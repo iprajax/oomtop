@@ -1,0 +1,146 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    # nightly perf check against SPEC §14 (03:17 UTC)
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: 0
+  RUST_BACKTRACE: 1
+
+jobs:
+  fmt:
+    name: fmt
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - run: cargo fmt --all -- --check
+
+  check:
+    name: clippy + test (${{ matrix.os }})
+    if: github.event_name != 'schedule'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - uses: Swatinem/rust-cache@v2
+      - name: clippy
+        run: cargo clippy --workspace --all-targets --locked -- -D warnings
+      - name: test
+        run: cargo test --workspace --locked
+      - name: oomtop --version
+        run: cargo run -q -p oomtop-cli --locked -- --version
+      - name: keymap presets have no conflicts
+        run: |
+          for p in default vim emacs htop; do
+            cargo run -q -p oomtop-cli --locked -- keys list --conflicts --preset "$p"
+          done
+      - name: built-in themes pass their checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          # every theme `theme list` knows (a fresh runner has no user themes, so these are the built-ins)
+          themes=$(cargo run -q -p oomtop-cli --locked -- theme list | awk '{print $1}')
+          test -n "$themes"
+          for t in $themes; do
+            cargo run -q -p oomtop-cli --locked -- theme check "$t"
+          done
+      - name: live smoke (this runner)
+        shell: bash
+        run: |
+          set -euo pipefail
+          bin=target/debug/oomtop
+          $bin doctor --no-probe
+          $bin json --compact --offline | python3 -c 'import json,sys; s=json.load(sys.stdin); assert s["schema_version"]==1 and s["processes"], "empty snapshot"'
+          # a measurable answer (0 yes · 3 after reclaim · 4 no on a runner below its margin); never 1 or 2
+          set +e; $bin headroom --need 1K --offline; code=$?; set -e
+          case "$code" in 0|3|4) ;; *) echo "headroom --need 1K exited $code"; exit 1 ;; esac
+      - name: ground truth (parsers + informational live comparison, SPEC §17)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/groundtruth/groundtruth.py --selftest
+          # live deltas on this runner (informational: CI hosts are noisy; the ≤ 5 % gate runs on real machines)
+          python3 tools/groundtruth/groundtruth.py --oomtop target/debug/oomtop --top 15 || true
+
+  msrv:
+    name: MSRV (rust-version from Cargo.toml)
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: read rust-version
+        id: msrv
+        run: echo "v=$(grep -m1 '^rust-version' Cargo.toml | cut -d'"' -f2)" >> "$GITHUB_OUTPUT"
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ steps.msrv.outputs.v }}
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo check --workspace --locked
+
+  perf:
+    name: nightly perf (SPEC §14)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --release -p oomtop-cli --locked
+      - name: CPU and RSS at the default 2 s refresh
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ "$RUNNER_OS" = "macOS" ]; then TIME="/usr/bin/time -l"; else
+            [ -x /usr/bin/time ] || { sudo apt-get update -q && sudo apt-get install -y -q time; }
+            TIME="/usr/bin/time -v"
+          fi
+          # 30 samples at 2 s through the TUI's pipeline (one engine: sample → attribute → idle → adapters →
+          # history → forecast); --discard skips JSON serialization, which the TUI doesn't do either.
+          $TIME target/release/oomtop ndjson --interval 2s --count 30 --offline --discard > /dev/null 2> time.txt
+          cat time.txt
+          python3 tools/groundtruth/perf_budget.py time.txt --seconds 60
+          # informational: the same with full JSON output
+          $TIME target/release/oomtop ndjson --interval 2s --count 15 --offline > /dev/null 2> time-json.txt || true
+          python3 tools/groundtruth/perf_budget.py time-json.txt --seconds 30 --report-only || true
+      - name: first snapshot latency
+        shell: bash
+        run: |
+          python3 - <<'EOF'
+          import subprocess, time
+          best = 1e9
+          for _ in range(5):
+              t = time.monotonic()
+              subprocess.run(["target/release/oomtop", "json", "--compact", "--offline"], check=True, stdout=subprocess.DEVNULL)
+              best = min(best, time.monotonic() - t)
+          # `json` takes two samples 250 ms apart by design; budget: 250 ms + 300 ms first frame.
+          print(f"oomtop json: best of 5 = {best*1000:.0f} ms")
+          assert best < 0.55 + 0.5, f"first snapshot too slow: {best:.3f}s"
+          EOF

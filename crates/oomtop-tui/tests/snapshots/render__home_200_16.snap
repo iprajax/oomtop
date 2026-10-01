@@ -1,0 +1,118 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||||||                              21.5%]  E3[|                                       2.0%]  P6[|||||||||||||||||||                    42.4%]  P9[|||||                                  11.8%]
+.aaabcccccccccddddddddddddddddddddddddddddddaaaaab.aaabcdddddddddddddddddddddddddddddddddddddddaaaab.aaabcccccccccccccccccccddddddddddddddddddddaaaaab.aaabcccccddddddddddddddddddddddddddddddddddaaaaab
+  E1[|||||||                                16.0%]  E4[|                                       1.3%]  P7[||||||||||||||||||||||||||||||||||     78.0%]
+.aaabcccccccddddddddddddddddddddddddddddddddaaaaab.aaabcdddddddddddddddddddddddddddddddddddddddaaaab.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeedddddaaaaab
+  E2[|||                                     6.7%]  E5[                                        0.7%]  P8[|||||||||||||||||||||||||||||||||||||||93.1%]
+.aaabcccdddddddddddddddddddddddddddddddddddddaaaab.aaabddddddddddddddddddddddddddddddddddddddddaaaab.aaabfffffffffffffffffffffffffffffffffffffffaaaaab
+ Mem[||||||||||||||||||||||#######################################******============....20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab......................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddddggggggggggggaaaaaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||   6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeedddaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||||||||||||||||||||||||||                                  58.0%]  Uptime: 58 days, 11:23:04
+.aaabcccccccccccccccccccccccccccccccccccccccccccccccccccccccddddddddddddddddddddddddddddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free 3.0 GiB.  [r]
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhbbbbb
+ MEM |apps 5.6G #gpu/metal 9.9G *compressed 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaaaaaaaa.....daaaaaaaaaaa.....gaaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣀⣤⣤⣤⣶⣶⣶⣿⣿  ▲ +360M/min  forecast stable   headroom 223M
+aaaaaaiiiiiiiiiiieeeeeeeeeeee............eeeeeeeeeeeeeaaaaaaaaaaaaaaaaa
+ GPU 58%  4.1 W  9.9G of budget 16.0G     package 11.8 W   P-cluster 3100/4400 MHz
+aaaaa..........bbbbbbbbbbbbbbbbbbbbbb
+ oomtop  [1 Home] 2 Processes 3 Models 4 Sandboxes 5 Reclaim 6 Timeline                       MacBook Air M5 · 24.0G unified  mode pressure  ▲ Pressure  72% speed  ▲ warm  bat 29%  2 sources limited
+bbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbb.......................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa..eeeeeeeeee..eeeeeeeee..eeeeee...........aaaaaaaaaaaaaaaaa
+─ Your things ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ddaaaaaaaaaaaadddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+ sd-server · qwen-image-studio  9.9G  generating 3/6 · 8.1 s/step    Claude Code ×4  1.4G
+
+ ▲ Leftovers: chrome-headless-shell from Claude Code · 7c11 450M · r reclaims
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+─ Ranked ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────── / filter · : command · i why ─
+ddaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ ▸ sd-server · qwen-image-studio (2)                        model   generating 3/6     9.9G  ⣦⣰⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼    85%                 because: holds 41% of RAM
+jjjkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkllllllllmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllllll
+   KotlinCompileDaemon                                      daemon  idle 6h35m         3.0G  ⣄⣦⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷     0%  ● reclaimable  because: idle cost · pressure
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa..............................cccccccccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   GradleDaemon 9.8                                         daemon  idle 3h40m         2.9G  ⣦⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷⣦     0%  ● reclaimable  because: idle cost · pressure
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa..............................cccccccccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Google Chrome (14)                                       app                        2.9G  ⣰⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶     6%                 because: holds 12% of RAM
+bbb........................................................aaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Claude desktop VM                                        sandbox                   ≥1.5G  ⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶⣼     2%  sandbox        because: sandbox · started by Claude
+bbbiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiaaaaaaaaaaaaaaaaaaaaaaa..............................iiiiiiiiiiiiiiiaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   ChatGPT / Codex (6)                                      app                        1.0G  ⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷⣦⣷     2%
+bbb........................................................aaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Claude Code · d4e5 (2)                                   agent                      383M  ⣰⣄⣶⣄⣦⣴⣦⣷⣤⣷⣼⣶     0%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   chrome-headless-shell                                    other   ▲ orphan           450M  ⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶⣼⣦     0%  ● reclaimable  because: orphan of Claude Code · 7c11 · idle cost
+bbb........................................................aaaaaaaaeeeeeeeeeeeeeee..............................cccccccccccccccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Claude                                                   app                        420M  ⣦⣰⣄⣶⣄⣦⣴⣦⣷⣤⣷⣼     1%
+bbb........................................................aaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   clang                                                    other                      120M  ⣦⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷⣦    30%
+bbb........................................................aaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Claude Code · a90b (2)                                   agent                      372M  ⣦⣰⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼     0%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Claude Code · 3f2a (2)                                   agent                      350M  ⣰⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶     4%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   WindowServer                                             system                     410M  ⣄⣦⣰⣦⣰⣤⣶⣼⣦⣼⣦⣷     6%  protected
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Claude Code · 7c11 (2)                                   agent                      361M  ⣄⣦⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷     0%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   oomtop (this)                                            other                     22.0M  ⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶⣼     1%  this
+bbb........................................................aaaaaaaaaaaaaaaaaaaaaaa..............................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+─ Details ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ddaaaaaaaadddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+ sd-server · qwen-image-studio → sd-server (9.7G) · python3 (180M)
+
+ model_server · 2 processes · grouped by builtin:model (high confidence) · root pid 4242
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ footprint 9.9G (Σ footprint, exact) · resident 1.2G · gpu n/a (inside footprint) · swapped n/a (not attributable per process) · reclaim ≈4.1G · swap freed ≈2.9G · cpu 85%
+
+ history ⣤⣰⣄⣦⣴⣦⣰⣤⣶⣼⣦⣴⣦⣷⣾ min 7.0G max 9.9G over 30 samples
+
+ because: holds 41% of RAM
+aaaaaaaaaaaaaaaaaaaaaaaaaa
+ [x] stop   [z] suspend   [p] pin   [m] mute   [w] watch   [c] compare   [i] why ranked here
+.bbb........bbb...........bbb.......bbb........bbb.........bbb...........bbb
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmmm..mmmmmmm...mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Yellow
+f = fg:Red bold
+g = dim italic
+h = fg:Yellow bold
+i = italic
+j = bold reverse
+k = bold italic reverse
+l = dim reverse
+m = reverse

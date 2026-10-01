@@ -1,0 +1,504 @@
+---
+source: crates/oomtop-core/tests/ux_query.rs
+expression: out
+---
+[
+  {
+    "input": "gpu hogs",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.9,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": {
+        "rank_by": "gpu"
+      },
+      "interpretations": [
+        "rank by GPU memory (0.90)"
+      ],
+      "need_bytes": null,
+      "normalized": "gpu hogs",
+      "sort": "gpu"
+    }
+  },
+  {
+    "input": "what's eating memory",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.9,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": {
+        "rank_by": "mem"
+      },
+      "interpretations": [
+        "rank by memory (0.90)"
+      ],
+      "need_bytes": null,
+      "normalized": "whats eating memory",
+      "sort": "mem"
+    }
+  },
+  {
+    "input": "mem>2G",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": "mem>2G",
+      "intent": "find",
+      "interpretations": [
+        "filter mem>2G (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": "mem>2G",
+      "sort": "mem"
+    }
+  },
+  {
+    "input": "mem>2G kind:daemon idle>30m",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": "mem>2G kind:daemon idle>30m",
+      "intent": "find",
+      "interpretations": [
+        "filter mem>2G kind:daemon idle>30m (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": "mem>2G kind:daemon idle>30m",
+      "sort": null
+    }
+  },
+  {
+    "input": "gpu>1G",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": "gpu>1G",
+      "intent": "find",
+      "interpretations": [
+        "filter gpu>1G (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": "gpu>1G",
+      "sort": "gpu"
+    }
+  },
+  {
+    "input": "owner:\"Claude Code\"",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": "owner:\"Claude Code\"",
+      "intent": "find",
+      "interpretations": [
+        "filter owner:\"Claude Code\" (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": "owner:\"Claude Code\"",
+      "sort": null
+    }
+  },
+  {
+    "input": "sandbox:*",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": "sandbox:*",
+      "intent": "find",
+      "interpretations": [
+        "filter sandbox:* (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": "sandbox:*",
+      "sort": null
+    }
+  },
+  {
+    "input": "kind:model,agent or gpu>1G -muted",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": "kind:model,agent or gpu>1G -muted",
+      "intent": "find",
+      "interpretations": [
+        "filter kind:model,agent or gpu>1G -muted (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": "kind:model,agent or gpu>1G -muted",
+      "sort": "gpu"
+    }
+  },
+  {
+    "input": "claude",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.9,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "find",
+      "interpretations": [
+        "go to Claude Code (0.90)"
+      ],
+      "need_bytes": null,
+      "normalized": "claude",
+      "sort": null
+    }
+  },
+  {
+    "input": "why slow",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.9,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "explain",
+      "interpretations": [
+        "explain slowdown (0.90)"
+      ],
+      "need_bytes": null,
+      "normalized": "why slow",
+      "sort": null
+    }
+  },
+  {
+    "input": "idle stuff",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.8,
+      "corrections": [],
+      "error": null,
+      "filter": "state:idle",
+      "intent": "reclaim",
+      "interpretations": [
+        "reclaim memory (state:idle) (0.80)"
+      ],
+      "need_bytes": null,
+      "normalized": "idle stuff",
+      "sort": null
+    }
+  },
+  {
+    "input": "models",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.8,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": {
+        "navigate": "models"
+      },
+      "interpretations": [
+        "open models (0.80)",
+        "filter kind:model (0.65)"
+      ],
+      "need_bytes": null,
+      "normalized": "models",
+      "sort": null
+    }
+  },
+  {
+    "input": "can I load 13g",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.95,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "headroom",
+      "interpretations": [
+        "can 13 GiB fit? (0.95)"
+      ],
+      "need_bytes": 13958643712,
+      "normalized": "can i load 13g",
+      "sort": null
+    }
+  },
+  {
+    "input": "can i load 13 gb",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.95,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "headroom",
+      "interpretations": [
+        "can 13 GB fit? (0.95)"
+      ],
+      "need_bytes": 13000000000,
+      "normalized": "can i load 13gb",
+      "sort": null
+    }
+  },
+  {
+    "input": ":reclaim",
+    "understood": {
+      "ambiguous": false,
+      "command": {
+        "args": [],
+        "name": "reclaim"
+      },
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "reclaim",
+      "interpretations": [
+        ":reclaim (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": ":reclaim",
+      "sort": null
+    }
+  },
+  {
+    "input": ":headroom 13G",
+    "understood": {
+      "ambiguous": false,
+      "command": {
+        "args": [
+          "13G"
+        ],
+        "name": "headroom"
+      },
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "headroom",
+      "interpretations": [
+        ":headroom (1.00)"
+      ],
+      "need_bytes": 13958643712,
+      "normalized": ":headroom 13G",
+      "sort": null
+    }
+  },
+  {
+    "input": ":why",
+    "understood": {
+      "ambiguous": false,
+      "command": {
+        "args": [],
+        "name": "why"
+      },
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "explain",
+      "interpretations": [
+        ":why (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": ":why",
+      "sort": null
+    }
+  },
+  {
+    "input": ":pin sd-server",
+    "understood": {
+      "ambiguous": false,
+      "command": {
+        "args": [
+          "sd-server"
+        ],
+        "name": "pin"
+      },
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "find",
+      "interpretations": [
+        ":pin (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": ":pin sd-server",
+      "sort": null
+    }
+  },
+  {
+    "input": ":mode pressure",
+    "understood": {
+      "ambiguous": false,
+      "command": {
+        "args": [
+          "pressure"
+        ],
+        "name": "mode"
+      },
+      "confidence": 1.0,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "find",
+      "interpretations": [
+        ":mode (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": ":mode pressure",
+      "sort": null
+    }
+  },
+  {
+    "input": "throtle",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.9,
+      "corrections": [
+        {
+          "from": "throtle",
+          "to": "throttle"
+        }
+      ],
+      "error": null,
+      "filter": null,
+      "intent": "explain",
+      "interpretations": [
+        "explain slowdown (0.90)"
+      ],
+      "need_bytes": null,
+      "normalized": "throttle",
+      "sort": null
+    }
+  },
+  {
+    "input": "gpu hogs kind:model",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.9,
+      "corrections": [],
+      "error": null,
+      "filter": "kind:model",
+      "intent": {
+        "rank_by": "gpu"
+      },
+      "interpretations": [
+        "rank by GPU memory (kind:model) (0.90)",
+        "filter kind:model (0.60)"
+      ],
+      "need_bytes": null,
+      "normalized": "gpu hogs kind:model",
+      "sort": "gpu"
+    }
+  },
+  {
+    "input": "memroy hogs",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 0.9,
+      "corrections": [
+        {
+          "from": "memroy",
+          "to": "memory"
+        }
+      ],
+      "error": null,
+      "filter": null,
+      "intent": {
+        "rank_by": "mem"
+      },
+      "interpretations": [
+        "rank by memory (0.90)"
+      ],
+      "need_bytes": null,
+      "normalized": "memory hogs",
+      "sort": "mem"
+    }
+  },
+  {
+    "input": "kind:modle",
+    "understood": {
+      "ambiguous": false,
+      "command": null,
+      "confidence": 1.0,
+      "corrections": [
+        {
+          "from": "modle",
+          "to": "model"
+        }
+      ],
+      "error": null,
+      "filter": "kind:model",
+      "intent": "find",
+      "interpretations": [
+        "filter kind:model (1.00)"
+      ],
+      "need_bytes": null,
+      "normalized": "kind:model",
+      "sort": null
+    }
+  },
+  {
+    "input": "(kind:app",
+    "understood": {
+      "ambiguous": true,
+      "command": null,
+      "confidence": 0.0,
+      "corrections": [],
+      "error": "unbalanced parentheses",
+      "filter": null,
+      "intent": "find",
+      "interpretations": [],
+      "need_bytes": null,
+      "normalized": "(kind:app",
+      "sort": null
+    }
+  },
+  {
+    "input": "frobnicate",
+    "understood": {
+      "ambiguous": true,
+      "command": null,
+      "confidence": 0.2,
+      "corrections": [],
+      "error": null,
+      "filter": null,
+      "intent": "find",
+      "interpretations": [
+        "rank by memory (0.20)",
+        "explain slowdown (0.19)",
+        "reclaim memory (0.18)"
+      ],
+      "need_bytes": null,
+      "normalized": "frobnicate",
+      "sort": null
+    }
+  }
+]

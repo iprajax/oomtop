@@ -1,0 +1,21 @@
+[package]
+name = "oomtop-core"
+description = "oomtop core: pure data model, units, attribution, headroom, forecast, throttle, query and ranking logic (no I/O)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+regex = { workspace = true }
+globset = { workspace = true }
+sha2 = { workspace = true }
+
+[dev-dependencies]
+insta = { workspace = true }

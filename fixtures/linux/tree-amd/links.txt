@@ -1,0 +1,27 @@
+# Applied by the tests to a temp copy: `link <path> <target>` | `chmod000 <path>`
+link proc/1/exe /usr/lib/systemd/systemd
+link proc/1/cwd /home/dev/project
+link proc/1/fd/0 /dev/null
+link proc/812/exe /usr/lib/systemd/systemd-oomd
+link proc/812/cwd /home/dev/project
+link proc/812/fd/0 /dev/null
+link proc/1500/exe /usr/bin/gnome-shell
+link proc/1500/cwd /home/dev/project
+link proc/1500/fd/0 /dev/null
+link proc/2100/exe /usr/bin/claude
+link proc/2100/cwd /home/dev/project
+link proc/2100/fd/0 /dev/null
+link proc/2200/exe /usr/bin/llama-server
+link proc/2200/cwd /home/dev/project
+link proc/2200/fd/0 /dev/null
+link proc/2300/exe /usr/bin/python3
+link proc/2300/cwd /home/dev/project
+link proc/2300/fd/0 /dev/null
+link proc/2400/exe /usr/lib/jvm/java-21/bin/java
+link proc/2400/cwd /home/dev/project
+link proc/2400/fd/0 /dev/null
+link proc/2200/fd/5 /dev/dri/renderD129
+link proc/2200/fd/6 /dev/dri/renderD129
+link proc/2200/fd/7 /home/dev/models/qwen2.5-coder-14b-q4_k_m.gguf
+link proc/2300/fd/9 /dev/dri/renderD128
+chmod000 sys/class/powercap/intel-rapl:0/energy_uj

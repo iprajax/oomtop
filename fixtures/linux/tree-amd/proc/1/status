@@ -1,0 +1,19 @@
+Name:	systemd
+Umask:	0022
+State:	S (sleeping)
+Tgid:	1
+Ngid:	0
+Pid:	1
+PPid:	0
+TracerPid:	0
+Uid:	0	0	0	0
+Gid:	0	0	0	0
+FDSize:	256
+VmPeak:	36440 kB
+VmSize:	36440 kB
+VmHWM:	18220 kB
+VmRSS:	18220 kB
+RssAnon:	16398 kB
+RssFile:	1822 kB
+VmSwap:	0 kB
+Threads:	12

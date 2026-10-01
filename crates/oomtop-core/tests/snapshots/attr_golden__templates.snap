@@ -1,0 +1,214 @@
+---
+source: crates/oomtop-core/tests/attr_golden.rs
+expression: rows
+---
+- pid: 0
+  template: kernel_task
+  display: kernel_task
+- pid: 1
+  template: launchd
+  display: launchd
+- pid: 150
+  template: WindowServer
+  display: WindowServer
+- pid: 160
+  template: mdworker_shared
+  display: mdworker_shared
+- pid: 161
+  template: mdworker_shared
+  display: mdworker_shared
+- pid: 400
+  template: iTerm2
+  display: iTerm2
+- pid: 410
+  template: login -fpl dev <path>
+  display: login
+- pid: 411
+  template: zsh
+  display: zsh · proj1
+- pid: 412
+  template: claude
+  display: claude · proj1
+- pid: 413
+  template: "@playwright/mcp"
+  display: "@playwright/mcp · proj1"
+- pid: 420
+  template: login -fpl dev <path>
+  display: login
+- pid: 421
+  template: zsh
+  display: zsh · proj2
+- pid: 422
+  template: claude
+  display: claude · proj2
+- pid: 423
+  template: "@playwright/mcp"
+  display: "@playwright/mcp · proj2"
+- pid: 430
+  template: login -fpl dev <path>
+  display: login
+- pid: 431
+  template: zsh
+  display: zsh · proj3
+- pid: 432
+  template: claude
+  display: claude · proj3
+- pid: 433
+  template: "@playwright/mcp"
+  display: "@playwright/mcp · proj3"
+- pid: 440
+  template: login -fpl dev <path>
+  display: login
+- pid: 441
+  template: zsh
+  display: zsh · proj4
+- pid: 442
+  template: claude
+  display: claude · proj4
+- pid: 443
+  template: "@playwright/mcp"
+  display: "@playwright/mcp · proj4"
+- pid: 4120
+  template: oomtop mcp
+  display: oomtop · proj1
+- pid: 5001
+  template: next dev -p <n>
+  display: next · proj2
+- pid: 5002
+  template: next/start-server
+  display: next/start-server · proj2
+- pid: 5101
+  template: Chromium
+  display: Chromium
+- pid: 5102
+  template: Chromium Helper (Renderer)
+  display: Chromium Helper (Renderer)
+- pid: 5201
+  template: fswatch -r src
+  display: fswatch · proj4
+- pid: 5301
+  template: typescript/tsc --watch
+  display: typescript/tsc · old
+- pid: 781
+  template: GradleDaemon <ver>
+  display: GradleDaemon
+- pid: 782
+  template: KotlinCompileDaemon --daemon-runFilesPath <path>
+  display: KotlinCompileDaemon
+- pid: 880
+  template: Claude
+  display: Claude
+- pid: 881
+  template: Claude Helper (Renderer)
+  display: Claude Helper (Renderer)
+- pid: 882
+  template: Claude Helper
+  display: Claude Helper
+- pid: 883
+  template: chrome_crashpad_handler
+  display: chrome_crashpad_handler
+- pid: 889
+  template: com.apple.Virtualization.VirtualMachine
+  display: com.apple.Virtualization.VirtualMachine
+- pid: 900
+  template: start.sh
+  display: start.sh · qwen-image-studio
+- pid: 901
+  template: sd-server --listen-port <n> --diffusion-model <file>
+  display: sd-server · qwen-image-studio
+- pid: 902
+  template: studio.py --port <n>
+  display: studio.py · qwen-image-studio
+- pid: 700
+  template: Google Chrome
+  display: Google Chrome
+- pid: 701
+  template: Google Chrome Helper (Renderer)
+  display: Google Chrome Helper (Renderer)
+- pid: 702
+  template: Google Chrome Helper (GPU)
+  display: Google Chrome Helper (GPU)
+- pid: 1
+  template: systemd
+  display: systemd
+- pid: 2
+  template: kthreadd
+  display: kthreadd
+- pid: 3
+  template: rcu_gp
+  display: rcu_gp
+- pid: 4
+  template: "kworker/0:0H-events_highpri"
+  display: "kworker/0:0H-events_highpri"
+- pid: 300
+  template: dockerd
+  display: dockerd
+- pid: 310
+  template: containerd-shim-runc-v2
+  display: containerd-shim-runc-v2
+- pid: 311
+  template: postgres
+  display: postgres
+- pid: 312
+  template: postgres
+  display: postgres
+- pid: 400
+  template: systemd --user
+  display: systemd
+- pid: 450
+  template: ollama serve
+  display: ollama
+- pid: 451
+  template: ollama runner --model <path> --port <n>
+  display: ollama
+- pid: 500
+  template: firefox
+  display: firefox
+- pid: 501
+  template: firefox -contentproc -childID <n> -isForBrowser tab
+  display: firefox
+- pid: 520
+  template: slack
+  display: slack
+- pid: 521
+  template: slack --type=zygote
+  display: slack
+- pid: 600
+  template: gnome-terminal-server
+  display: gnome-terminal-server
+- pid: 601
+  template: bash
+  display: bash · api
+- pid: 602
+  template: "@anthropic-ai/claude-code"
+  display: "@anthropic-ai/claude-code · api"
+- pid: 603
+  template: typescript/tsserver --useInferredProjectPerProjectRoot
+  display: typescript/tsserver · api
+- pid: 604
+  template: bash -c cargo
+  display: bash -c cargo · api
+- pid: 605
+  template: cargo test
+  display: cargo · api
+- pid: 610
+  template: bash
+  display: bash · api
+- pid: 611
+  template: load_test.py --rps <n>
+  display: load_test.py · scripts
+- pid: 700
+  template: tmux new -d
+  display: tmux
+- pid: 701
+  template: zsh
+  display: zsh
+- pid: 702
+  template: sudo htop
+  display: sudo
+- pid: 703
+  template: htop
+  display: htop
+- pid: 4120
+  template: oomtop
+  display: oomtop

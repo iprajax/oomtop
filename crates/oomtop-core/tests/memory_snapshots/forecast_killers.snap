@@ -1,0 +1,50 @@
+---
+source: crates/oomtop-core/tests/memory_forecast.rs
+expression: "serde_json::json!({\n    \"macos_jetsam_available_decline\": out, \"linux_setup\":\n    {\n        \"killer\": oom.killer, \"killers\": oom.killers, \"thresholds\":\n        oom.thresholds,\n    }, \"linux_forecast\":\n    {\n        \"target\": f.target, \"killer\": f.killer, \"eta\":\n        format_duration(f.eta_s), \"rate_per_min_mib\":\n        (f.rate_per_min / MIB as f64).round(), \"confidence\":\n        (f.confidence * 1000.0).round() / 1000.0,\n    },\n})"
+---
+linux_forecast:
+  confidence: 1
+  eta: 5m
+  killer: systemd_oomd
+  rate_per_min_mib: 250
+  target: killer_threshold
+linux_setup:
+  killer: earlyoom
+  killers:
+    - kernel
+    - systemd_oomd
+    - earlyoom
+  thresholds:
+    - duration_s: ~
+      killer: systemd_oomd
+      metric: swap_used_pct
+      source: systemd-oomd default
+      value: 90
+    - duration_s: 30
+      killer: systemd_oomd
+      metric: mem_pressure_pct
+      source: systemd-oomd default
+      value: 60
+    - duration_s: ~
+      killer: earlyoom
+      metric: available_bytes
+      source: earlyoom argv
+      value: 1717986918
+    - duration_s: ~
+      killer: earlyoom
+      metric: swap_used_pct
+      source: earlyoom argv
+      value: 90
+macos_jetsam_available_decline:
+  - actual: 28m
+    forecast: 28m
+    t: 2m
+  - actual: 26m
+    forecast: 26m
+    t: 4m
+  - actual: 24m
+    forecast: 24m
+    t: 6m
+  - actual: 22m
+    forecast: 22m
+    t: 8m

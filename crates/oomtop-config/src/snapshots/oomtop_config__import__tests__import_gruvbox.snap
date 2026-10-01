@@ -1,0 +1,57 @@
+---
+source: crates/oomtop-config/src/import.rs
+expression: theme_to_toml(&g)
+---
+name = "gruvbox-dark-medium"
+appearance = "dark"
+
+[ui]
+accent           = { fg = "#fe8019", bold = true }
+"accent.text"    = { fg = "#282828", bg = "#fe8019", bold = true }
+border           = { fg = "#504945" }
+"border.focus"   = { fg = "#fe8019" }
+faint            = { fg = "#665c54" }
+muted            = { fg = "#bdae93" }
+selection        = { bg = "#504945" }
+"selection.text" = { fg = "#d5c4a1", bg = "#504945", bold = true }
+surface          = { bg = "#282828" }
+text             = { fg = "#d5c4a1" }
+
+[state]
+crit  = { fg = "#fb4934", bold = true }
+info  = { fg = "#d5c4a1" }
+ok    = { fg = "#b8bb26" }
+stale = { fg = "#665c54" }
+warn  = { fg = "#fabd2f" }
+
+[mem]
+app        = { fg = "#d5c4a1" }
+cache      = { fg = "#504945" }
+compressed = { fg = "#bdae93" }
+free       = { fg = "#b8bb26" }
+gpu        = { fg = "#fabd2f" }
+swap       = { fg = "#fb4934" }
+wired      = { fg = "#665c54" }
+
+[kind]
+agent   = { fg = "#fe8019", bold = true }
+app     = { fg = "#d5c4a1" }
+daemon  = { fg = "#bdae93" }
+model   = { fg = "#fabd2f" }
+other   = { fg = "#bdae93" }
+sandbox = { fg = "#8ec07c", italic = true }
+system  = { fg = "#665c54" }
+
+[chart]
+"bar.fill"   = { fg = "#d5c4a1" }
+"bar.track"  = { fg = "#504945" }
+spark        = { fg = "#bdae93" }
+"spark.peak" = { fg = "#fe8019", bold = true }
+
+[text]
+headline = { fg = "#d5c4a1", bold = true }
+key      = { fg = "#fe8019", bold = true }
+label    = { fg = "#bdae93" }
+link     = { fg = "#fe8019", underline = true }
+number   = { fg = "#d5c4a1" }
+unit     = { fg = "#bdae93" }

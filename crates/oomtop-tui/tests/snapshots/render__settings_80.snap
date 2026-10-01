@@ -1,0 +1,77 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+─ Settings ────────────── a view over your config files · changes preview live ─
+aabbbbbbbbbaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ Appearance      appearance.appearance         ‹› auto                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.background         ‹› transparent          default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.borders            ‹› rounded              default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.color              ‹› auto                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.density            ‹› compact              config.t…
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.glyphs             ‹› unicode              default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.header                ["meters", "headlin… default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.motion             ‹› marks                default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.sparklines         ‹› braille              default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 appearance.theme              ‹› colorblind           runtime …
+cccccccccccccccccddddddddddddddddddddddddddddddeeeffffffffffffffffffffcccccccccc
+                 format.cpu                    ‹› per-core             default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 format.decimals                  1                    default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 format.memory_units           ‹› iec                  default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 format.time                   ‹› relative             default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+ Layout          layout.name                   ‹›                      default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+ Keys            keys.preset                   ‹› default              default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+ Behavior        adapters.enabled              ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 adapters.ports                   {}                   default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 adapters.timeout_ms              200                  default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 general.expensive_refresh_ms     10000                default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 general.host_refresh_ms          1000                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 general.live_reload           ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 general.mouse                 ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 general.other_users           ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 general.refresh_ms               3000                 config.t…
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 general.watch_poll_ms            0                    default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+                 headroom.margin_override                              default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbb
+ appearance.theme — terminal (default) | mono | ember | mint | sand | coral | h…
+
+ save target user: /home/me/.config/oomtop/config.toml  · 1 unsaved change
+bbbbbbbbbbbbbgggggggggggggggggggggggggggggggggggggggggbbbbbbbbbbbbbbbbbbbb
+ ←/→ change · enter edit/apply for session · s save · tab save target · e open …
+hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+
+
+--- legend
+a = fg:DarkGray
+b = dim
+c = dim reverse
+d = reverse
+e = fg:DarkGray reverse
+f = bold reverse
+g = underline
+h = bold

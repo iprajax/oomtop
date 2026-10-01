@@ -1,0 +1,90 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||              21.5%]  E3[                    2.0%]  P6[||||||||||         42.4%]  P9[|||                11.8%]
+.aaabcccccddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabccccccccccdddddddddaaaaab.aaabcccddddddddddddddddaaaaab
+  E1[||||               16.0%]  E4[                    1.3%]  P7[|||||||||||||||||||78.0%]
+.aaabccccdddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabeeeeeeeeeeeeeeeeeeeaaaaab
+  E2[||                  6.7%]  E5[                    0.7%]  P8[|||||||||||||||||||93.1%]
+.aaabccddddddddddddddddddaaaab.aaabddddddddddddddddddddaaaab.aaabfffffffffffffffffffaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab.............bbbbbbbbbbbbbbbbbbbbbbdddgggggaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]  Uptime: 58 days, 11:23:04
+.aaabcccccccccccccccccccccccccccccccddddddddddddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free 3.0 GiB.  [r]
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaa.....daaaa.....gaaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   headroom 223M
+aaaaaaiiiiiiiiiiieeeeeeeeeeee........eeeeeeeeeeeee
+ oomtop  [1 Home] 2 Processes 3 Models 4 Sandboxes 5 Reclaim 6 Timeline         ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbb.........eeeeeeeeee..eeeeeeeee..eeeeee
+─ You╭ Help · j/k scroll · any key closes ────────────────────────────────────────────────────────────────────────╮─────
+ddaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddd
+ sd-s│Keys (from your keymap)                                                                                     │
+.....bbbbbbbbbbbbbbbbbbbbbbbb.....................................................................................b
+ ▲ Le│  up / k                move up                                                                             │
+eeeeebbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................beeeee
+─ Ran│  down / j              move down                                                                           │why ─
+ddaaabbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+ ▸ sd│  g / home              top (timeline: oldest)                                                              │
+jjjkkbbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................blllll
+   Ko│  G / end               bottom (timeline: live)                                                             │mable
+bbbaabbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................bccccc
+   Gr│  pageup                page up (timeline: -1 min)                                                          │mable
+bbbaabbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................bccccc
+   Go│  pagedown              page down (timeline: +1 min)                                                        │
+bbb..bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   Cl│  enter / right / l     expand members / open details (timeline: scrub later)                               │
+bbbiibbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................biiiii
+   Ch│  left / h              collapse / close (timeline: scrub earlier)                                          │
+bbb..bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   Cl│  1                     Home: your things + ranked groups                                                   │
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   ch│  2                     Processes                                                                           │mable
+bbb..bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................bccccc
+   Cl│  3                     Models                                                                              │
+bbb..bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   cl│  4                     Sandboxes                                                                           │
+bbb..bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   Cl│  5 / F8                Reclaim candidates                                                                  │
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   Cl│  6 / t                 Timeline (last 10 min)                                                              │
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   Wi│  tab                   next view                                                                           │d
+bbbaabbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   Cl│  backtab               previous view                                                                       │
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+   oo│  / / F4                filter (mem>2G kind:daemon …)                                                       │
+bbb..bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................baaaaa
+     │  :                     command (:reclaim :headroom 13G :why …)                                             │
+.....bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................b
+     │  ctrl-k / F3           palette: search, filters, commands                                                  │
+.....bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................b
+     │  x / F9                stop group (SIGTERM; again for SIGKILL) — confirms                                  │
+.....bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................b
+     │  z                     suspend / resume (CPU relief only) — confirms                                       │
+.....bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................b
+     │  p                     pin to Your things                                                                  │
+.....bbbbbbbbbbbbbbbbbbbbbbbbb....................................................................................b
+     ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+.....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmmm..mmmmmmm...mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Yellow
+f = fg:Red bold
+g = dim italic
+h = fg:Yellow bold
+i = italic
+j = bold reverse
+k = bold italic reverse
+l = dim reverse
+m = reverse

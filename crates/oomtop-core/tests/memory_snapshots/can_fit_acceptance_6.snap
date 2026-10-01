@@ -1,0 +1,78 @@
+---
+source: crates/oomtop-core/tests/memory_can_fit.rs
+expression: out
+---
+- scenario: plenty free
+  available: 16.0G
+  safety_margin: 1.9G
+  headroom: 14.1G
+  answer: "yes"
+  exit_code: 0
+  reclaim: []
+  gain: ~
+  shortfall: ~
+  reason: fits in current headroom
+- scenario: short by 1.9G
+  available: 13.0G
+  safety_margin: 1.9G
+  headroom: 11.1G
+  answer: yes_after_reclaim
+  exit_code: 3
+  reclaim:
+    - "daemon:gradle ≈3.1G"
+  gain: 3.1G
+  shortfall: ~
+  reason: fits after stopping 1 group (Gradle daemon) freeing ≈3.1 GiB
+- scenario: needs both daemons
+  available: 10.0G
+  safety_margin: 1.9G
+  headroom: 8.1G
+  answer: yes_after_reclaim
+  exit_code: 3
+  reclaim:
+    - "daemon:gradle ≈3.1G"
+    - "daemon:kotlin ≈2.6G"
+  gain: 5.7G
+  shortfall: ~
+  reason: "fits after stopping 2 groups (Gradle daemon, Kotlin compile daemon) freeing ≈5.7 GiB"
+- scenario: as captured
+  available: 6.4G
+  safety_margin: 1.9G
+  headroom: 4.5G
+  answer: "no"
+  exit_code: 4
+  reclaim: []
+  gain: ~
+  shortfall: 2.8G
+  reason: short by 2.8 GiB even after reclaiming ≈5.7 GiB
+- scenario: swap growing
+  available: 15.0G
+  safety_margin: 2.9G
+  headroom: 12.1G
+  answer: yes_after_reclaim
+  exit_code: 3
+  reclaim:
+    - "daemon:gradle ≈3.1G"
+  gain: 3.1G
+  shortfall: ~
+  reason: fits after stopping 1 group (Gradle daemon) freeing ≈3.1 GiB
+- scenario: gradle busy
+  available: 10.0G
+  safety_margin: 1.9G
+  headroom: 8.1G
+  answer: "no"
+  exit_code: 4
+  reclaim: []
+  gain: ~
+  shortfall: 2.3G
+  reason: short by 2.3 GiB even after reclaiming ≈2.6 GiB
+- scenario: no memory data
+  available: n/a
+  safety_margin: 1.9G
+  headroom: ~
+  answer: "no"
+  exit_code: 1
+  reclaim: []
+  gain: ~
+  shortfall: 13.0G
+  reason: available memory is unavailable on this host

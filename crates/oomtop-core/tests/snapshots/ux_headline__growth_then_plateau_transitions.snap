@@ -1,0 +1,16 @@
+---
+source: crates/oomtop-core/tests/ux_headline.rs
+expression: transitions(&run)
+---
+t=  0s [pressure] Tight on memory — 1.2 GB headroom. sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=120s [pressure] Swap full in ~9 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=155s [pressure] Swap full in ~8 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=215s [pressure] Swap full in ~7 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=275s [pressure] Swap full in ~6 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=350s [pressure] Swap full in ~7 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=390s [pressure] Swap full in ~8 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=410s [pressure] Swap full in ~9 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=425s [pressure] Swap full in ~10 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=440s [pressure] Swap full in ~11 min at this rate — sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=450s [pressure] Tight on memory — 2.2 GB headroom. sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+t=480s [leftovers] Idle leftovers — 2 idle build daemons could free 5.9 GB.

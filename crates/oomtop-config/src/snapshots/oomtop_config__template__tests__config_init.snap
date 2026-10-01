@@ -1,0 +1,175 @@
+---
+source: crates/oomtop-config/src/template.rs
+expression: init_template()
+---
+## oomtop configuration — every option with its default value.
+## Uncomment (remove the leading "# ") and edit what you want to change; `##` lines are documentation.
+##
+## Precedence (later wins): built-in defaults → /etc/oomtop/ → this file → config.d/*.toml (alphabetical) →
+##   config.d/host-<hostname>.toml → OOMTOP_* env vars (OOMTOP_APPEARANCE__THEME=ember) → CLI flags
+##   (--set appearance.theme=ember) → runtime toggles.
+## `oomtop config print --effective --origin` shows every value and which layer set it.
+## Other files next to this one: themes/<name>.toml · keymap.toml · layouts/<name>.toml · rules.d/*.toml.
+## This file is live-reloaded on save; an invalid edit keeps the last good config and reports file:line.
+
+## Sampling cadence and general behavior
+# [general]
+## per-process refresh in ms (TUI, serve)
+# refresh_ms = 2000
+## host stats refresh in ms
+# host_refresh_ms = 1000
+## expensive reads (smaps rotation, adapters) in ms
+# expensive_refresh_ms = 10000
+## enable mouse support in the TUI
+# mouse = true
+## reload config, themes, keymap and layouts on save (debounced 200 ms)
+# live_reload = true
+## 0 = native file events; > 0 = poll every N ms (network filesystems)
+# watch_poll_ms = 0
+## show other users' processes (false = only yours; host totals stay whole-machine)
+# other_users = true
+
+## When a process counts as idle or orphaned (SPEC §7)
+# [thresholds]
+## per-core CPU % below which a process counts as inactive
+# idle_cpu_pct = 0.5
+## seconds without CPU/disk activity before a process is idle
+# idle_after_s = 1800
+## minimum age in seconds before a leftover counts as an orphan
+# orphan_age_s = 600
+
+## Safety margin for headroom and can_fit answers (SPEC §8.1)
+# [headroom]
+## minimum safety margin (e.g. "1.5G")
+# min_margin = "1.5G"
+## safety margin as % of RAM (the larger of this and min_margin wins)
+# margin_pct = 8.0
+## extra margin % when under pressure or swap is growing
+# pressure_boost_pct = 50.0
+## fixed safety margin (e.g. "2G"); empty = computed
+# margin_override = ""
+
+## Processes that are never offered for stop/suspend (SPEC §13)
+# [protected]
+## extra process names never offered for stop/suspend
+# names = []
+## for example:
+##   names = ["postgres", "Xcode"]
+
+## Model files on disk (SPEC §10)
+# [models]
+## folders indexed for model files
+# folders = ["~/.cache/huggingface", "~/.ollama/models", "~/.lmstudio/models"]
+
+## Local model-server / sandbox APIs, 127.0.0.1 only, never a port scan (SPEC §10)
+# [adapters]
+## probe local model-server APIs (127.0.0.1 only)
+# enabled = true
+## adapter HTTP timeout in ms
+# timeout_ms = 200
+
+## Port overrides per server kind
+# [adapters.ports]
+## port overrides per server kind, e.g. { ollama = 11434 }
+## for example:
+##   ollama = 11434
+##   llama_cpp = 8080
+
+## What is read from process environments and what is exported (SPEC §13)
+# [privacy]
+## environment keys read as session markers (values hashed, never stored)
+# marker_allowlist = ["CLAUDECODE", "CLAUDE_CODE_SESSION_ID", "CLAUDE_CODE_ENTRYPOINT", "CODEX_SANDBOX", "CODEX_SESSION_ID", "CURSOR_AGENT", "CURSOR_TRACE_ID", "GEMINI_CLI", "GOOSE_SESSION_ID", "AIDER_SESSION", "OOMTOP_SESSION", "TERM_PROGRAM"]
+## redact command lines in json/ndjson output (serve and MCP always redact)
+# redact_exports = true
+
+## Theme and look (UX §12.5); the default theme inherits your terminal's colors
+# [appearance]
+## terminal (default) | mono | ember | mint | sand | coral | high-contrast | colorblind | none | <user theme>
+# theme = "terminal"
+## auto | dark | light
+# appearance = "auto"
+## auto | truecolor | 256 | 16 | none
+# color = "auto"
+## transparent (never paint) | theme (paint the theme surface)
+# background = "transparent"
+## unicode | nerd | ascii
+# glyphs = "unicode"
+## rounded | plain | thick | double | none
+# borders = "rounded"
+## comfortable | compact
+# density = "comfortable"
+## marks (one-refresh change markers) | none
+# motion = "marks"
+## braille | blocks | none
+# sparklines = "braille"
+## header rows in display order: meters (htop-style per-core CPU, Mem, Swp, tasks/load/uptime) · headline · memory · swap · accelerators · thermal
+# header = ["meters", "headline", "memory", "swap", "accelerators", "thermal"]
+
+## Number and time formatting (UX §12.5)
+# [format]
+## iec (GiB) | si (GB)
+# memory_units = "iec"
+## decimals for memory values
+# decimals = 1
+## per-core (100% = 1 core) | total (100% = machine)
+# cpu = "per-core"
+## relative ("idle 5h") | clock
+# time = "relative"
+
+## Key preset; remap individual keys in keymap.toml (UX §12.7)
+# [keys]
+## default | vim | emacs | htop
+# preset = "default"
+
+## Panel/column layout from layouts/<name>.toml (UX §12.6)
+# [layout]
+## layout from layouts/<name>.toml; empty = built-in adaptive layout
+# name = ""
+
+## Local learning (UX §5); nothing leaves this machine
+# [personalization]
+## learn from what you open, pin and search (local only)
+# learn = true
+## frecency half-life in days
+# half_life_days = 7.0
+## days the local impression/selection log is kept
+# retention_days = 30
+## size cap of the local impression/selection log in MB
+# log_max_mb = 5
+
+## Ranking weights (UX §5.4); fixed defaults keep rankings explainable
+# [personalization.weights]
+## ranking weight: share of memory/GPU/CPU
+# salience = 1.0
+## ranking weight: your frecency for the entity
+# affinity = 0.6
+## ranking weight: reclaimable bytes / fixable cause
+# actionability = 0.5
+## ranking weight: active query match
+# query = 3.0
+## ranking weight: muted / system noise penalty
+# noise = 1.0
+
+## `oomtop serve` HTTP endpoint (SPEC §12.2)
+# [serve]
+## HTTP listen address for `oomtop serve` (127.0.0.1 unless changed)
+# listen = "127.0.0.1:9469"
+
+## `oomtop mcp` server for agents (SPEC §12.3)
+# [mcp]
+## register the elicitation-gated MCP reclaim tool
+# allow_actions = false
+
+## Query aliases usable in `/`, `:` and saved views (UX §12.7)
+# [aliases]
+## query aliases, e.g. llm = "kind:model,agent"
+## for example:
+##   hogs = ":sort footprint desc"
+##   llm  = "kind:model,agent"
+
+## Saved views: named queries with an optional layout (UX §12.7)
+## saved views: [[views]] name/query/layout
+##   [[views]]
+##   name   = "gpu-work"
+##   query  = "gpu>500M or kind:model"
+##   layout = "llm-dev"

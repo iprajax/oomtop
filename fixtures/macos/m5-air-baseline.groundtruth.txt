@@ -1,0 +1,72 @@
+## vm_stat
+Mach Virtual Memory Statistics: (page size of 16384 bytes)
+Pages free:                                   207906.
+Pages active:                                 227624.
+Pages inactive:                               267028.
+Pages speculative:                             76897.
+Pages throttled:                                   0.
+Pages wired down:                             162129.
+Pages purgeable:                                7217.
+"Translation faults":                      785302308.
+Pages copy-on-write:                        28302767.
+Pages zero filled:                         516203382.
+Pages reactivated:                         108609966.
+Pages purged:                               13469345.
+File-backed pages:                            303775.
+Anonymous pages:                              267774.
+Pages stored in compressor:                  1418969.
+Pages occupied by compressor:                 575896.
+Decompressions:                            145516879.
+Compressions:                              161131749.
+Pageins:                                    20811940.
+Pageouts:                                     267039.
+Swapins:                                     5966913.
+Swapouts:                                    7237261.
+Pages tagged:                                 111707.
+Pages tagged resident:                         75078.
+Pages tagged compressed:                       36629.
+Pages tag-storage:                             49152.
+Pages tag-storage holding tags:                 5515.
+Pages tag-storage free:                         1246.
+Pages tag-storage non-tag pageable:            42314.
+Pages tag-storage non-tag wired:                  77.
+Bytes of compressed tags:                    5935360.
+Tagged compressions:                         3980546.
+Tagged decompressions:                       3742960.
+## swapusage
+vm.swapusage: total = 3072.00M  used = 2079.25M  free = 992.75M  (encrypted)
+## memory_pressure
+The system has 25769803776 (1572864 pages with a page size of 16384).
+System-wide memory free percentage: 51%
+## top
+PID    MEM   CMPRS COMMAND         
+88143  5571M 4759M java            
+78921  3793M 3774M java            
+76247  644M  597M  Codex (Renderer)
+13372  624M  851M  com.apple.Virtua
+403    521M  281M  WindowServer    
+41842  454M  315M  Google Chrome He
+58069  444M  394M  Google Chrome He
+11803  442M  107M  Terminal        
+92759  402M  41M   claude.exe      
+71059  361M  105M  Google Chrome He
+93459  349M  48M   claude.exe      
+76193  299M  223M  ChatGPT         
+13339  274M  194M  Claude Helper (R
+71050  245M  148M  Google Chrome   
+76273  233M  98M   Codex (Renderer)
+76208  229M  64M   Codex (Service) 
+68673  218M  105M  claude.exe      
+76283  202M  186M  Codex (Renderer)
+59147  183M  161M  node            
+41364  177M  112M  Google Chrome   
+85320  171M  136M  Google Chrome He
+0      160M  0B    kernel_task     
+11893  158M  135M  Spotlight       
+13278  154M  94M   Claude          
+44885  153M  98M   Google Chrome He
+85325  150M  92M   Google Chrome He
+41416  142M  52M   Google Chrome He
+76248  131M  123M  codex           
+11730  130M  127M  loginwindow     
+76246  125M  120M  Codex (Renderer)

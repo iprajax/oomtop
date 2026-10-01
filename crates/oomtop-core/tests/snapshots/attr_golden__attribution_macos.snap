@@ -1,0 +1,191 @@
+---
+source: crates/oomtop-core/tests/attr_golden.rs
+expression: view(&s)
+---
+- id: "model:builtin:sd-cpp:901"
+  kind: model
+  label: sd-server
+  root: 901
+  confidence: high
+  footprint_mib: 10200
+  members:
+    - 901 rule/high
+  owner: "other:start-sh:900"
+- id: "daemon:builtin:gradle-daemon:781"
+  kind: daemon
+  label: GradleDaemon
+  root: 781
+  confidence: high
+  footprint_mib: 3100
+  members:
+    - 781 rule/high
+  owner: "agent:129fecce54c8"
+  flags:
+    - idle
+- id: "daemon:builtin:kotlin-daemon:782"
+  kind: daemon
+  label: KotlinCompileDaemon
+  root: 782
+  confidence: high
+  footprint_mib: 2900
+  members:
+    - 782 rule/high
+  owner: "agent:129fecce54c8"
+  flags:
+    - idle
+- id: "app:claude"
+  kind: app
+  label: Claude
+  root: 880
+  confidence: medium
+  footprint_mib: 2454
+  members:
+    - 880 heuristic/low
+    - 881 responsible/high
+    - 882 responsible/high
+    - 883 responsible/high
+    - 889 responsible/high
+  flags:
+    - lower_bound
+- id: "app:google-chrome"
+  kind: app
+  label: Google Chrome
+  root: 700
+  confidence: medium
+  footprint_mib: 1800
+  members:
+    - 700 heuristic/low
+    - 701 responsible/high
+    - 702 responsible/high
+- id: "agent:ae63aa1177d6"
+  kind: agent
+  label: Claude Code
+  root: 422
+  confidence: high
+  footprint_mib: 1610
+  members:
+    - 422 rule/high
+    - 423 marker/high
+    - 5001 marker/high
+    - 5002 marker/high
+  owner: "app:iterm"
+- id: "agent:d1ead45b82dc"
+  kind: agent
+  label: Claude Code
+  root: 432
+  confidence: high
+  footprint_mib: 1060
+  members:
+    - 432 rule/high
+    - 433 marker/high
+    - 5101 marker/high
+    - 5102 marker/high
+  owner: "app:iterm"
+- id: "system:kernel-task"
+  kind: system
+  label: kernel_task
+  root: 0
+  confidence: high
+  footprint_mib: 1024
+  members:
+    - 0 rule/high
+  flags:
+    - protected
+- id: "system:windowserver"
+  kind: system
+  label: WindowServer
+  root: 150
+  confidence: high
+  footprint_mib: 900
+  members:
+    - 150 rule/high
+  flags:
+    - protected
+- id: "agent:129fecce54c8"
+  kind: agent
+  label: Claude Code
+  root: 412
+  confidence: high
+  footprint_mib: 522
+  members:
+    - 412 rule/high
+    - 413 marker/high
+    - 4120 ancestry/high
+  owner: "app:iterm"
+  flags:
+    - protected
+- id: "agent:d69c0032cfd6"
+  kind: agent
+  label: Claude Code
+  root: 442
+  confidence: high
+  footprint_mib: 518
+  members:
+    - 442 rule/high
+    - 443 marker/high
+    - 5201 lineage/medium
+  owner: "app:iterm"
+- id: "app:iterm"
+  kind: app
+  label: iTerm
+  root: 400
+  confidence: medium
+  footprint_mib: 336
+  members:
+    - 400 heuristic/low
+    - 410 ancestry/medium
+    - 411 ancestry/medium
+    - 420 ancestry/medium
+    - 421 ancestry/medium
+    - 430 ancestry/medium
+    - 431 ancestry/medium
+    - 440 ancestry/medium
+    - 441 ancestry/medium
+  flags:
+    - protected
+- id: "other:typescript-tsc:5301"
+  kind: other
+  label: typescript/tsc
+  root: 5301
+  confidence: medium
+  footprint_mib: 300
+  members:
+    - 5301 marker/medium
+  owner: "agent:a66614ff9157"
+  flags:
+    - idle
+    - orphan
+- id: "other:start-sh:900"
+  kind: other
+  label: start.sh
+  root: 900
+  confidence: low
+  footprint_mib: 162
+  members:
+    - 900 heuristic/low
+    - 902 ancestry/medium
+  owner: "app:iterm"
+  flags:
+    - idle
+- id: "system:mdworker-shared"
+  kind: system
+  label: mdworker_shared
+  root: 160
+  confidence: low
+  footprint_mib: 38
+  members:
+    - 160 heuristic/low
+    - 161 heuristic/low
+  flags:
+    - protected
+- id: "system:launchd"
+  kind: system
+  label: launchd
+  root: 1
+  confidence: high
+  footprint_mib: 30
+  members:
+    - 1 rule/high
+  flags:
+    - idle
+    - protected

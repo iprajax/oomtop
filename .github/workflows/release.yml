@@ -1,0 +1,239 @@
+name: release
+
+# Tag vX.Y.Z → build every artifact of SPEC §16, checksum them, and draft a GitHub Release.
+#  - Linux glibc (baseline glibc 2.28 via cargo-zigbuild): NVML is dlopen'ed at runtime → NVIDIA GPUs work.
+#  - Linux musl (fully static): portable everywhere, but cannot dlopen glibc's NVML → GPU shows "unavailable".
+#  - macOS universal (arm64 + x86_64): codesigned + notarized when the signing secrets are configured.
+#  - .deb / .rpm from the glibc binaries (cargo-deb / cargo-generate-rpm metadata in crates/oomtop-cli).
+
+on:
+  push:
+    tags: ["v[0-9]+.[0-9]+.[0-9]+*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "tag to build (dry run: artifacts only, no release)"
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+  BIN: oomtop
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.t.outputs.tag }}
+      version: ${{ steps.t.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - id: t
+        shell: bash
+        run: |
+          tag="${{ github.event.inputs.tag || github.ref_name }}"
+          version="${tag#v}"
+          crate_version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
+          if [ "$version" != "$crate_version" ]; then
+            echo "::error::tag $tag does not match workspace version $crate_version"; exit 1
+          fi
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+  linux:
+    needs: meta
+    name: linux ${{ matrix.target }}
+    # native runner per architecture, so every binary gets a smoke test
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # glibc 2.28 baseline (RHEL 8 / Debian 10 and newer); NVML via dlopen
+          - { target: x86_64-unknown-linux-gnu, zig_target: x86_64-unknown-linux-gnu.2.28, flavor: gnu, runner: ubuntu-latest }
+          - { target: aarch64-unknown-linux-gnu, zig_target: aarch64-unknown-linux-gnu.2.28, flavor: gnu, runner: ubuntu-24.04-arm }
+          # fully static, no NVML
+          - { target: x86_64-unknown-linux-musl, zig_target: x86_64-unknown-linux-musl, flavor: musl, runner: ubuntu-latest }
+          - { target: aarch64-unknown-linux-musl, zig_target: aarch64-unknown-linux-musl, flavor: musl, runner: ubuntu-24.04-arm }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+      - uses: mlugg/setup-zig@v1
+        with:
+          version: 0.13.0
+      - name: install cargo-zigbuild
+        run: cargo install --locked cargo-zigbuild
+      - name: build
+        run: cargo zigbuild --release --locked -p oomtop-cli --target ${{ matrix.zig_target }}
+      - name: verify glibc baseline / static linkage
+        shell: bash
+        run: |
+          set -euo pipefail
+          f=target/${{ matrix.target }}/release/$BIN
+          file "$f"
+          if [ "${{ matrix.flavor }}" = "gnu" ]; then
+            # highest GLIBC_x.y symbol version referenced must be <= 2.28
+            max=$(readelf -W --dyn-syms "$f" | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -1)
+            echo "max glibc symbol: $max"
+            test "$(printf '%s\nGLIBC_2.28\n' "$max" | sort -V | tail -1)" = "GLIBC_2.28"
+          else
+            file "$f" | grep -Eq 'static(ally|-pie) linked'
+          fi
+      - name: smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          b=target/${{ matrix.target }}/release/$BIN
+          $b --version
+          $b doctor --no-probe --offline
+          $b json --compact --offline > /dev/null
+          if [ "${{ matrix.flavor }}" = "musl" ]; then
+            # static musl can't dlopen NVML: the source must degrade, never crash
+            $b doctor --json --no-probe --offline | python3 -c 'import json,sys; d=json.load(sys.stdin); n=[s for s in d["sources"] if "nvml" in s["name"]]; assert all(s["status"]!="available" for s in n), n'
+          fi
+      - name: package
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="$BIN-${{ needs.meta.outputs.version }}-${{ matrix.target }}"
+          mkdir -p "dist/$name"
+          cp "target/${{ matrix.target }}/release/$BIN" LICENSE README.md "dist/$name/"
+          cp -r docs "dist/$name/docs"
+          tar -C dist -czf "dist/$name.tar.gz" "$name"
+          rm -rf "dist/$name"
+      - name: deb + rpm (glibc builds)
+        if: matrix.flavor == 'gnu'
+        shell: bash
+        run: |
+          set -euo pipefail
+          cargo install --locked cargo-deb cargo-generate-rpm
+          cargo deb -p oomtop-cli --no-build --no-strip --target ${{ matrix.target }} --output dist/
+          cargo generate-rpm -p crates/oomtop-cli --target ${{ matrix.target }} --output dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.target }}
+          path: dist/*
+
+  macos:
+    needs: meta
+    name: macos universal
+    runs-on: macos-latest
+    env:
+      # secrets can't appear in `if:` directly; expose whether they are configured
+      HAS_CERT: ${{ secrets.MACOS_CERT_P12 != '' }}
+      HAS_NOTARY: ${{ secrets.APPLE_ID != '' && secrets.APPLE_APP_PASSWORD != '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+      - uses: Swatinem/rust-cache@v2
+      - name: build both architectures
+        env:
+          MACOSX_DEPLOYMENT_TARGET: "11.0"
+        run: |
+          cargo build --release --locked -p oomtop-cli --target aarch64-apple-darwin
+          cargo build --release --locked -p oomtop-cli --target x86_64-apple-darwin
+      - name: lipo
+        run: |
+          mkdir -p dist
+          lipo -create -output dist/$BIN \
+            target/aarch64-apple-darwin/release/$BIN target/x86_64-apple-darwin/release/$BIN
+          lipo -info dist/$BIN
+          dist/$BIN --version
+      - name: codesign (Developer ID, hardened runtime)
+        if: env.HAS_CERT == 'true'
+        env:
+          MACOS_CERT_P12: ${{ secrets.MACOS_CERT_P12 }}
+          MACOS_CERT_PASSWORD: ${{ secrets.MACOS_CERT_PASSWORD }}
+          MACOS_SIGN_IDENTITY: ${{ secrets.MACOS_SIGN_IDENTITY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          kc="$RUNNER_TEMP/signing.keychain-db"
+          kcpw="$(openssl rand -hex 16)"
+          echo "$MACOS_CERT_P12" | base64 --decode > "$RUNNER_TEMP/cert.p12"
+          security create-keychain -p "$kcpw" "$kc"
+          security set-keychain-settings -lut 21600 "$kc"
+          security unlock-keychain -p "$kcpw" "$kc"
+          security import "$RUNNER_TEMP/cert.p12" -P "$MACOS_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$kc"
+          security set-key-partition-list -S apple-tool:,apple: -k "$kcpw" "$kc"
+          security list-keychains -d user -s "$kc"
+          codesign --force --timestamp --options runtime --sign "$MACOS_SIGN_IDENTITY" dist/$BIN
+          codesign --verify --strict --verbose=2 dist/$BIN
+      - name: notarize
+        if: env.HAS_CERT == 'true' && env.HAS_NOTARY == 'true'
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A bare Mach-O can't be stapled; notarize a zip of it (Gatekeeper checks the ticket online).
+          ditto -c -k dist/$BIN "$RUNNER_TEMP/notarize.zip"
+          xcrun notarytool submit "$RUNNER_TEMP/notarize.zip" \
+            --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_APP_PASSWORD" --wait
+      - name: package
+        shell: bash
+        run: |
+          set -euo pipefail
+          name="$BIN-${{ needs.meta.outputs.version }}-universal-apple-darwin"
+          mkdir -p "dist/$name"
+          mv dist/$BIN "dist/$name/"
+          cp LICENSE README.md packaging/THIRD-PARTY-NOTICES.md "dist/$name/"
+          cp -r docs "dist/$name/docs"
+          tar -C dist -czf "dist/$name.tar.gz" "$name"
+          rm -rf "dist/$name"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-macos
+          path: dist/*
+
+  release:
+    needs: [meta, linux, macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: dist-*
+          path: dist
+          merge-multiple: true
+      - name: installer
+        run: cp packaging/install.sh dist/install.sh
+      - name: checksums
+        working-directory: dist
+        run: |
+          sha256sum * | tee SHA256SUMS
+      - name: Homebrew formula
+        run: |
+          python3 packaging/homebrew/render.py \
+            --version "${{ needs.meta.outputs.version }}" \
+            --sums dist/SHA256SUMS \
+            --template packaging/homebrew/oomtop.rb.tmpl > dist/oomtop.rb
+          cat dist/oomtop.rb
+      - name: draft release
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ needs.meta.outputs.tag }}" dist/* \
+            --draft --title "oomtop ${{ needs.meta.outputs.version }}" --generate-notes

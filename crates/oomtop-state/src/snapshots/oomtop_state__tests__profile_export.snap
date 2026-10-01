@@ -1,0 +1,87 @@
+---
+source: crates/oomtop-state/src/tests.rs
+expression: v
+---
+{
+  "entities": [
+    {
+      "alias": null,
+      "display_name": "Claude Code",
+      "fingerprint": "0f1e2d3c4b5a6978",
+      "first_seen_ms": 17107200000,
+      "last_seen_ms": 17107200000,
+      "muted_until_ms": null,
+      "pinned": false
+    },
+    {
+      "alias": null,
+      "display_name": "build daemons",
+      "fingerprint": "99aa88bb77cc66dd",
+      "first_seen_ms": 17193600000,
+      "last_seen_ms": 17280000000,
+      "muted_until_ms": 19872000000,
+      "pinned": false
+    },
+    {
+      "alias": "studio",
+      "display_name": "sd-server · qwen-image-studio",
+      "fingerprint": "a1b2c3d4e5f60718",
+      "first_seen_ms": 17020800000,
+      "last_seen_ms": 17193600000,
+      "muted_until_ms": null,
+      "pinned": true
+    }
+  ],
+  "events": {
+    "mute": 1,
+    "pin": 1,
+    "search_select": 1,
+    "select": 3
+  },
+  "exported_at_ms": 17280000000,
+  "frecency": [
+    [
+      "0f1e2d3c4b5a6978",
+      1.811447
+    ],
+    [
+      "99aa88bb77cc66dd",
+      -2.0
+    ],
+    [
+      "a1b2c3d4e5f60718",
+      5.44323
+    ]
+  ],
+  "half_life_s": 604800.0,
+  "learning": true,
+  "machine_profile": {
+    "fanless": true,
+    "ram_gb": 24,
+    "roles": [
+      "local-llm",
+      "agent-heavy",
+      "jvm"
+    ],
+    "unified_memory": true
+  },
+  "queries": [
+    [
+      "cl",
+      2.0
+    ],
+    [
+      "gpu hogs",
+      0.905724
+    ]
+  ],
+  "schema_version": 1,
+  "ux_stats": {
+    "dismiss_rate": 0.0,
+    "hit_at_3": 0.5,
+    "impressions": 2,
+    "mean_keystrokes": 3.0,
+    "reformulation_rate": 0.0,
+    "selections": 2
+  }
+}

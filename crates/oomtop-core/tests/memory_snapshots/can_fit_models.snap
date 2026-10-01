@@ -1,0 +1,46 @@
+---
+source: crates/oomtop-core/tests/memory_can_fit.rs
+expression: out
+---
+- scenario: "8B GGUF on Metal, as captured"
+  available: 6.4G
+  safety_margin: 1.9G
+  headroom: 4.5G
+  answer: yes_after_reclaim
+  exit_code: 3
+  reclaim:
+    - "daemon:gradle ≈3.1G"
+  gain: 3.1G
+  shortfall: ~
+  reason: fits after stopping 1 group (Gradle daemon) freeing ≈3.1 GiB
+- scenario: "studio on Metal, 18G free"
+  available: 18.0G
+  safety_margin: 1.9G
+  headroom: 16.1G
+  answer: "yes"
+  exit_code: 0
+  reclaim: []
+  gain: ~
+  shortfall: ~
+  reason: fits in current headroom and GPU budget
+- scenario: "studio on Metal, 10G free"
+  available: 10.0G
+  safety_margin: 1.9G
+  headroom: 8.1G
+  answer: "no"
+  exit_code: 4
+  reclaim: []
+  gain: ~
+  shortfall: 12.4M
+  reason: short by 12.4 MiB even after reclaiming ≈5.7 GiB
+- scenario: 14G on a 24G RTX 4090 with 10G in use
+  available: 40.0G
+  safety_margin: 5.1G
+  headroom: 34.9G
+  answer: yes_after_reclaim
+  exit_code: 3
+  reclaim:
+    - "model:ollama ≈2.0G"
+  gain: 2.0G
+  shortfall: ~
+  reason: fits after stopping 1 group (Ollama) freeing ≈2.0 GiB

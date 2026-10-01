@@ -1,0 +1,22 @@
+---
+source: crates/oomtop-state/src/tests.rs
+expression: s.render_text(now)
+---
+Profile: (in memory)
+Learning: on (local only)
+Log: 1 KiB of 5.0 MiB cap, kept 30 days · 6 events · 2 impressions · 2 queries
+Learning since: 2 day(s) ago
+Lineage journal: 0 process record(s) (kept on reset)
+Pinned:
+  studio
+Muted:
+  build daemons
+Most used:
+  studio (affinity 5.44)
+  Claude Code (affinity 1.81)
+Renamed:
+  sd-server · qwen-image-studio → studio
+Frequent queries: cl · gpu hogs
+Ranking quality (30 d): Hit@3 50% · keystrokes to target 3.0 · reformulation 0% · dismiss 0%
+Machine profile: {"fanless":true,"ram_gb":24,"roles":["local-llm","agent-heavy","jvm"],"unified_memory":true}
+Reset with `oomtop profile reset` (ranking returns to salience-only defaults).

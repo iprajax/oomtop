@@ -1,0 +1,26 @@
+---
+source: crates/oomtop-core/tests/memory_headroom.rs
+expression: cands
+---
+[
+  {
+    "group_id": "daemon:gradle",
+    "label": "Gradle daemon",
+    "kind": "build_daemon",
+    "gain": 3353369637,
+    "idle_for_s": 18000,
+    "orphan": false,
+    "swap_gain": null,
+    "gpu_gain": null
+  },
+  {
+    "group_id": "daemon:kotlin",
+    "label": "Kotlin compile daemon",
+    "kind": "build_daemon",
+    "gain": 2808985492,
+    "idle_for_s": 13200,
+    "orphan": false,
+    "swap_gain": null,
+    "gpu_gain": null
+  }
+]

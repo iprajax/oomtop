@@ -1,0 +1,85 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||              21.5%]  E3[                    2.0%]  P6[||||||||||         42.4%]  P9[|||                11.8%]
+.aaab...................aaaaab.aaab....................aaaab.aaab...................aaaaab.aaab...................aaaaab
+  E1[||||               16.0%]  E4[                    1.3%]  P7[|||||||||||||||||||78.0%]
+.aaab...................aaaaab.aaab....................aaaab.aaab...................aaaaab
+  E2[||                  6.7%]  E5[                    0.7%]  P8[|||||||||||||||||||93.1%]
+.aaab....................aaaab.aaab....................aaaab.aaabbbbbbbbbbbbbbbbbbbbaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab.............bbbbbbbbbbbbbbbbbbbbbb...cccccaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaab.............................................aaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]  Uptime: 58 days, 11:23:04
+.aaab.................................................aaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free 3.0 GiB.  [r]
+.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaa......aaaa.....caaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   headroom 223M
+aaaaaaddddddddddd
+ oomtop  [1 Home] 2 Processes 3 Models 4 Sandboxes 5 Reclaim 6 Timeline         ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbb
+─ Your things ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+..aaaaaaaaaaaa
+ sd-server · qwen-image-studio  9.9G  generating 3/6 · 8.1 s/step    Claude Code ×4  1.4G
+
+ ▲ Leftovers: chrome-headless-shell from Claude Code · 7c11 450M · r reclaims
+
+─ Ranked ──────────────────────────────────────────────────────────────────────────────── / filter · : command · i why ─
+..aaaaaaa................................................................................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ ▸ sd-server · qwen-image-studio (2)                       model   generating 3/6     9.9G  ⣰⣦⣰⣄⣷⣼    85%
+eeefffffffffffffffffffffffffffffffffffffffffffffffffffffffgggggggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhggggggggggggggg
+   KotlinCompileDaemon                                     daemon  idle 6h35m         3.0G  ⣶⣄⣦⣸⣦⣷     0%  ● reclaimable
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   GradleDaemon 9.8                                        daemon  idle 3h40m         2.9G  ⣄⣦⣸⣦⣷⣤     0%  ● reclaimable
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Google Chrome (14)                                      app                        2.9G  ⣦⣰⣄⣷⣼⣦     6%
+bbb.......................................................aaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   Claude desktop VM                                       sandbox                   ≥1.5G  ⣰⣄⣷⣼⣦⣼     2%  sandbox
+bbbdddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaa........................ddddddddddddddd
+   ChatGPT / Codex (6)                                     app                        1.0G  ⣦⣰⣤⣷⣄⣷     2%
+bbb.......................................................aaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   Claude Code · d4e5 (2)                                  agent                      383M  ⣄⣷⣄⣶⣼⣦     0%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   chrome-headless-shell                                   other   ▲ orphan           450M  ⣄⣶⣼⣦⣸⣦     0%  ● reclaimable
+bbb.......................................................aaaaaaaa
+   Claude                                                  app                        420M  ⣰⣤⣷⣄⣶⣼     1%
+bbb.......................................................aaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   clang                                                   other                      120M  ⣄⣦⣸⣦⣷⣤    30%
+bbb.......................................................aaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   Claude Code · a90b (2)                                  agent                      372M  ⣰⣦⣰⣄⣷⣼     0%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   Claude Code · 3f2a (2)                                  agent                      350M  ⣦⣰⣄⣷⣼⣦     4%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   WindowServer                                            system                     410M  ⣦⣸⣦⣰⣦⣷     6%  protected
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   Claude Code · 7c11 (2)                                  agent                      361M  ⣶⣄⣦⣸⣦⣷     0%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+   oomtop (this)                                           other                     22.0M  ⣰⣄⣷⣼⣦⣼     1%  this
+bbb.......................................................aaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+
+
+
+
+
+
+
+
+
+
+
+
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..hhhhhhh..hhhhhhh..hhhhhhh..hhhhhhh..hhhhhhh..hhhhhhh..hhhhhhh..hhhhhhhh..hhhhhhh...hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+--- legend
+a = dim
+b = bold
+c = dim italic
+d = italic
+e = bold reverse
+f = bold italic reverse
+g = dim reverse
+h = reverse

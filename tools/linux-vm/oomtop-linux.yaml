@@ -1,0 +1,48 @@
+# Disposable Ubuntu 24.04 guest for running oomtop's checks on real Linux from a Mac (SPEC §17, M0).
+# aarch64 natively; x86_64 test binaries through Rosetta. No host sudo: Lima runs as the user, and the
+# provisioning scripts below run as root *inside the guest* only.
+#
+#   brew install lima
+#   limactl start --name=oomtop-linux --tty=false tools/linux-vm/oomtop-linux.yaml
+#   tools/linux-vm/check.sh            # fmt, clippy -D warnings, tests: aarch64 + x86_64
+#   limactl stop oomtop-linux && limactl delete oomtop-linux   # when done
+#
+# The repository is mounted read-only at the same path; build output goes to ~/target in the guest.
+# Change `location` below if your checkout lives elsewhere.
+base: template:ubuntu-24.04
+vmType: vz
+cpus: 2
+memory: "3GiB"
+disk: "40GiB"   # two debug target trees (aarch64 + x86_64) need ~12 GB
+vmOpts:
+  vz:
+    rosetta:
+      enabled: true
+      binfmt: true
+mounts:
+  - location: "~/wsapce/ptspace/oomtop"
+    writable: false
+containerd:
+  system: false
+  user: false
+provision:
+  - mode: system
+    script: |
+      #!/bin/bash
+      set -eux
+      export DEBIAN_FRONTEND=noninteractive
+      dpkg -s build-essential gcc-x86-64-linux-gnu >/dev/null 2>&1 || {
+        apt-get update -q
+        apt-get install -y -q build-essential pkg-config curl gcc-x86-64-linux-gnu libc6-dev-amd64-cross
+      }
+      # x86_64 loader for Rosetta-run test binaries (the cross toolchain ships it under /usr/x86_64-linux-gnu)
+      mkdir -p /lib64
+      ln -sf /usr/x86_64-linux-gnu/lib64/ld-linux-x86-64.so.2 /lib64/ld-linux-x86-64.so.2
+  - mode: user
+    script: |
+      #!/bin/bash
+      set -eux
+      if [ ! -x "$HOME/.cargo/bin/cargo" ]; then
+        curl -sSf https://sh.rustup.rs | sh -s -- -y --profile minimal --component clippy,rustfmt
+      fi
+      "$HOME/.cargo/bin/rustup" target add x86_64-unknown-linux-gnu

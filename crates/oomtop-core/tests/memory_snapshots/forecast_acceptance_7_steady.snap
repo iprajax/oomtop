@@ -1,0 +1,93 @@
+---
+source: crates/oomtop-core/tests/memory_forecast.rs
+expression: golden
+---
+crossing: 41m
+first_forecast_at: 7m
+forecasts: 61
+max_abs_err_pct: 23.1
+timeline:
+  - actual: 41m
+    err_pct: ~
+    forecast: stable
+    t: 0s
+  - actual: 39m
+    err_pct: ~
+    forecast: stable
+    t: 2m
+  - actual: 37m
+    err_pct: ~
+    forecast: stable
+    t: 4m
+  - actual: 35m
+    err_pct: ~
+    forecast: stable
+    t: 6m
+  - actual: 33m
+    err_pct: -9.6
+    forecast: 29m (R² 0.998)
+    t: 8m
+  - actual: 31m
+    err_pct: ~
+    forecast: stable
+    t: 10m
+  - actual: 29m
+    err_pct: ~
+    forecast: stable
+    t: 12m
+  - actual: 27m
+    err_pct: -0.6
+    forecast: 27m (R² 0.990)
+    t: 14m
+  - actual: 25m
+    err_pct: -13.1
+    forecast: 21m (R² 0.991)
+    t: 16m
+  - actual: 23m
+    err_pct: -9.4
+    forecast: 21m (R² 0.998)
+    t: 18m
+  - actual: 21m
+    err_pct: -1.5
+    forecast: 20m (R² 0.997)
+    t: 20m
+  - actual: 19m
+    err_pct: 9.7
+    forecast: 21m (R² 0.984)
+    t: 22m
+  - actual: 17m
+    err_pct: -5.8
+    forecast: 16m (R² 0.990)
+    t: 24m
+  - actual: 15m
+    err_pct: -10.4
+    forecast: 13m (R² 0.996)
+    t: 26m
+  - actual: 13m
+    err_pct: -11
+    forecast: 11m (R² 0.999)
+    t: 28m
+  - actual: 11m
+    err_pct: -1.5
+    forecast: 11m (R² 0.997)
+    t: 30m
+  - actual: 9m
+    err_pct: 7.8
+    forecast: 9m (R² 0.998)
+    t: 32m
+  - actual: 7m
+    err_pct: -2.6
+    forecast: 6m (R² 0.991)
+    t: 34m
+  - actual: 5m
+    err_pct: -21.3
+    forecast: 4m (R² 0.994)
+    t: 36m
+  - actual: 3m
+    err_pct: -22.1
+    forecast: 2m (R² 0.998)
+    t: 38m
+  - actual: 1m
+    err_pct: -14.3
+    forecast: 1m (R² 0.997)
+    t: 40m

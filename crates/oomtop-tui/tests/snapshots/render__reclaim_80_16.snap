@@ -1,0 +1,77 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||      21.5%]  E3[          2.0%]  P6[||||||   42.4%]  P9[||       11.8%]
+.aaabcccddddddaaaaab.aaabddddddddddaaaab.aaabccccccdddaaaaab.aaabccdddddddaaaaab
+  E1[||       16.0%]  E4[          1.3%]  P7[|||||||||78.0%]
+.aaabccdddddddaaaaab.aaabddddddddddaaaab.aaabeeeeeeeeeaaaaab
+  E2[|         6.7%]  E5[          0.7%]  P8[|||||||||93.1%]
+.aaabcdddddddddaaaab.aaabddddddddddaaaab.aaabfffffffffaaaaab
+ Mem[||||||||##############*20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab........bbbbbbbbbbbbbbdaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabeeeeeeeeeeeeeeeeeeeeeeeeeaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[||||||||||||||||||||         58.0%]  Uptime: 58 days, 11:23:04
+.aaabccccccccccccccccccccdddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9
+.ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+ GiB; 3 idle groups could free 3.0 GiB.  [r]
+.ggggggggggggggggggggggggggggggggggggggbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaa.....daaaa.....haaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   headroom 223M
+aaaaaaiiiiiiiiiiieeeeeeeeeeee........eeeeeeeeeeeee
+ oomtop  1 2 3 4 [5 Reclaim] 6          ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.b.b.b.b.bbbbbbbbbbb.b..........eeeeeeeeee..eeeeeeeee..eeeeee
+ Reclaimable ≈3.0G across 3 groups · headroom 223M → ≈3.2G after reclaim · susp…
+
+─ Candidates ────────────────────────── largest gain first · x stop (confirms) ─
+ddaaaaaaaaaaaddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ ▸ All 3 candidates · ≈3.0G RAM + ≈1.7G swap — x stops them all (one confirmati…
+jjjkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk
+   KotlinCompileDaemon   daemon   idle 6h35m                ≈1.3G +≈874M swap
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacccccccccciiiiiiiiiiiiiii
+   GradleDaemon 9.8      daemon   idle 3h40m                ≈1.3G +≈816M swap
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacccccccccciiiiiiiiiiiiiii
+   chrome-headless-shell other    orphan of Claude Cod…     ≈403M +≈23.3M swap
+bbb.....................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacccccccccciiiiiiiiiiiiiii
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+F1Help F2Setup F3Search F4Filter F5Tree F6SortBy F7Why F8Reclaim F9Stop F10Quit
+..lllll..llllll..lllllll..lllllll..lllll..lllllll..llll..llllllll..lllll...lllll
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Yellow
+f = fg:Red bold
+g = fg:Yellow bold
+h = dim italic
+i = italic
+j = bold reverse
+k = fg:Green reverse
+l = reverse

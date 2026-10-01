@@ -1,0 +1,19 @@
+Name:	systemd-oomd
+Umask:	0022
+State:	S (sleeping)
+Tgid:	812
+Ngid:	0
+Pid:	812
+PPid:	1
+TracerPid:	0
+Uid:	991	991	991	991
+Gid:	991	991	991	991
+FDSize:	256
+VmPeak:	12240 kB
+VmSize:	12240 kB
+VmHWM:	6120 kB
+VmRSS:	6120 kB
+RssAnon:	5508 kB
+RssFile:	612 kB
+VmSwap:	0 kB
+Threads:	12

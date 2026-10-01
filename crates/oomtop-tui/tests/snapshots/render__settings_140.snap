@@ -1,0 +1,78 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+─ Settings ────────────────────────────────────────────────────────────────────────── a view over your config files · changes preview live ─
+aabbbbbbbbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ Appearance      appearance.appearance         ‹› auto                 default                             Themes (live preview)
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 appearance.background         ‹› transparent          default                             ▸ colorblind                ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.borders            ‹› rounded              default                               coral                     ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.color              ‹› auto                 default                               ember                     ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.density            ‹› compact              config.toml:3                         high-contrast             ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.glyphs             ‹› unicode              default                               mint                      ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.header                ["meters", "headlin… default                               mono                      ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.motion             ‹› marks                default                               none                      ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.sparklines         ‹› braille              default                               sand                      ok
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbccc..................dddddddddd
+                 appearance.theme              ‹› colorblind           runtime (unsaved)                     terminal                  ok
+eeeeeeeeeeeeeeeeeffffffffffffffffffffffffffffffggghhhhhhhhhhhhhhhhhhhheeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeccc..................dddddddddd
+                 format.cpu                    ‹› per-core             default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 format.decimals                  1                    default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 format.memory_units           ‹› iec                  default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 format.time                   ‹› relative             default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ Layout          layout.name                   ‹›                      default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ Keys            keys.preset                   ‹› default              default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ Behavior        adapters.enabled              ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 adapters.ports                   {}                   default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 adapters.timeout_ms              200                  default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 general.expensive_refresh_ms     10000                default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 general.host_refresh_ms          1000                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 general.live_reload           ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 general.mouse                 ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 general.other_users           ‹› true                 default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 general.refresh_ms               3000                 config.toml:5
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 general.watch_poll_ms            0                    default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+                 headroom.margin_override                              default
+bbbbbbbbbbbbbbbbb..............................aaa....................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ appearance.theme — terminal (default) | mono | ember | mint | sand | coral | high-contrast | colorblind | none | <user theme>
+
+ save target user: /home/me/.config/oomtop/config.toml  · 1 unsaved change
+bbbbbbbbbbbbbiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiibbbbbbbbbbbbbbbbbbbb
+ ←/→ change · enter edit/apply for session · s save · tab save target · e open file · t theme · esc revert
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+
+--- legend
+a = fg:DarkGray
+b = dim
+c = bold
+d = fg:Green
+e = dim reverse
+f = reverse
+g = fg:DarkGray reverse
+h = bold reverse
+i = underline

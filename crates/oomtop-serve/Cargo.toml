@@ -1,0 +1,22 @@
+[package]
+name = "oomtop-serve"
+description = "oomtop HTTP JSON + Prometheus /metrics server (127.0.0.1 by default)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+
+[dependencies]
+oomtop-core = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+tiny_http = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+ureq = { workspace = true }
+regex = { workspace = true }
+insta = { workspace = true }

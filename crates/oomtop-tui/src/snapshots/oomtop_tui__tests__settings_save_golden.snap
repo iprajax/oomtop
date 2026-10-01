@@ -1,0 +1,16 @@
+---
+source: crates/oomtop-tui/src/lib.rs
+expression: out
+---
+# my oomtop settings
+[appearance]
+# the look
+theme = "none"  # default
+density = "compact"
+
+[general]
+# slow machine
+refresh_ms = 3000
+
+[format]
+decimals = 2

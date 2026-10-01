@@ -1,0 +1,16 @@
+---
+source: crates/oomtop-core/tests/ux_headline.rs
+expression: "out.join(\"\\n\")"
+---
+pressure_negative_headroom [pressure]
+  si:  Tight on memory — 1.1 GB into the safety margin. sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.
+  iec: Tight on memory — 1.0 GiB into the safety margin. sd-server holds 9.2 GiB; 2 idle build daemons could free 5.5 GiB.
+leftovers_orphan [leftovers]
+  si:  1 orphan left behind — orphaned clang could free 180 MB.
+  iec: 1 orphan left behind — orphaned clang could free 172 MiB.
+throttle_low_power_idle [throttle]
+  si:  Low Power Mode on. Turn it off or pause heavy work.
+  iec: Low Power Mode on. Turn it off or pause heavy work.
+calm_memory_unavailable [calm]
+  si:  All good — no pressure signals.
+  iec: All good — no pressure signals.

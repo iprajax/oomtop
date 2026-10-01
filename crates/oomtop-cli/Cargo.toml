@@ -1,0 +1,85 @@
+[package]
+name = "oomtop-cli"
+description = "oomtop: see the OOM coming. Terminal resource monitor for local AI work."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+authors.workspace = true
+readme = "../../README.md"
+keywords.workspace = true
+categories.workspace = true
+
+
+[[bin]]
+name = "oomtop"
+path = "src/main.rs"
+
+[dependencies]
+oomtop-core = { workspace = true }
+oomtop-collect = { workspace = true }
+oomtop-detect = { workspace = true }
+oomtop-adapters = { workspace = true }
+oomtop-config = { workspace = true }
+oomtop-state = { workspace = true }
+oomtop-tui = { workspace = true }
+oomtop-mcp = { workspace = true }
+oomtop-serve = { workspace = true }
+clap = { workspace = true }
+anyhow = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+toml = { workspace = true }
+libc = { workspace = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+tikv-jemallocator = "0.6"
+
+[dev-dependencies]
+tempfile = { workspace = true }
+sha2 = { workspace = true }
+
+# --- packaging (SPEC §16): `cargo deb -p oomtop-cli`, `cargo generate-rpm -p crates/oomtop-cli` ---------------
+
+[package.metadata.deb]
+name = "oomtop"
+maintainer = "oomtop contributors <noreply@users.noreply.github.com>"
+copyright = "oomtop contributors, MIT License"
+license-file = ["../../LICENSE", "0"]
+extended-description = """\
+Terminal resource monitor for local AI work: true memory accounting (PSS/SwapPss, GPU via NVML \
+and drm fdinfo), attribution of every process to its agent session, app, sandbox or model server, \
+headroom checks, OOM forecast, throttle explanations and an MCP server for agents."""
+section = "utils"
+priority = "optional"
+# Explicit instead of "$auto": the declared floor is the glibc 2.28 baseline the zigbuild targets (not whatever
+# dpkg-shlibdeps infers on the runner), and packaging works on any host, even without dpkg-dev (verified on
+# macOS with cargo-deb 3). The binary links only libc + libgcc_s. NVML is dlopen'ed at runtime
+# (libnvidia-ml.so.1) from the NVIDIA driver, never required.
+depends = "libc6 (>= 2.28), libgcc-s1 | libgcc1"
+assets = [
+    ["target/release/oomtop", "usr/bin/", "755"],
+    ["../../README.md", "usr/share/doc/oomtop/README.md", "644"],
+    ["../../docs/config.md", "usr/share/doc/oomtop/config.md", "644"],
+    ["../../docs/themes.md", "usr/share/doc/oomtop/themes.md", "644"],
+    ["../../docs/mcp.md", "usr/share/doc/oomtop/mcp.md", "644"],
+    ["../../docs/cli.md", "usr/share/doc/oomtop/cli.md", "644"],
+]
+
+[package.metadata.generate-rpm]
+name = "oomtop"
+summary = "See the OOM coming: true memory, attribution and headroom for local AI work"
+license = "MIT"
+# glibc 2.28 baseline (RHEL 8 / Debian 10 and newer), same as the cargo-zigbuild target.
+requires = { glibc = ">= 2.28" }
+assets = [
+    { source = "target/release/oomtop", dest = "/usr/bin/oomtop", mode = "755" },
+    { source = "../../README.md", dest = "/usr/share/doc/oomtop/README.md", mode = "644", doc = true },
+    { source = "../../docs/config.md", dest = "/usr/share/doc/oomtop/config.md", mode = "644", doc = true },
+    { source = "../../docs/themes.md", dest = "/usr/share/doc/oomtop/themes.md", mode = "644", doc = true },
+    { source = "../../docs/mcp.md", dest = "/usr/share/doc/oomtop/mcp.md", mode = "644", doc = true },
+    { source = "../../docs/cli.md", dest = "/usr/share/doc/oomtop/cli.md", mode = "644", doc = true },
+    { source = "../../LICENSE", dest = "/usr/share/licenses/oomtop/LICENSE", mode = "644", doc = true },
+]

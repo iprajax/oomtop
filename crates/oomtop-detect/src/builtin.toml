@@ -1,0 +1,548 @@
+# Built-in detection rules (SPEC §7, §15). Same format as ~/.config/oomtop/rules.d/*.toml.
+#
+# Semantics (oomtop_core::attribution):
+# - Within `match`, fields are OR'd and values within a field are OR'd; `exclude` vetoes a match.
+# - `exe` globs match the executable's full path AND its basename (argv[0] when the path is unreadable);
+#   `name` matches the short process name (comm); `script` matches any argv element after argv[0]
+#   (node/python scripts, JVM main classes); `cmdline` regexes match the space-joined argv.
+# - `env` is not an identity match: processes carrying those allowlisted marker keys join the session of the
+#   rule (one group per hashed `session_key` value).
+# - Globs are case-sensitive: `claude` (Claude Code) never matches `Claude` (the desktop app).
+# - A process matching a rule becomes a group root; descendants that match the same rule merge into it.
+# - User rules load after these with +100 priority, and a user rule with the same `id` replaces the built-in.
+#
+# Apps on macOS need no rules: `.app` bundles are grouped by bundle name and helpers/XPC services by
+# responsible pid. App-owned VMs (Claude desktop, Docker Desktop) stay in their app's group on purpose.
+
+# ==========================================================================================================
+# Agent sessions
+# ==========================================================================================================
+
+[[group]]
+id = "builtin:claude-code"
+kind = "agent_session"
+label = "Claude Code"
+# native installer (~/.local/share/claude/versions/<ver>), npm/Homebrew `claude.exe`, desktop-bundled copy
+match.exe = ["claude", "claude.exe", "**/@anthropic-ai/claude-code/**", "**/.local/share/claude/versions/*", "**/Claude/claude-code/*/claude"]
+match.name = ["claude", "claude.exe"]
+# node-based installs (exe = node)
+match.script = ["**/@anthropic-ai/claude-code/**", "**/claude-code/cli.js", "**/claude-code/cli.mjs"]
+match.env = ["CLAUDECODE", "CLAUDE_CODE_SESSION_ID", "CLAUDE_CODE_ENTRYPOINT"]
+session_key = "env:CLAUDE_CODE_SESSION_ID"
+
+[[group]]
+id = "builtin:codex"
+kind = "agent_session"
+label = "Codex"
+match.exe = ["codex", "codex-*-apple-darwin", "codex-*-linux-*", "**/@openai/codex/**"]
+match.script = ["**/@openai/codex/**"]
+match.env = ["CODEX_SANDBOX", "CODEX_SESSION_ID"]
+session_key = "env:CODEX_SESSION_ID"
+# helper binaries shipped next to codex are part of the session, not new roots
+exclude.exe = ["codex-code-mode-host", "codex-linux-sandbox"]
+
+[[group]]
+id = "builtin:cursor-agent"
+kind = "agent_session"
+label = "Cursor Agent"
+match.exe = ["cursor-agent", "**/cursor-agent/**"]
+match.script = ["**/cursor-agent/**"]
+match.env = ["CURSOR_AGENT"]
+
+[[group]]
+id = "builtin:gemini-cli"
+kind = "agent_session"
+label = "Gemini CLI"
+match.exe = ["gemini", "**/@google/gemini-cli/**"]
+match.script = ["**/@google/gemini-cli/**", "**/gemini-cli/bundle/gemini.js"]
+match.env = ["GEMINI_CLI"]
+
+[[group]]
+id = "builtin:aider"
+kind = "agent_session"
+label = "Aider"
+match.exe = ["aider"]
+match.script = ["**/bin/aider"]
+match.cmdline = ['(^|\s)-m\s+aider(\s|$)']
+match.env = ["AIDER_SESSION"]
+
+[[group]]
+id = "builtin:goose"
+kind = "agent_session"
+label = "Goose"
+match.exe = ["goose", "goosed"]
+match.env = ["GOOSE_SESSION_ID"]
+session_key = "env:GOOSE_SESSION_ID"
+
+[[group]]
+id = "builtin:opencode"
+kind = "agent_session"
+label = "OpenCode"
+match.exe = ["opencode", "**/opencode-ai/**"]
+match.script = ["**/opencode-ai/**"]
+
+[[group]]
+id = "builtin:amp"
+kind = "agent_session"
+label = "Amp"
+match.script = ["**/@sourcegraph/amp/**"]
+
+[[group]]
+id = "builtin:qwen-code"
+kind = "agent_session"
+label = "Qwen Code"
+match.script = ["**/@qwen-code/qwen-code/**"]
+
+[[group]]
+id = "builtin:copilot-cli"
+kind = "agent_session"
+label = "Copilot CLI"
+match.script = ["**/@github/copilot/**"]
+
+# ==========================================================================================================
+# Model servers (adapters in oomtop-adapters add loaded models, queue and tok/s)
+# ==========================================================================================================
+
+[[group]]
+id = "builtin:ollama"
+kind = "model_server"
+label = "Ollama"
+match.exe = ["ollama", "ollama_llama_server"]
+# `ollama run/pull/list …` are short-lived clients, not the server
+exclude.cmdline = ['^\S*ollama\s+(run|pull|push|list|ls|ps|show|stop|create|cp|rm|help|signin|signout|launch)(\s|$)']
+
+[[group]]
+id = "builtin:llama-cpp"
+kind = "model_server"
+label = "llama.cpp server"
+match.exe = ["llama-server", "llama-cpp-server", "llamafile", "*.llamafile"]
+
+[[group]]
+id = "builtin:llama-cpp-python"
+kind = "model_server"
+label = "llama-cpp-python server"
+match.cmdline = ['llama_cpp\.server']
+
+[[group]]
+id = "builtin:llama-swap"
+kind = "model_server"
+label = "llama-swap"
+match.exe = ["llama-swap"]
+
+[[group]]
+id = "builtin:sd-cpp"
+kind = "model_server"
+label = "sd-server"
+match.exe = ["sd-server"]
+
+[[group]]
+id = "builtin:sd-cpp-cli"
+kind = "model_server"
+label = "stable-diffusion.cpp"
+match.exe = ["sd-cli"]
+
+[[group]]
+id = "builtin:vllm"
+kind = "model_server"
+label = "vLLM"
+match.exe = ["vllm"]
+match.cmdline = ['(^|\s|/)vllm\s+serve(\s|$)', 'vllm\.entrypoints\.']
+exclude.cmdline = ['(^|\s|/)vllm\s+(chat|complete|bench|collect-env|run-batch)(\s|$)']
+
+[[group]]
+id = "builtin:lm-studio"
+kind = "model_server"
+label = "LM Studio"
+match.exe = ["LM Studio", "lm-studio", "lmstudio", "LM-Studio-*.AppImage"]
+match.bundle = ["ai.elementlabs.lmstudio"]
+
+[[group]]
+id = "builtin:mlx-lm"
+kind = "model_server"
+label = "MLX server"
+match.exe = ["mlx_lm.server", "mlx_vlm.server"]
+match.cmdline = ['mlx_lm(\.|\s+|/)server', 'mlx_vlm(\.|\s+|/)server']
+
+[[group]]
+id = "builtin:koboldcpp"
+kind = "model_server"
+label = "KoboldCpp"
+match.exe = ["koboldcpp", "koboldcpp-*"]
+match.script = ["**/koboldcpp.py"]
+
+[[group]]
+id = "builtin:local-ai"
+kind = "model_server"
+label = "LocalAI"
+match.exe = ["local-ai"]
+
+[[group]]
+id = "builtin:whisper-server"
+kind = "model_server"
+label = "whisper.cpp server"
+match.exe = ["whisper-server"]
+
+[[group]]
+id = "builtin:comfyui"
+kind = "model_server"
+label = "ComfyUI"
+match.script = ["**/ComfyUI/main.py", "**/comfyui/main.py"]
+match.exe = ["comfy"]
+
+[[group]]
+id = "builtin:text-generation-webui"
+kind = "model_server"
+label = "text-generation-webui"
+match.script = ["**/text-generation-webui/server.py"]
+
+[[group]]
+id = "builtin:invokeai"
+kind = "model_server"
+label = "InvokeAI"
+match.exe = ["invokeai-web"]
+
+# ==========================================================================================================
+# Sandboxes, VMs, containers
+# (Virtualization.framework guests belong to the app that launched them via responsible pid; when that is
+#  unknown the detector re-labels the orphaned VM as a sandbox instead of "system".)
+# ==========================================================================================================
+
+[[group]]
+id = "builtin:firecracker"
+kind = "sandbox"
+label = "Firecracker microVM"
+match.exe = ["firecracker", "jailer"]
+
+[[group]]
+id = "builtin:cloud-hypervisor"
+kind = "sandbox"
+label = "Cloud Hypervisor VM"
+match.exe = ["cloud-hypervisor"]
+
+[[group]]
+id = "builtin:android-emulator"
+kind = "sandbox"
+label = "Android emulator"
+match.cmdline = ['(^|/)qemu-system-\S*\s(.*\s)?-avd\s', '(^|/)emulator\s(.*\s)?-avd\s']
+priority = 1
+
+[[group]]
+id = "builtin:qemu"
+kind = "sandbox"
+label = "QEMU VM"
+match.exe = ["qemu-system-*", "qemu-kvm", "QEMULauncher"]
+
+[[group]]
+id = "builtin:lima"
+kind = "sandbox"
+label = "Lima VM"
+match.exe = ["limactl"]
+match.cmdline = ['limactl\s.*hostagent']
+exclude.cmdline = ['limactl\s+(list|ls|shell|copy|cp|info|--version|help)(\s|$)']
+
+[[group]]
+id = "builtin:colima"
+kind = "sandbox"
+label = "Colima"
+match.exe = ["colima"]
+exclude.cmdline = ['colima\s+(list|ls|status|ssh|version|--version|help)(\s|$)']
+
+[[group]]
+id = "builtin:podman-machine"
+kind = "sandbox"
+label = "Podman machine"
+match.exe = ["vfkit", "krunkit", "gvproxy"]
+
+[[group]]
+id = "builtin:podman-service"
+kind = "sandbox"
+label = "Podman service"
+match.cmdline = ['(^|/)podman\s+(system\s+)?service(\s|$)']
+
+[[group]]
+id = "builtin:docker-engine"
+kind = "sandbox"
+label = "Docker engine"
+match.exe = ["dockerd", "containerd", "dockerd-rootless.sh", "rootlesskit"]
+
+[[group]]
+id = "builtin:container"
+kind = "sandbox"
+label = "container"
+# the shim is the root; container processes merge into it (same rule) or match by cgroup on Linux
+match.exe = ["containerd-shim*", "conmon"]
+match.cgroup = ["**/docker-*.scope", "**/docker-*.scope/**", "/docker/*", "/docker/*/**", "**/libpod-*.scope", "**/libpod-*.scope/**", "**/crio-*.scope", "**/crio-*.scope/**", "/kubepods*/**", "**/kubepods*.slice/**"]
+exclude.cgroup = ["**/libpod-conmon-*.scope"]
+
+[[group]]
+id = "builtin:virtualbox"
+kind = "sandbox"
+label = "VirtualBox VM"
+match.exe = ["VBoxHeadless", "VirtualBoxVM"]
+
+[[group]]
+id = "builtin:parallels"
+kind = "sandbox"
+label = "Parallels VM"
+match.exe = ["prl_vm_app"]
+
+[[group]]
+id = "builtin:vmware"
+kind = "sandbox"
+label = "VMware VM"
+match.exe = ["vmware-vmx"]
+
+[[group]]
+id = "builtin:bubblewrap"
+kind = "sandbox"
+label = "bubblewrap sandbox"
+match.exe = ["bwrap"]
+
+[[group]]
+id = "builtin:firejail"
+kind = "sandbox"
+label = "firejail sandbox"
+match.exe = ["firejail"]
+
+[[group]]
+id = "builtin:nsjail"
+kind = "sandbox"
+label = "nsjail sandbox"
+match.exe = ["nsjail"]
+
+[[group]]
+id = "builtin:gvisor"
+kind = "sandbox"
+label = "gVisor sandbox"
+match.exe = ["runsc", "runsc-*"]
+
+[[group]]
+id = "builtin:seatbelt"
+kind = "sandbox"
+label = "Seatbelt sandbox"
+match.exe = ["sandbox-exec"]
+
+# ==========================================================================================================
+# Build daemons & language servers (their own roots, so they show up as reclaimable when idle)
+# ==========================================================================================================
+
+[[group]]
+id = "builtin:gradle-daemon"
+kind = "build_daemon"
+label = "GradleDaemon"
+match.script = ["org.gradle.launcher.daemon.bootstrap.GradleDaemon"]
+
+[[group]]
+id = "builtin:kotlin-daemon"
+kind = "build_daemon"
+label = "KotlinCompileDaemon"
+match.script = ["org.jetbrains.kotlin.daemon.KotlinCompileDaemon"]
+
+[[group]]
+id = "builtin:maven-daemon"
+kind = "build_daemon"
+label = "Maven daemon"
+match.script = ["org.mvndaemon.mvnd.daemon.DaemonMain"]
+
+[[group]]
+id = "builtin:bazel"
+kind = "build_daemon"
+label = "Bazel server"
+# the server is `java` (comm) with argv[0] rewritten to `bazel(<workspace>)`; `exe` also matches argv[0]
+match.exe = ["bazel(*"]
+match.name = ["bazel(*"]
+match.cmdline = ['A-server\.jar']
+
+[[group]]
+id = "builtin:buck2"
+kind = "build_daemon"
+label = "Buck2 daemon"
+match.exe = ["buck2d"]
+match.cmdline = ['(^|/)buck2\s.*\bdaemon\b']
+
+[[group]]
+id = "builtin:sccache"
+kind = "build_daemon"
+label = "sccache"
+match.exe = ["sccache"]
+
+[[group]]
+id = "builtin:watchman"
+kind = "build_daemon"
+label = "watchman"
+match.exe = ["watchman"]
+
+[[group]]
+id = "builtin:tsserver"
+kind = "build_daemon"
+label = "tsserver"
+match.script = ["**/*tsserver.js", "**/typescript/lib/tsserver.js"]
+
+[[group]]
+id = "builtin:rust-analyzer"
+kind = "build_daemon"
+label = "rust-analyzer"
+match.exe = ["rust-analyzer", "rust-analyzer-*"]
+
+[[group]]
+id = "builtin:gopls"
+kind = "build_daemon"
+label = "gopls"
+match.exe = ["gopls"]
+
+[[group]]
+id = "builtin:clangd"
+kind = "build_daemon"
+label = "clangd"
+match.exe = ["clangd"]
+
+[[group]]
+id = "builtin:sourcekit-lsp"
+kind = "build_daemon"
+label = "sourcekit-lsp"
+match.exe = ["sourcekit-lsp"]
+
+[[group]]
+id = "builtin:pyright"
+kind = "build_daemon"
+label = "Pyright"
+match.exe = ["pyright-langserver", "basedpyright-langserver"]
+match.script = ["**/pyright/langserver.index.js", "**/basedpyright/langserver.index.js", "**/pyright-langserver", "**/basedpyright-langserver"]
+
+[[group]]
+id = "builtin:jdtls"
+kind = "build_daemon"
+label = "Eclipse JDT LS"
+match.exe = ["jdtls"]
+match.cmdline = ['org\.eclipse\.jdt\.ls']
+
+[[group]]
+id = "builtin:kotlin-lsp"
+kind = "build_daemon"
+label = "Kotlin language server"
+match.exe = ["kotlin-language-server", "kotlin-lsp"]
+match.script = ["org.javacs.kt.MainKt"]
+
+[[group]]
+id = "builtin:language-server"
+kind = "build_daemon"
+label = "language server"
+match.exe = ["*-language-server", "*-languageserver", "lua-language-server", "ruby-lsp", "elixir-ls", "zls", "taplo", "marksman"]
+match.script = ["**/*-language-server", "**/*-language-server.js", "**/*-language-server/**/server.js", "**/*LanguageServer*.js"]
+
+# ==========================================================================================================
+# Linux apps (macOS apps are grouped by their .app bundle without rules)
+# ==========================================================================================================
+
+[[group]]
+id = "builtin:firefox"
+kind = "app"
+label = "Firefox"
+match.exe = ["firefox", "firefox-bin", "firefox-esr"]
+exclude.exe = ["**/*.app/**"]
+
+[[group]]
+id = "builtin:chrome"
+kind = "app"
+label = "Google Chrome"
+match.exe = ["/opt/google/chrome/chrome", "/opt/google/chrome*/chrome"]
+
+[[group]]
+id = "builtin:chromium"
+kind = "app"
+label = "Chromium"
+match.exe = ["chromium", "chromium-browser", "**/chromium/chromium", "**/chromium/chrome"]
+exclude.exe = ["**/*.app/**"]
+
+[[group]]
+id = "builtin:vscode"
+kind = "app"
+label = "VS Code"
+match.exe = ["/usr/share/code/code", "/usr/share/code-insiders/code-insiders", "**/VSCode-linux-*/code", "/opt/visual-studio-code/code", "**/snap/code/*/usr/share/code/code"]
+
+[[group]]
+id = "builtin:cursor"
+kind = "app"
+label = "Cursor"
+match.exe = ["/opt/cursor/cursor", "/usr/share/cursor/cursor", "**/Cursor-*.AppImage", "**/squashfs-root/cursor"]
+
+[[group]]
+id = "builtin:slack"
+kind = "app"
+label = "Slack"
+match.exe = ["/usr/lib/slack/slack", "/usr/share/slack/slack", "**/snap/slack/*/usr/lib/slack/slack"]
+
+[[group]]
+id = "builtin:jetbrains"
+kind = "app"
+label = "JetBrains IDE"
+match.exe = ["**/idea/bin/idea", "**/android-studio/bin/studio", "**/pycharm*/bin/pycharm", "**/clion*/bin/clion"]
+match.cmdline = ['com\.intellij\.idea\.Main']
+exclude.exe = ["**/*.app/**"]
+
+# ==========================================================================================================
+# System (protected: never offered for actions)
+# ==========================================================================================================
+
+[[group]]
+id = "builtin:kernel-task"
+kind = "system"
+label = "kernel_task"
+match.name = ["kernel_task"]
+protected = true
+
+[[group]]
+id = "builtin:launchd"
+kind = "system"
+label = "launchd"
+match.name = ["launchd"]
+protected = true
+
+[[group]]
+id = "builtin:window-server"
+kind = "system"
+label = "WindowServer"
+match.name = ["WindowServer"]
+protected = true
+
+[[group]]
+id = "builtin:loginwindow"
+kind = "system"
+label = "loginwindow"
+match.name = ["loginwindow"]
+protected = true
+
+[[group]]
+id = "builtin:systemd"
+kind = "system"
+label = "systemd"
+match.name = ["systemd"]
+protected = true
+
+[[group]]
+id = "builtin:init"
+kind = "system"
+label = "init"
+match.name = ["init"]
+protected = true
+
+[[group]]
+id = "builtin:kthreadd"
+kind = "system"
+label = "kernel threads"
+match.name = ["kthreadd"]
+protected = true
+
+[[group]]
+id = "builtin:xorg"
+kind = "system"
+label = "Xorg"
+match.name = ["Xorg", "Xwayland"]
+protected = true
+
+[[group]]
+id = "builtin:desktop-shell"
+kind = "system"
+label = "desktop shell"
+match.name = ["gnome-shell", "kwin_wayland", "kwin_x11", "plasmashell", "mutter", "sway", "Hyprland", "weston", "niri", "labwc", "cosmic-comp"]
+protected = true

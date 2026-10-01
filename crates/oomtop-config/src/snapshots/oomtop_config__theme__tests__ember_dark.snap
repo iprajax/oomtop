@@ -1,0 +1,57 @@
+---
+source: crates/oomtop-config/src/theme.rs
+expression: "theme_to_toml(&builtin_theme(\"ember\").unwrap())"
+---
+name = "ember"
+appearance = "dark"
+
+[ui]
+accent           = { fg = "#ffb547", bold = true }
+"accent.text"    = { fg = "#141416", bg = "#ffb547", bold = true }
+border           = { fg = "#34343a" }
+"border.focus"   = { fg = "#ffb547" }
+faint            = { fg = "#707076" }
+muted            = { fg = "#a3a3a8" }
+selection        = { bg = "#2b2b30" }
+"selection.text" = { fg = "#e8e8ea", bg = "#2b2b30", bold = true }
+surface          = { bg = "#141416" }
+text             = { fg = "#e8e8ea" }
+
+[state]
+crit  = { fg = "#ff6a5c", bold = true }
+info  = { fg = "#e8e8ea" }
+ok    = { fg = "#6cc47a" }
+stale = { fg = "#707076" }
+warn  = { fg = "#e6b450" }
+
+[mem]
+app        = { fg = "#cfcfd3" }
+cache      = { fg = "#707076" }
+compressed = { fg = "#8c8c93" }
+free       = { fg = "#6cc47a" }
+gpu        = { fg = "#ff8a6b" }
+swap       = { fg = "#ff6a5c" }
+wired      = { fg = "#74747a" }
+
+[kind]
+agent   = { fg = "#ffb547", bold = true }
+app     = { fg = "#e8e8ea" }
+daemon  = { fg = "#a3a3a8" }
+model   = { fg = "#ff8a6b" }
+other   = { fg = "#a3a3a8" }
+sandbox = { fg = "#a3a3a8", italic = true }
+system  = { fg = "#707076" }
+
+[chart]
+"bar.fill"   = { fg = "#e8e8ea" }
+"bar.track"  = { fg = "#34343a" }
+spark        = { fg = "#a3a3a8" }
+"spark.peak" = { fg = "#ffb547", bold = true }
+
+[text]
+headline = { fg = "#e8e8ea", bold = true }
+key      = { fg = "#ffb547", bold = true }
+label    = { fg = "#a3a3a8" }
+link     = { fg = "#ffb547", underline = true }
+number   = { fg = "#e8e8ea" }
+unit     = { fg = "#a3a3a8" }

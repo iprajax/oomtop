@@ -1,0 +1,61 @@
+---
+source: crates/oomtop-core/tests/memory_headroom.rs
+expression: h
+---
+{
+  "available_now": {
+    "value": 2834678415,
+    "source": "kern.memorystatus_level × RAM (tighter than vm_statistics64)",
+    "quality": "estimate"
+  },
+  "safety_margin": 3092376453,
+  "headroom": -257698038,
+  "pressure": "warn",
+  "swap_growing": false,
+  "reclaimable": {
+    "value": 6162355129,
+    "source": "Σ reclaim_gain",
+    "quality": "estimate"
+  },
+  "reclaimable_swap": {
+    "value": null,
+    "source": "Σ swap_gain",
+    "quality": {
+      "unavailable": "not attributable per process"
+    }
+  },
+  "gpu": [
+    {
+      "accelerator_id": "gpu0",
+      "budget": {
+        "value": 17179869184,
+        "source": "default Metal working set (≈2/3–3/4 of RAM)",
+        "quality": "estimate"
+      },
+      "in_use": {
+        "value": 314572800,
+        "source": "IOAccelerator PerformanceStatistics",
+        "quality": "exact"
+      },
+      "free": {
+        "value": 16865296384,
+        "source": "gpu budget − in use",
+        "quality": "estimate"
+      },
+      "unified": true,
+      "vendor": "apple",
+      "name": "Apple M5 GPU (10-core)",
+      "margin": 0,
+      "headroom": 16865296384
+    }
+  ],
+  "as_of_ms": 1790709769433,
+  "total": 25769803776,
+  "memorystatus_available": 2834678415,
+  "margin_boosted": true,
+  "notes": [
+    "kern.memorystatus_level reports less available (2.6 GiB < 3.0 GiB); using it",
+    "safety margin +50% (memory pressure)"
+  ],
+  "unified_memory": true
+}

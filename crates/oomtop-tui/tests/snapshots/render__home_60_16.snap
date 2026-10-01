@@ -1,0 +1,65 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+ CPU[||||||||||                                       18.0%]
+.aaabccccccccccdddddddddddddddddddddddddddddddddddddddaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]
+.aaab.............bbbbbbbbbbbbbbbbbbbbbbdddeeeeeaaaaaaaaaaab
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]
+.aaabfffffffffffffffffffffffffffffffffffffffffffffaaaaaaaaab
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]
+.aaabcccccccccccccccccccccccccccccccddddddddddddddddddaaaaab
+ Tight on memory — 223 MiB headroom. sd-server ·
+.ggggggggggggggggggggggggggggggggggggggggggggggg
+ qwen-image-studio holds 9.9 GiB; 3 idle groups could free
+.ggggggggggggggggggggggggggggggggggggggggggggggggggggggggg
+ 3.0 GiB.  [r]
+.ggggggggbbbbb
+ oomtop  [1 Home] 2 3 4 5 6  ▲ Pressure  72% speed  ▲ warm
+bbbbbbbb.bbbbbbbb.b.b.b.b.b..ffffffffff..fffffffff..ffffff
+ sd-server · qwen-image-s…    Claude Code ×4  1.4G
+
+ ▲ Leftovers: chrome-headless-shell from Claude Code · 7c11…
+ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+─ Ranked ───────────────────────────────────────────────────
+ddaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddddddd
+ ▸ sd-server · qwen-image-studio (2)                    9.9G
+hhhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiijjkkkkkkkkk
+   KotlinCompileDaemon                            ●     3.0G
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacc
+   GradleDaemon 9.8                               ●     2.9G
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacc
+   Google Chrome (14)                                   2.9G
+bbb..............................................aa
+   Claude desktop VM                                   ≥1.5G
+bbbllllllllllllllllllllllllllllllllllllllllllllllaa
+   ChatGPT / Codex (6)                                  1.0G
+bbb..............................................aa
+   Claude Code · d4e5 (2)                               383M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaa
+   chrome-headless-shell                          ▲     450M
+bbb..............................................ff
+   Claude                                               420M
+bbb..............................................aa
+   clang                                                120M
+bbb..............................................aa
+   Claude Code · a90b (2)                               372M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaa
+   … 4 more
+aaaaaaaaaaa
+F1Help F2Set F3Find F4Filt F5Tree F6Sort F9Stop F10Quit
+..kkkkk..kkkk..kkkkk..kkkkk..kkkkk..kkkkk..kkkkk...kkkkkkkkk
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = dim italic
+f = fg:Yellow
+g = fg:Yellow bold
+h = bold reverse
+i = bold italic reverse
+j = dim reverse
+k = reverse
+l = italic

@@ -1,0 +1,90 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||              21.5%]  E3[                    2.0%]  P6[||||||||||         42.4%]  P9[|||                11.8%]
+.aaabcccccddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabccccccccccdddddddddaaaaab.aaabcccddddddddddddddddaaaaab
+  E1[||||               16.0%]  E4[                    1.3%]  P7[|||||||||||||||||||78.0%]
+.aaabccccdddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabeeeeeeeeeeeeeeeeeeeaaaaab
+  E2[||                  6.7%]  E5[                    0.7%]  P8[|||||||||||||||||||93.1%]
+.aaabccddddddddddddddddddaaaab.aaabddddddddddddddddddddaaaab.aaabfffffffffffffffffffaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab.............bbbbbbbbbbbbbbbbbbbbbbdddgggggaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.2G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]  Uptime: 58 days, 11:24:24
+.aaabcccccccccccccccccccccccccccccccddddddddddddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 377 MiB into the safety margin. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+ 3.0 GiB.  [r]
+.hhhhhhhhbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 2.5G
+aaaa..aaaaa.....baaaa.....daaaa.....gaaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.2G / 7.0G  ▲ 88% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   ▲ headroom -377M
+aaaaaaiiiiiiiiiiieeeeeeeeeeee........eeeeeeeeeeeee...eeeeeeeeeeeeeeee
+ oomtop  1 Home 2 Processes 3 Models 4 Sandboxes 5 Reclaim [6 Timeline]         ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.bbbbbb.bbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbbbb.........eeeeeeeeee..eeeeeeeee..eeeeee
+─ Timeline · last 1m20s ────────────────────────────────────────────── h/l scrub · pgup/pgdn 1 min · g oldest · G live ─
+ddaaaaaaaaaaaaaaaaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ AVAIL  ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣄⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀      2.5G
+aaaaaaaa
+ SWAP   ⣿⣇⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣀⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿      6.2G
+aaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
+ CPU    ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤       18%
+aaaaaaaa
+ MARKS     │                                              │                                       │
+aaaaaaaaeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+                                                                                                            ▲
+........bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ Viewing live · mode pressure · avail 2.5G · swap 6.2G / 7.0G · cpu 18%
+
+ swap +1.0G (-8s) · KotlinCompileDaemon started (-40s) · KotlinCompileDaemon ended (-1m18s)
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+─ Ranked as it was ─────────────────────────────────────────────────────────────────────────────────────────────────────
+ddaaaaaaaaaaaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+ ▸ sd-server · qwen-image-studio                                                       model        9.9G
+jjjkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkklllllllllmmmmmmmmmmmmmmmmmmmmmmmmm
+   KotlinCompileDaemon                                                                 daemon       3.0G  ● reclaimable
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.........ccccccccccccccc
+   GradleDaemon 9.8                                                                    daemon       2.9G  ● reclaimable
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.........ccccccccccccccc
+   Google Chrome                                                                       app          2.9G
+bbb...................................................................................aaaaaaaaa
+   Claude desktop VM                                                                   sandbox      1.5G
+bbbiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiaaaaaaaaa
+   ChatGPT / Codex                                                                     app          1.0G
+bbb...................................................................................aaaaaaaaa
+   Claude Code · d4e5                                                                  agent        383M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaa
+   chrome-headless-shell                                                               other        450M  ● reclaimable
+bbb...................................................................................aaaaaaaaa.........ccccccccccccccc
+   Claude                                                                              app          420M
+bbb...................................................................................aaaaaaaaa
+   clang                                                                               other        120M
+bbb...................................................................................aaaaaaaaa
+   Claude Code · a90b                                                                  agent        372M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaa
+   Claude Code · 3f2a                                                                  agent        350M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaa
+   WindowServer                                                                        system       410M
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Claude Code · 7c11                                                                  agent        361M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaa
+   oomtop (this)                                                                       other       22.0M
+bbb...................................................................................aaaaaaaaa
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmmm..mmmmmmm...mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Yellow
+f = fg:Red bold
+g = dim italic
+h = fg:Yellow bold
+i = italic
+j = bold reverse
+k = bold italic reverse
+l = dim reverse
+m = reverse

@@ -1,0 +1,2239 @@
+---
+source: crates/oomtop-mcp/tests/tool_definitions.rs
+expression: tool_definitions(true)
+---
+[
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "Memory headroom"
+    },
+    "description": "How much memory can be used right now without swapping: available memory, safety margin, headroom (available − margin, may be negative), GPU/Metal budget, memory pressure, swap trend and OOM forecast. Samples the machine on each call.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {},
+      "type": "object"
+    },
+    "name": "get_headroom",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "forecast": {
+          "properties": {
+            "confidence": {
+              "type": "number"
+            },
+            "eta_s": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "killer": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "rate_per_min": {
+              "type": "number"
+            },
+            "target": {
+              "type": "string"
+            },
+            "window_s": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "target",
+            "eta_s",
+            "confidence"
+          ],
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "headroom": {
+          "properties": {
+            "as_of_ms": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "available_now": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "gpu": {
+              "items": {
+                "properties": {
+                  "accelerator_id": {
+                    "type": "string"
+                  },
+                  "budget": {
+                    "properties": {
+                      "quality": {
+                        "type": [
+                          "string",
+                          "object"
+                        ]
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "source",
+                      "quality"
+                    ],
+                    "type": "object"
+                  },
+                  "free": {
+                    "properties": {
+                      "quality": {
+                        "type": [
+                          "string",
+                          "object"
+                        ]
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "source",
+                      "quality"
+                    ],
+                    "type": "object"
+                  },
+                  "headroom": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "in_use": {
+                    "properties": {
+                      "quality": {
+                        "type": [
+                          "string",
+                          "object"
+                        ]
+                      },
+                      "source": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "integer",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "value",
+                      "source",
+                      "quality"
+                    ],
+                    "type": "object"
+                  },
+                  "margin": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "unified": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "accelerator_id",
+                  "budget",
+                  "in_use",
+                  "free",
+                  "unified"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "headroom": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "margin_boosted": {
+              "type": "boolean"
+            },
+            "notes": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "pressure": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "reclaimable": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "reclaimable_swap": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "safety_margin": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "swap_growing": {
+              "type": "boolean"
+            },
+            "total": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "available_now",
+            "safety_margin",
+            "headroom",
+            "swap_growing",
+            "reclaimable",
+            "gpu"
+          ],
+          "type": "object"
+        },
+        "likely_victim": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "mode": {
+          "type": "string"
+        },
+        "oom_killer": {
+          "type": "string"
+        },
+        "pressure": {
+          "properties": {
+            "quality": {
+              "type": [
+                "string",
+                "object"
+              ]
+            },
+            "source": {
+              "type": "string"
+            },
+            "value": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "source",
+            "quality"
+          ],
+          "type": "object"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "swap": {
+          "properties": {
+            "growing": {
+              "type": "boolean"
+            },
+            "in_per_min": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "out_per_min": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "total": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "used": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "integer",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "used",
+            "total",
+            "growing"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "mode",
+        "headroom",
+        "pressure",
+        "swap",
+        "forecast"
+      ],
+      "type": "object"
+    },
+    "title": "Memory headroom"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "Can it fit?"
+    },
+    "description": "Call before loading a large model or starting heavy work. Give exactly one of `bytes`, `size` (e.g. \"13G\") or `model_path` (GGUF/safetensors; only headers are read). Answers `yes`, `yes_after_reclaim` (with the idle groups to stop and their estimated gain) or `no` (with the shortfall). Advisory only and valid for 10 s; never includes the calling agent's own session.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "description": "Memory needed, in bytes.",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "gpu_resident": {
+          "description": "The need lives in GPU memory (checked against the GPU/Metal budget too). Default false.",
+          "type": "boolean"
+        },
+        "label": {
+          "description": "What is being loaded, for the answer text.",
+          "type": "string"
+        },
+        "model_path": {
+          "description": "Local model file to estimate (headers only).",
+          "type": "string"
+        },
+        "size": {
+          "description": "Memory needed as a size, e.g. \"13G\", \"800MiB\".",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "name": "can_fit",
+    "outputSchema": {
+      "properties": {
+        "advisory": {
+          "type": "boolean"
+        },
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exit_code": {
+          "type": "integer"
+        },
+        "expires_at_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "fit": {
+          "properties": {
+            "answer": {
+              "enum": [
+                "yes",
+                "yes_after_reclaim",
+                "no"
+              ],
+              "type": "string"
+            },
+            "gain": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "reclaim": {
+              "items": {
+                "properties": {
+                  "gain": {
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "gpu_gain": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "group_id": {
+                    "type": "string"
+                  },
+                  "idle_for_s": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "kind": {
+                    "type": "string"
+                  },
+                  "label": {
+                    "type": "string"
+                  },
+                  "orphan": {
+                    "type": "boolean"
+                  },
+                  "swap_gain": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "group_id",
+                  "label",
+                  "kind",
+                  "gain"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "shortfall": {
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "answer"
+          ],
+          "type": "object"
+        },
+        "gpu_checked": {
+          "type": "boolean"
+        },
+        "gpu_free": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "headroom": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "host_need": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "need": {
+          "properties": {
+            "bytes": {
+              "minimum": 0,
+              "type": "integer"
+            },
+            "gpu_bytes": {
+              "type": [
+                "integer",
+                "null"
+              ]
+            },
+            "label": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "bytes"
+          ],
+          "type": "object"
+        },
+        "need_source": {
+          "type": "string"
+        },
+        "notes": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "valid_for_s": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "fit",
+        "need",
+        "need_source",
+        "headroom",
+        "valid_for_s",
+        "reason",
+        "exit_code",
+        "advisory"
+      ],
+      "type": "object"
+    },
+    "title": "Can it fit?"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "Top consumers"
+    },
+    "description": "Top groups (agent sessions, apps, model servers, sandboxes, build daemons) by memory footprint, GPU memory or CPU. Numbers are true memory (footprint / PSS, not RSS) with source and quality.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "by": {
+          "description": "Sort key (default footprint).",
+          "enum": [
+            "footprint",
+            "gpu",
+            "cpu"
+          ],
+          "type": "string"
+        },
+        "n": {
+          "description": "How many groups (default 10).",
+          "maximum": 100,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "name": "top_consumers",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "by": {
+          "enum": [
+            "footprint",
+            "gpu",
+            "cpu"
+          ],
+          "type": "string"
+        },
+        "groups": {
+          "items": {
+            "properties": {
+              "confidence": {
+                "type": "string"
+              },
+              "configured_mem": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "cpu_pct": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "footprint": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "gpu": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "id": {
+                "type": "string"
+              },
+              "idle": {
+                "type": "boolean"
+              },
+              "idle_for_s": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "is_caller": {
+                "type": "boolean"
+              },
+              "is_self": {
+                "type": "boolean"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "lower_bound": {
+                "type": "boolean"
+              },
+              "matched_by": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "orphan": {
+                "type": "boolean"
+              },
+              "owner_group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "process_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "protected": {
+                "type": "boolean"
+              },
+              "reclaim_candidate": {
+                "type": "boolean"
+              },
+              "reclaim_gain": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "resident": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "root_pid": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "swap_gain": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "swapped": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "label",
+              "root_pid",
+              "process_count",
+              "footprint",
+              "cpu_pct",
+              "reclaim_gain",
+              "idle",
+              "orphan",
+              "protected",
+              "is_caller",
+              "lower_bound",
+              "reclaim_candidate"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "memory_total": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "n": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "by",
+        "n",
+        "groups"
+      ],
+      "type": "object"
+    },
+    "title": "Top consumers"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "List groups"
+    },
+    "description": "Every attributed group with its memory, CPU, idle/orphan state and estimated reclaim gain, largest first. Filter by `kind` (agent, app, model, sandbox, daemon, system, other).",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "description": "Only groups of this kind.",
+          "enum": [
+            "agent_session",
+            "agent",
+            "app",
+            "model_server",
+            "model",
+            "sandbox",
+            "build_daemon",
+            "daemon",
+            "system",
+            "other"
+          ],
+          "type": "string"
+        },
+        "limit": {
+          "description": "Maximum groups returned (default 50).",
+          "maximum": 500,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "name": "list_groups",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "groups": {
+          "items": {
+            "properties": {
+              "confidence": {
+                "type": "string"
+              },
+              "configured_mem": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "cpu_pct": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "footprint": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "gpu": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "id": {
+                "type": "string"
+              },
+              "idle": {
+                "type": "boolean"
+              },
+              "idle_for_s": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "is_caller": {
+                "type": "boolean"
+              },
+              "is_self": {
+                "type": "boolean"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "lower_bound": {
+                "type": "boolean"
+              },
+              "matched_by": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "orphan": {
+                "type": "boolean"
+              },
+              "owner_group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "process_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "protected": {
+                "type": "boolean"
+              },
+              "reclaim_candidate": {
+                "type": "boolean"
+              },
+              "reclaim_gain": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "resident": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "root_pid": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "swap_gain": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "swapped": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "label",
+              "root_pid",
+              "process_count",
+              "footprint",
+              "cpu_pct",
+              "reclaim_gain",
+              "idle",
+              "orphan",
+              "protected",
+              "is_caller",
+              "lower_bound",
+              "reclaim_candidate"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "returned": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "total": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "truncated": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "kind",
+        "total",
+        "returned",
+        "truncated",
+        "groups"
+      ],
+      "type": "object"
+    },
+    "title": "List groups"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "List model servers"
+    },
+    "description": "Local model servers (Ollama, llama.cpp, sd.cpp, vLLM, LM Studio, MLX…) with loaded models, device, throughput/progress and the memory of their group.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {},
+      "type": "object"
+    },
+    "name": "list_model_servers",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "model_servers": {
+          "items": {
+            "properties": {
+              "busy": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "boolean",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "endpoint": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "group": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "group_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "models": {
+                "items": {
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "pids": {
+                "items": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "status": {
+                "type": [
+                  "string",
+                  "object"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "pids",
+              "models",
+              "group"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "count",
+        "model_servers"
+      ],
+      "type": "object"
+    },
+    "title": "List model servers"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "List sandboxes"
+    },
+    "description": "Containers, VMs and process sandboxes with their host memory cost (a lower bound for Virtualization.framework VMs) and configured memory.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {},
+      "type": "object"
+    },
+    "name": "list_sandboxes",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "count": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "sandboxes": {
+          "items": {
+            "properties": {
+              "configured_mem": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "footprint_lower_bound": {
+                "type": "boolean"
+              },
+              "group": {
+                "type": [
+                  "object",
+                  "null"
+                ]
+              },
+              "guest_mem": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "host_cost": {
+                "properties": {
+                  "quality": {
+                    "type": [
+                      "string",
+                      "object"
+                    ]
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "value",
+                  "source",
+                  "quality"
+                ],
+                "type": "object"
+              },
+              "host_pids": {
+                "items": {
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "type": "array"
+              },
+              "id": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "runtime": {
+                "type": "string"
+              },
+              "started_by_group": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "kind",
+              "runtime",
+              "label",
+              "host_pids",
+              "host_cost"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "summary": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "count",
+        "sandboxes"
+      ],
+      "type": "object"
+    },
+    "title": "List sandboxes"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "Explain slowdown"
+    },
+    "description": "Ranked likely causes of slowness or memory pressure (swap storm, memory pressure, thermal throttling, Low Power Mode, low battery, CPU saturation, imminent OOM) with evidence and a fix. Reports nothing throttle-related while the machine is idle.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {},
+      "type": "object"
+    },
+    "name": "explain_slowdown",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "causes": {
+          "items": {
+            "properties": {
+              "evidence": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "fix": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "kind": {
+                "type": "string"
+              },
+              "score": {
+                "type": "number"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "kind",
+              "score",
+              "title",
+              "evidence",
+              "fix"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "cpu_total_pct": {
+          "properties": {
+            "quality": {
+              "type": [
+                "string",
+                "object"
+              ]
+            },
+            "source": {
+              "type": "string"
+            },
+            "value": {
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "value",
+            "source",
+            "quality"
+          ],
+          "type": "object"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "thermal": {
+          "properties": {
+            "battery_pct": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "low_power_mode": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "on_battery": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "pressure": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            },
+            "throttle_factor": {
+              "properties": {
+                "quality": {
+                  "type": [
+                    "string",
+                    "object"
+                  ]
+                },
+                "source": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                }
+              },
+              "required": [
+                "value",
+                "source",
+                "quality"
+              ],
+              "type": "object"
+            }
+          },
+          "required": [
+            "pressure",
+            "throttle_factor"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "causes",
+        "thermal"
+      ],
+      "type": "object"
+    },
+    "title": "Explain slowdown"
+  },
+  {
+    "annotations": {
+      "destructiveHint": false,
+      "idempotentHint": true,
+      "openWorldHint": false,
+      "readOnlyHint": true,
+      "title": "Suggest reclaim"
+    },
+    "description": "Idle build daemons, orphans and idle model servers that could be stopped, with estimated RAM gain (and swap freed separately). No side effects: it only lists; the user runs `oomtop reclaim` to act. Never includes the calling agent's own session.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {},
+      "type": "object"
+    },
+    "name": "suggest_reclaim",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "candidates": {
+          "items": {
+            "properties": {
+              "gain": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "gpu_gain": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "group_id": {
+                "type": "string"
+              },
+              "idle_for_s": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "kind": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "orphan": {
+                "type": "boolean"
+              },
+              "swap_gain": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "group_id",
+              "label",
+              "kind",
+              "gain"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "command": {
+          "type": "string"
+        },
+        "excluded": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "headroom": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "headroom_after": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "side_effects": {
+          "type": "boolean"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "total_gain": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "total_swap_gain": {
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "candidates",
+        "total_gain",
+        "headroom",
+        "excluded",
+        "command",
+        "side_effects"
+      ],
+      "type": "object"
+    },
+    "title": "Suggest reclaim"
+  },
+  {
+    "annotations": {
+      "destructiveHint": true,
+      "idempotentHint": false,
+      "openWorldHint": false,
+      "readOnlyHint": false,
+      "title": "Reclaim memory"
+    },
+    "description": "Stop the given reclaim candidates (idle build daemons, orphans, idle model servers — the ids suggest_reclaim returns; anything else is refused). Model servers with an unload API are unloaded without a signal; other group roots get SIGTERM, never SIGKILL; a model server running a job is refused. oomtop itself asks the user to confirm the exact list and gains through MCP elicitation and acts only on an explicit accept. Without client elicitation support nothing is stopped and the `oomtop reclaim` command is returned for the user. Protected groups and the calling agent's own session are always refused.",
+    "inputSchema": {
+      "additionalProperties": false,
+      "properties": {
+        "group_ids": {
+          "description": "Group ids to stop (from suggest_reclaim / list_groups).",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 64,
+          "minItems": 1,
+          "type": "array"
+        }
+      },
+      "required": [
+        "group_ids"
+      ],
+      "type": "object"
+    },
+    "name": "reclaim",
+    "outputSchema": {
+      "properties": {
+        "as_of_ms": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "available_after": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "available_before": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "command": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "executed": {
+          "type": "boolean"
+        },
+        "expected_gain": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "measured_gain": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "outcomes": {
+          "items": {
+            "properties": {
+              "exited": {
+                "type": "boolean"
+              },
+              "group_id": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "ok": {
+                "type": "boolean"
+              },
+              "pid": {
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "group_id",
+              "pid",
+              "ok",
+              "message"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "refused": {
+          "items": {
+            "properties": {
+              "group_id": {
+                "type": "string"
+              },
+              "reason": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "group_id",
+              "reason"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "schema_version": {
+          "minimum": 0,
+          "type": "integer"
+        },
+        "status": {
+          "enum": [
+            "done",
+            "partial",
+            "declined",
+            "cancelled",
+            "not_confirmed",
+            "needs_user",
+            "unavailable",
+            "nothing_to_do",
+            "failed"
+          ],
+          "type": "string"
+        },
+        "summary": {
+          "type": "string"
+        },
+        "targets": {
+          "items": {
+            "properties": {
+              "expected_gain": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "group_id": {
+                "type": "string"
+              },
+              "idle": {
+                "type": "boolean"
+              },
+              "idle_for_s": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "kind": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "orphan": {
+                "type": "boolean"
+              },
+              "pid": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "process_count": {
+                "minimum": 0,
+                "type": "integer"
+              },
+              "signal": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "group_id",
+              "label",
+              "pid",
+              "signal",
+              "expected_gain"
+            ],
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "user_action": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "as_of_ms",
+        "summary",
+        "status",
+        "executed",
+        "targets",
+        "refused",
+        "outcomes",
+        "command"
+      ],
+      "type": "object"
+    },
+    "title": "Reclaim memory"
+  }
+]

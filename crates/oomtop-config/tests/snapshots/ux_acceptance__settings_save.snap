@@ -1,0 +1,30 @@
+---
+source: crates/oomtop-config/tests/ux_acceptance.rs
+expression: out
+---
+# ~/.config/oomtop/config.toml — my settings
+# (kept in dotfiles; please don't reformat)
+
+[general]
+refresh_ms = 2000        # 2 s is plenty on battery
+
+# --- look -------------------------------------------------------------
+[appearance]
+theme      = "ember"  # follow Ghostty
+density    = "compact"
+header     = ["headline", "memory", "swap"]   # no accelerators row
+color = "256"
+
+[headroom]
+min_margin = "2.5G"        # fanless Air: be conservative
+
+[aliases]
+llm = "kind:model,agent" # my LLM stuff
+hogs = ":sort footprint desc"
+
+[[views]]
+name  = "gpu-work"
+query = "gpu>500M or llm"
+
+[personalization.weights]
+affinity = 0.8

@@ -1,0 +1,75 @@
+---
+source: crates/oomtop-core/tests/ux_ranking.rs
+expression: "out.join(\"\\n\\n\")"
+---
+== calm ==
+ 1. sd-server               1.105  1st: holds 9.9 GB (salience) · you opened it 5× this week (affinity).
+ 2. Google Chrome           0.717  2nd: you opened it 9× this week (affinity) · holds 2.8 GB (salience) · 14 processes grouped.
+ 3. KotlinCompileDaemon     0.466  3rd: holds 3.0 GB (salience) · idle 6h35m, could free 3.0 GB (actionability).
+ 4. GradleDaemon            0.450  4th: holds 2.9 GB (salience) · idle 3h40m, could free 2.9 GB (actionability).
+ 5. Claude Code             0.180  5th: agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+ 6. clang                   0.161  6th: recently started (novelty) · holds 180 MB (salience).
+ 7. Claude desktop VM       0.118  7th: holds 1.5 GB (salience).
+ 8. Claude Code             0.030  8th: agent sessions start boosted on this machine (prior) · similar to a row above (diversity) · holds 350 MB (salience) · 3 processes grouped.
+ 9. Claude Code            -0.120  9th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+10. Claude Code            -0.270  10th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+
+== pressure ==
+ 1. sd-server               1.836  1st: holds 9.9 GB (salience) · you opened it 5× this week (affinity).
+ 2. KotlinCompileDaemon     0.931  2nd: holds 3.0 GB (salience) · idle 6h35m, could free 3.0 GB (actionability).
+ 3. Google Chrome           0.924  3rd: you opened it 9× this week (affinity) · holds 2.8 GB (salience) · 14 processes grouped.
+ 4. GradleDaemon            0.900  4th: holds 2.9 GB (salience) · idle 3h40m, could free 2.9 GB (actionability).
+ 5. Claude desktop VM       0.233  5th: holds 1.5 GB (salience).
+ 6. Claude Code             0.206  6th: agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+ 7. clang                   0.175  7th: recently started (novelty) · holds 180 MB (salience).
+ 8. Claude Code             0.056  8th: agent sessions start boosted on this machine (prior) · similar to a row above (diversity) · holds 350 MB (salience) · 3 processes grouped.
+ 9. Claude Code            -0.094  9th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+10. Claude Code            -0.244  10th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+
+== throttle ==
+ 1. sd-server               0.798  1st: holds 9.9 GB (salience) · you opened it 5× this week (affinity).
+ 2. Google Chrome           0.656  2nd: you opened it 9× this week (affinity) · holds 2.8 GB (salience) · 14 processes grouped.
+ 3. KotlinCompileDaemon     0.373  3rd: idle 6h35m, could free 3.0 GB (actionability) · holds 3.0 GB (salience).
+ 4. GradleDaemon            0.360  4th: idle 3h40m, could free 2.9 GB (actionability) · holds 2.9 GB (salience).
+ 5. Claude Code             0.174  5th: agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+ 6. clang                   0.155  6th: recently started (novelty).
+ 7. Claude desktop VM       0.073  7th: holds 1.5 GB (salience).
+ 8. Claude Code             0.024  8th: agent sessions start boosted on this machine (prior) · similar to a row above (diversity) · holds 350 MB (salience) · 3 processes grouped.
+ 9. Claude Code            -0.126  9th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+10. Claude Code            -0.276  10th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+
+== working ==
+ 1. sd-server               1.105  1st: holds 9.9 GB (salience) · you opened it 5× this week (affinity).
+ 2. Google Chrome           0.724  2nd: you opened it 9× this week (affinity) · holds 2.8 GB (salience) · 14 processes grouped.
+ 3. KotlinCompileDaemon     0.466  3rd: holds 3.0 GB (salience) · idle 6h35m, could free 3.0 GB (actionability).
+ 4. GradleDaemon            0.450  4th: holds 2.9 GB (salience) · idle 3h40m, could free 2.9 GB (actionability).
+ 5. Claude Code             0.181  5th: agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+ 6. clang                   0.161  6th: recently started (novelty) · holds 180 MB (salience).
+ 7. Claude desktop VM       0.118  7th: holds 1.5 GB (salience).
+ 8. Claude Code             0.031  8th: agent sessions start boosted on this machine (prior) · similar to a row above (diversity) · holds 350 MB (salience) · 3 processes grouped.
+ 9. Claude Code            -0.119  9th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+10. Claude Code            -0.269  10th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+
+== leftovers ==
+ 1. sd-server               1.105  1st: holds 9.9 GB (salience) · you opened it 5× this week (affinity).
+ 2. Google Chrome           0.717  2nd: you opened it 9× this week (affinity) · holds 2.8 GB (salience) · 14 processes grouped.
+ 3. KotlinCompileDaemon     0.699  3rd: idle 6h35m, could free 3.0 GB (actionability) · holds 3.0 GB (salience).
+ 4. GradleDaemon            0.675  4th: idle 3h40m, could free 2.9 GB (actionability) · holds 2.9 GB (salience).
+ 5. Claude Code             0.180  5th: agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+ 6. clang                   0.161  6th: recently started (novelty) · holds 180 MB (salience).
+ 7. Claude desktop VM       0.118  7th: holds 1.5 GB (salience).
+ 8. Claude Code             0.030  8th: agent sessions start boosted on this machine (prior) · similar to a row above (diversity) · holds 350 MB (salience) · 3 processes grouped.
+ 9. Claude Code            -0.120  9th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+10. Claude Code            -0.270  10th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+
+== cold start (no profile, priors) ==
+ 1. sd-server               0.949  1st: holds 9.9 GB (salience) · model servers start boosted on this machine (prior).
+ 2. KotlinCompileDaemon     0.466  2nd: holds 3.0 GB (salience) · idle 6h35m, could free 3.0 GB (actionability).
+ 3. GradleDaemon            0.450  3rd: holds 2.9 GB (salience) · idle 3h40m, could free 2.9 GB (actionability).
+ 4. Google Chrome           0.234  4th: holds 2.8 GB (salience) · 14 processes grouped.
+ 5. Claude Code             0.180  5th: agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+ 6. clang                   0.161  6th: recently started (novelty) · holds 180 MB (salience).
+ 7. Claude desktop VM       0.118  7th: holds 1.5 GB (salience).
+ 8. Claude Code             0.030  8th: agent sessions start boosted on this machine (prior) · similar to a row above (diversity) · holds 350 MB (salience) · 3 processes grouped.
+ 9. Claude Code            -0.120  9th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.
+10. Claude Code            -0.270  10th: similar to a row above (diversity) · agent sessions start boosted on this machine (prior) · holds 350 MB (salience) · 3 processes grouped.

@@ -1,0 +1,91 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||              21.5%]  E3[                    2.0%]  P6[||||||||||         42.4%]  P9[|||                11.8%]
+.aaabcccccddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabccccccccccdddddddddaaaaab.aaabcccddddddddddddddddaaaaab
+  E1[||||               16.0%]  E4[                    1.3%]  P7[|||||||||||||||||||78.0%]
+.aaabccccdddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabeeeeeeeeeeeeeeeeeeeaaaaab
+  E2[||                  6.7%]  E5[                    0.7%]  P8[|||||||||||||||||||93.1%]
+.aaabccddddddddddddddddddaaaab.aaabddddddddddddddddddddaaaab.aaabfffffffffffffffffffaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab.............bbbbbbbbbbbbbbbbbbbbbbdddgggggaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]  Uptime: 58 days, 11:23:04
+.aaabcccccccccccccccccccccccccccccccddddddddddddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free 3.0 GiB.  [r]
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaa.....daaaa.....gaaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   headroom 223M
+aaaaaaiiiiiiiiiiieeeeeeeeeeee........eeeeeeeeeeeee
+ oomtop  [1 Home] 2 Processes 3 Models 4 Sandboxes 5 Reclaim 6 Timeline         ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbb.........eeeeeeeeee..eeeeeeeee..eeeeee
+─ Your things ──────────────────────────────────────────────────────────────────────────────────────────────────────────
+ddaaaaaaaaaaaadddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+ sd-server · qwen-image-studio  9.9G  generating 3/6 · 8.1 s/step    Claude Code ×4  1.4G
+
+ ▲ Leftovers: chrome-headless-shell from Claude Code · 7c11 450M · r reclaims
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+─ Ranked ─────────────╭ Compare · c/esc close ───────────────────────────────────────────────────╮ · : command · i why ─
+ddaaaaaaadddddddddddddbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaaa
+   sd-server · qwen-im│              GradleDaemon 9.8      KotlinCompileDaemon   difference      │    85%
+bbbjjjjjjjjjjjjjjjjjjjb..............bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaa......b.......aaaaaaaaaaaaaaa
+ ▸ KotlinCompileDaemon│kind          daemon                daemon                                │     0%  ● reclaimable
+kkklllllllllllllllllllbaaaaaaaaaaaaaa............................................................bmmmmmmmnnnnnnnnnnnnnnn
+   GradleDaemon 9.8   │footprint     2.9G                  3.0G                  +124M           │     0%  ● reclaimable
+bbbaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaa............................................aaaaa...........b.......ccccccccccccccc
+   Google Chrome (14) │resident      500M                  450M                  -50.0M          │     6%
+bbb...................baaaaaaaaaaaaaa............................................aaaaaa..........b.......aaaaaaaaaaaaaaa
+   Claude desktop VM  │gpu           n/a                   n/a                                   │     2%  sandbox
+bbbiiiiiiiiiiiiiiiiiiibaaaaaaaaaaaaaa............................................................b.......iiiiiiiiiiiiiii
+   ChatGPT / Codex (6)│swapped       n/a                   n/a                                   │     2%
+bbb...................baaaaaaaaaaaaaa............................................................b.......aaaaaaaaaaaaaaa
+   Claude Code · d4e5 │cpu           0%                    0%                                    │     0%
+bbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaa............................................................b.......aaaaaaaaaaaaaaa
+   chrome-headless-she│processes     1                     1                                     │     0%  ● reclaimable
+bbb...................baaaaaaaaaaaaaa............................................................b.......ccccccccccccccc
+   Claude             │idle          3h40m                 6h35m                                 │     1%
+bbb...................baaaaaaaaaaaaaa............................................................b.......aaaaaaaaaaaaaaa
+   clang              │reclaim       ≈1.3G                 ≈1.3G                 +8.0M           │    30%
+bbb...................baaaaaaaaaaaaaa............................................aaaaa...........b.......aaaaaaaaaaaaaaa
+   Claude Code · a90b │flags         reclaimable           reclaimable                           │     0%
+bbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaa............................................................b.......aaaaaaaaaaaaaaa
+   Claude Code · 3f2a │history       ⣤⣰⣄⣦⣄⣦⣰⣦⣷⣤⣶⣼⣦⣷⣦       ⣄⣦⣰⣤⣶⣄⣦⣴⣦⣷⣤⣶⣼⣶⣷                       │     4%
+bbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaa............................................................b.......aaaaaaaaaaaaaaa
+   WindowServer       │                                                                          │     6%  protected
+bbbaaaaaaaaaaaaaaaaaaab..........................................................................b.......aaaaaaaaaaaaaaa
+   Claude Code · 7c11 ╰──────────────────────────────────────────────────────────────────────────╯     0%
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb.......aaaaaaaaaaaaaaa
+   oomtop (this)                                           other                     22.0M  ⣰⣄⣷⣼⣦⣼     1%  this
+bbb.......................................................aaaaaaaaaaaaaaaaaaaaaaa........................aaaaaaaaaaaaaaa
+
+
+
+
+
+
+
+
+
+
+
+
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmmm..mmmmmmm...mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Yellow
+f = fg:Red bold
+g = dim italic
+h = fg:Yellow bold
+i = italic
+j = bold italic
+k = bold reverse
+l = dim reverse
+m = reverse
+n = fg:Green reverse

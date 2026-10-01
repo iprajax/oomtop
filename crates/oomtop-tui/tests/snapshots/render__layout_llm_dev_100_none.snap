@@ -1,0 +1,71 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups
+.aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ could free 3.0 GiB.  [r]
+.aaaaaaaaaaaaaaaaaaaaaaaa
+ oomtop  [1 Home] 2 Processes 3 Models 4 Sandboxes 5 Reclaim 6 Timeline      ▲ Pressure  72% speed
+aaaaaaaa.aaaaaaaa.aaaaaaaaaaa.aaaaaaaa.aaaaaaaaaaa.aaaaaaaaa.aaaaaaaaaa
+ ▲ Leftovers: chrome-headless-shell from Claude Code · 7c11 450M · r reclaims
+
+─ Ranked ───────────────────────────────────────── sorted by memory · / filter · : command · i why ─
+..bbbbbbb.........................................bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+   NAME                                          MEM      GPU TREND        STATE                MEM%
+...bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ ▸ sd-server · qwen-image-studio (2)            9.9G      n/a ⣰⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼  generating 3/6        41%
+cccdddddddddddddddddddddddddddddddddddddddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+   KotlinCompileDaemon                          3.0G      n/a ⣦⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷  idle 6h35m            12%
+aaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb................................bbbbbbbbbbbbbbbb
+   Google Chrome (14)                           2.9G      n/a ⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶                        12%
+aaa.......................................................................bbbbbbbbbbbbbbbb
+   GradleDaemon 9.8                             2.9G      n/a ⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷⣦  idle 3h40m            12%
+aaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb................................bbbbbbbbbbbbbbbb
+   Claude desktop VM                           ≥1.5G      n/a ⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶⣼                         6%
+aaafffffffffffffffffffffffffffffffffffffff................................bbbbbbbbbbbbbbbb
+   ChatGPT / Codex (6)                          1.0G      n/a ⣦⣰⣄⣶⣄⣦⣼⣦⣷⣤⣷                         4%
+aaa.......................................................................bbbbbbbbbbbbbbbb
+   chrome-headless-shell                        450M      n/a ⣄⣦⣰⣦⣰⣤⣷⣼⣦⣼⣦  ▲ orphan               2%
+aaa
+   Claude                                       420M      n/a ⣰⣄⣶⣄⣦⣴⣦⣷⣤⣷⣼                         2%
+aaa.......................................................................bbbbbbbbbbbbbbbb
+   WindowServer                                 410M      n/a ⣦⣰⣦⣰⣄⣶⣼⣦⣼⣦⣷                         2%
+aaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb................................bbbbbbbbbbbbbbbb
+   Claude Code · d4e5 (2)                       383M      n/a ⣄⣶⣄⣦⣰⣦⣷⣤⣷⣼⣦                         2%
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa................................bbbbbbbbbbbbbbbb
+   Claude Code · a90b (2)                       372M      n/a ⣰⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼                         2%
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa................................bbbbbbbbbbbbbbbb
+   Claude Code · 7c11 (2)                       361M      n/a ⣦⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷                         1%
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa................................bbbbbbbbbbbbbbbb
+   Claude Code · 3f2a (2)                       350M      n/a ⣤⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶                         1%
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa................................bbbbbbbbbbbbbbbb
+   clang                                        120M      n/a ⣄⣦⣰⣤⣷⣄⣶⣼⣦⣷⣦                         0%
+aaa.......................................................................bbbbbbbbbbbbbbbb
+   oomtop (this)                               22.0M      n/a ⣰⣄⣦⣼⣦⣰⣦⣷⣼⣶⣼                         0%
+aaa.......................................................................bbbbbbbbbbbbbbbb
+
+
+
+
+
+
+
+
+─ Timeline ─────────────────────────────────────────────────────────────────── 6 for the full view ─
+..bbbbbbbbb...................................................................bbbbbbbbbbbbbbbbbbbbbb
+ AVAIL  ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤      3.1G
+bbbbbbbb
+ SWAP   ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤      6.1G
+bbbbbbbbfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ CPU    ⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤⣤       18%
+bbbbbbbb
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..eeeeeee..eeeeeee..eeeeeee..eeeeeee..eeeeeee..eeeeeee..eeeeeee..eeeeeeee..eeeeeee...eeeeeeeeeeeeeee
+--- legend
+a = bold
+b = dim
+c = bold reverse
+d = bold italic reverse
+e = reverse
+f = italic

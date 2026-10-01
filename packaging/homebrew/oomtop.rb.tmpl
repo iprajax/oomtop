@@ -1,0 +1,43 @@
+# Homebrew formula for oomtop — rendered by packaging/homebrew/render.py in the release workflow.
+# Tap: brew tap iprajax/oomtop && brew install oomtop   (homebrew-core submission after 1.0, SPEC §16)
+class Oomtop < Formula
+  desc "See the OOM coming: true memory, attribution and headroom for local AI work"
+  homepage "https://github.com/iprajax/oomtop"
+  version "@VERSION@"
+  license "MIT"
+
+  on_macos do
+    url "https://github.com/iprajax/oomtop/releases/download/v@VERSION@/oomtop-@VERSION@-universal-apple-darwin.tar.gz"
+    sha256 "@SHA_MACOS@"
+  end
+
+  on_linux do
+    on_intel do
+      url "https://github.com/iprajax/oomtop/releases/download/v@VERSION@/oomtop-@VERSION@-x86_64-unknown-linux-gnu.tar.gz"
+      sha256 "@SHA_LINUX_X86_64@"
+    end
+    on_arm do
+      url "https://github.com/iprajax/oomtop/releases/download/v@VERSION@/oomtop-@VERSION@-aarch64-unknown-linux-gnu.tar.gz"
+      sha256 "@SHA_LINUX_AARCH64@"
+    end
+  end
+
+  def install
+    bin.install "oomtop"
+    doc.install Dir["docs/*"]
+  end
+
+  def caveats
+    <<~EOS
+      Use it from Claude Code (MCP, read-only by default):
+        claude mcp add oomtop -- #{opt_bin}/oomtop mcp
+      Configuration: oomtop config init   (writes ~/.config/oomtop/config.toml)
+    EOS
+  end
+
+  test do
+    assert_match version.to_s, shell_output("#{bin}/oomtop --version")
+    assert_match "theme", shell_output("#{bin}/oomtop config init --print")
+    system bin/"oomtop", "keys", "list", "--conflicts"
+  end
+end

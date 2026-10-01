@@ -1,0 +1,5 @@
+---
+source: crates/oomtop-core/tests/ux_headline.rs
+expression: transitions(&run)
+---
+t=  0s [leftovers] Idle leftovers — 2 idle build daemons could free 5.9 GB.

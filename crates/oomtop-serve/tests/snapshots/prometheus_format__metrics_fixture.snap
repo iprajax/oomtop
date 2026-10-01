@@ -1,0 +1,116 @@
+---
+source: crates/oomtop-serve/tests/prometheus_format.rs
+expression: text
+---
+# HELP oomtop_info oomtop build and host facts (value is always 1).
+# TYPE oomtop_info gauge
+oomtop_info{version="[version]",os="macos",arch="aarch64",schema_version="1"} 1
+# HELP oomtop_snapshot_timestamp_seconds When the snapshot was taken (Unix time).
+# TYPE oomtop_snapshot_timestamp_seconds gauge
+oomtop_snapshot_timestamp_seconds 1790000000
+# HELP oomtop_memory_total_bytes Physical memory.
+# TYPE oomtop_memory_total_bytes gauge
+oomtop_memory_total_bytes 25769803776
+# HELP oomtop_memory_available_bytes Available memory (headroom input, SPEC 8.1).
+# TYPE oomtop_memory_available_bytes gauge
+oomtop_memory_available_bytes 10737418240
+# HELP oomtop_memory_compressed_bytes Physical memory held by the compressor (zswap/zram on Linux).
+# TYPE oomtop_memory_compressed_bytes gauge
+oomtop_memory_compressed_bytes 2147483648
+# HELP oomtop_swap_used_bytes Swap used.
+# TYPE oomtop_swap_used_bytes gauge
+oomtop_swap_used_bytes 1073741824
+# HELP oomtop_swap_total_bytes Swap total.
+# TYPE oomtop_swap_total_bytes gauge
+oomtop_swap_total_bytes 4294967296
+# HELP oomtop_memory_pressure_level Memory pressure: 0 normal, 1 warn, 2 critical.
+# TYPE oomtop_memory_pressure_level gauge
+oomtop_memory_pressure_level 1
+# HELP oomtop_headroom_bytes Available memory minus the safety margin (may be negative).
+# TYPE oomtop_headroom_bytes gauge
+oomtop_headroom_bytes 7645041787
+# HELP oomtop_safety_margin_bytes Safety margin (boosted under pressure or growing swap).
+# TYPE oomtop_safety_margin_bytes gauge
+oomtop_safety_margin_bytes 3092376453
+# HELP oomtop_reclaimable_bytes Estimated RAM freed by stopping idle build daemons, orphans and idle model servers.
+# TYPE oomtop_reclaimable_bytes gauge
+oomtop_reclaimable_bytes 3221225472
+# HELP oomtop_swap_growing 1 when swap use is growing (absent when swap is not measured).
+# TYPE oomtop_swap_growing gauge
+oomtop_swap_growing 0
+# HELP oomtop_gpu_headroom_bytes GPU/Metal budget minus GPU memory in use and margin, per accelerator.
+# TYPE oomtop_gpu_headroom_bytes gauge
+oomtop_gpu_headroom_bytes{gpu="gpu0"} 6442450944
+# HELP oomtop_oom_eta_seconds Forecast time until the OOM target is reached.
+# TYPE oomtop_oom_eta_seconds gauge
+oomtop_oom_eta_seconds{target="swap_exhaustion",killer="jetsam"} 360
+# HELP oomtop_oom_forecast_confidence R squared of the forecast fit (0..1).
+# TYPE oomtop_oom_forecast_confidence gauge
+oomtop_oom_forecast_confidence{target="swap_exhaustion",killer="jetsam"} 0.91
+# HELP oomtop_oom_recent_kills OOM kills seen recently (kernel, oomd, earlyoom, jetsam).
+# TYPE oomtop_oom_recent_kills gauge
+oomtop_oom_recent_kills 0
+# HELP oomtop_gpu_memory_used_bytes GPU memory in use.
+# TYPE oomtop_gpu_memory_used_bytes gauge
+oomtop_gpu_memory_used_bytes{gpu="gpu0",name="Apple M5"} 10737418240
+# HELP oomtop_gpu_budget_bytes GPU working-set budget (Metal recommendedMaxWorkingSetSize / iogpu.wired_limit_mb).
+# TYPE oomtop_gpu_budget_bytes gauge
+oomtop_gpu_budget_bytes{gpu="gpu0",name="Apple M5"} 17179869184
+# HELP oomtop_processes Processes in the snapshot.
+# TYPE oomtop_processes gauge
+oomtop_processes 1
+# HELP oomtop_groups Attributed groups.
+# TYPE oomtop_groups gauge
+oomtop_groups 5
+# HELP oomtop_model_servers Detected model servers.
+# TYPE oomtop_model_servers gauge
+oomtop_model_servers 0
+# HELP oomtop_sandboxes Detected sandboxes.
+# TYPE oomtop_sandboxes gauge
+oomtop_sandboxes 0
+# HELP oomtop_source_status Data source status (1 for the current status of each source).
+# TYPE oomtop_source_status gauge
+oomtop_source_status{source="macos.ioreport",status="unavailable"} 1
+oomtop_source_status{source="macos.procs",status="available"} 1
+# HELP oomtop_group_footprint_bytes Group memory: footprint (macOS) / PSS (Linux), summed by kind and label.
+# TYPE oomtop_group_footprint_bytes gauge
+oomtop_group_footprint_bytes{kind="agent_session",label="Claude Code"} 536870912
+oomtop_group_footprint_bytes{kind="app",label="we\"ird\\app\nx"} 1073741824
+oomtop_group_footprint_bytes{kind="build_daemon",label="GradleDaemon"} 6442450944
+oomtop_group_footprint_bytes{kind="model_server",label="sd-server"} 10737418240
+# HELP oomtop_group_resident_bytes Group resident memory.
+# TYPE oomtop_group_resident_bytes gauge
+oomtop_group_resident_bytes{kind="agent_session",label="Claude Code"} 536870912
+oomtop_group_resident_bytes{kind="app",label="we\"ird\\app\nx"} 1073741824
+oomtop_group_resident_bytes{kind="build_daemon",label="GradleDaemon"} 6442450944
+oomtop_group_resident_bytes{kind="model_server",label="sd-server"} 10737418240
+# HELP oomtop_group_cpu_percent Group CPU (per-core percent).
+# TYPE oomtop_group_cpu_percent gauge
+oomtop_group_cpu_percent{kind="agent_session",label="Claude Code"} 1.5
+oomtop_group_cpu_percent{kind="app",label="we\"ird\\app\nx"} 1.5
+oomtop_group_cpu_percent{kind="build_daemon",label="GradleDaemon"} 3
+oomtop_group_cpu_percent{kind="model_server",label="sd-server"} 1.5
+# HELP oomtop_group_reclaim_gain_bytes Estimated RAM freed if the group were stopped.
+# TYPE oomtop_group_reclaim_gain_bytes gauge
+oomtop_group_reclaim_gain_bytes{kind="agent_session",label="Claude Code"} 268435456
+oomtop_group_reclaim_gain_bytes{kind="app",label="we\"ird\\app\nx"} 536870912
+oomtop_group_reclaim_gain_bytes{kind="build_daemon",label="GradleDaemon"} 3221225472
+oomtop_group_reclaim_gain_bytes{kind="model_server",label="sd-server"} 5368709120
+# HELP oomtop_group_processes Processes in the group(s).
+# TYPE oomtop_group_processes gauge
+oomtop_group_processes{kind="agent_session",label="Claude Code"} 1
+oomtop_group_processes{kind="app",label="we\"ird\\app\nx"} 1
+oomtop_group_processes{kind="build_daemon",label="GradleDaemon"} 2
+oomtop_group_processes{kind="model_server",label="sd-server"} 1
+# HELP oomtop_group_count Groups sharing this kind and label.
+# TYPE oomtop_group_count gauge
+oomtop_group_count{kind="agent_session",label="Claude Code"} 1
+oomtop_group_count{kind="app",label="we\"ird\\app\nx"} 1
+oomtop_group_count{kind="build_daemon",label="GradleDaemon"} 2
+oomtop_group_count{kind="model_server",label="sd-server"} 1
+# HELP oomtop_group_idle_count Idle groups sharing this kind and label.
+# TYPE oomtop_group_idle_count gauge
+oomtop_group_idle_count{kind="agent_session",label="Claude Code"} 0
+oomtop_group_idle_count{kind="app",label="we\"ird\\app\nx"} 0
+oomtop_group_idle_count{kind="build_daemon",label="GradleDaemon"} 2
+oomtop_group_idle_count{kind="model_server",label="sd-server"} 0

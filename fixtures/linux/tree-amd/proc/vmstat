@@ -1,0 +1,10 @@
+nr_free_pages 812331
+nr_zone_inactive_anon 31220
+nr_zone_active_anon 912331
+pgpgin 81233112
+pgpgout 12003311
+pswpin 812331
+pswpout 1912004
+pgfault 912331122
+pgmajfault 81233
+oom_kill 0

@@ -1,0 +1,99 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||||                      21.5%]  E4[                              1.3%]  P8[|||||||||||||||||||||||||||||93.1%]
+.aaabcccccccddddddddddddddddddddddaaaaab.aaabddddddddddddddddddddddddddddddaaaab.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeaaaaab
+  E1[|||||                        16.0%]  E5[                              0.7%]  P9[||||                         11.8%]
+.aaabcccccddddddddddddddddddddddddaaaaab.aaabddddddddddddddddddddddddddddddaaaab.aaabccccdddddddddddddddddddddddddaaaaab
+  E2[||                            6.7%]  P6[||||||||||||||               42.4%]
+.aaabccddddddddddddddddddddddddddddaaaab.aaabccccccccccccccdddddddddddddddaaaaab
+  E3[|                             2.0%]  P7[|||||||||||||||||||||||||||  78.0%]
+.aaabcdddddddddddddddddddddddddddddaaaab.aaabfffffffffffffffffffffffffffddaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab.............bbbbbbbbbbbbbbbbbbbbbbdddgggggaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabfffffffffffffffffffffffffffffffffffffffffffffaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]  Uptime: 58 days, 11:23:04
+.aaabcccccccccccccccccccccccccccccccddddddddddddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free 3.0 GiB.  [r]
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaa.....daaaa.....gaaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   headroom 223M
+aaaaaaiiiiiiiiiiiffffffffffff........fffffffffffff
+ oomtop  1 Home [2 Processes] 3 Models 4 Sandboxes 5 Reclaim 6 Timeline         ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.bbbbbb.bbbbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbb.........ffffffffff..fffffffff..ffffff
+─ Processes ────────────────────────────────────────────────────────────────── 38 processes · sorted by footprint (F6) ─
+ddaaaaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+       PID NAME                                                 GROUP                     MEM      RES    CPU STATE
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+ ▸    4242 sd-server                                            sd-server · qwen-im…     9.7G     1.1G    85% running
+jjjkkkkkkkkllllllllllllllllllllllllllllllllllllllllllllllllllllkkkkkkkkkkkkkkkkkkkkkmmmmmmmmmmmmmmmmmmmmmmmmmkkkkkkkkkkm
+      5200 java                                                 KotlinCompileDaemon      3.0G     450M     0% sleeping
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      5100 java                                                 GradleDaemon 9.8         2.9G     500M     0% sleeping
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1350 com.apple.Virtualization.VirtualMachine              Claude desktop VM        1.5G     900M     2% running
+bbbaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       800 Goog╭ Command ───────────────────────────────────────────────────────────────────────────────╮  3% running
+bbbaaaaaaaa....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb....aaaaaaaaaa
+      6100 chro│:sort ▏                                                                                 │  0% sleeping
+bbbaaaaaaaa....bbbbbbbb.................................................................................b....aaaaaaaaaa
+      1300 Clau│▸ :sort footprint                                     true memory (current)             │  1% sleeping
+bbbaaaaaaaa....bjjmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkb....aaaaaaaaaa
+       300 Wind│  :sort cpu                                           CPU %                             │  6% running
+bbbaaaaaaaaaaaabbb....................................................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab....aaaaaaaaaa
+      1500 Chat│  :sort resident                                      resident (RSS)                    │  1% sleeping
+bbbaaaaaaaa....bbb....................................................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab....aaaaaaaaaa
+      2030 clau│  :sort pid                                           process id                        │  0% sleeping
+bbbaaaaaaaabbbbbbb....................................................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab....aaaaaaaaaa
+      2020 clau│  :sort name                                          name                              │  0% sleeping
+bbbaaaaaaaabbbbbbb....................................................aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab....aaaaaaaaaa
+      2010 clau│                                                                                        │  0% sleeping
+bbbaaaaaaaabbbbb........................................................................................b....aaaaaaaaaa
+      2000 clau╰────────────────────────────────────────────────────────────────────────────────────────╯  4% running
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb....aaaaaaaaaa
+       813 Google Chrome Helper (Renderer)                      Google Chrome            191M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       817 Google Chrome Helper (Renderer)                      Google Chrome            191M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       821 Google Chrome Helper (Renderer)                      Google Chrome            191M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       812 Google Chrome Helper (Renderer)                      Google Chrome            184M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       816 Google Chrome Helper (Renderer)                      Google Chrome            184M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       820 Google Chrome Helper (Renderer)                      Google Chrome            184M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      4200 python3                                              sd-server · qwen-im…     180M     150M     0% sleeping
+bbbaaaaaaaannnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       811 Google Chrome Helper (Renderer)                      Google Chrome            177M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       815 Google Chrome Helper (Renderer)                      Google Chrome            177M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       819 Google Chrome Helper (Renderer)                      Google Chrome            177M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       810 Google Chrome Helper (Renderer)                      Google Chrome            170M     120M     2% running
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       814 Google Chrome Helper (Renderer)                      Google Chrome            170M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+ :sort ▏   enter run · tab next suggestion · esc cancel
+bbbbbbbbddddddddddddddddddddddddddddddddddddddddddddddd
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmmm..mmmmmmm...mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Red bold
+f = fg:Yellow
+g = dim italic
+h = fg:Yellow bold
+i = italic
+j = bold reverse
+k = dim reverse
+l = bold italic reverse
+m = reverse
+n = bold italic

@@ -1,0 +1,37 @@
+---
+source: crates/oomtop-core/tests/attr_acceptance.rs
+expression: causes
+---
+- kind: swap_storm
+  score: 0.921
+  title: Swapping heavily
+  evidence:
+    - "swap in +600M/min, out +350M/min for 5m"
+    - swap used +1.8G in 5m
+    - swap 3.8G / 6.0G
+    - "largest: sd-server 10.0G, GradleDaemon 3.0G, KotlinCompileDaemon 2.8G"
+  fix: stop 2 idle build daemons + 1 orphan (≈5.9G)
+- kind: thermal_throttle
+  score: 0.707
+  title: Thermal throttling — running at 49% speed
+  evidence:
+    - P-cluster at 43% of max clock (97% busy) with thermal pressure heavy
+    - E-cluster at 69% of max clock (60% busy) with thermal pressure heavy
+    - GPU at 42% of max clock (99% busy) with thermal pressure heavy
+    - thermal pressure heavy
+    - on battery at 29%
+  fix: plug in and pause heavy work until it cools
+- kind: memory_pressure
+  score: 0.6
+  title: Memory pressure
+  evidence:
+    - memory pressure warn
+    - swap 3.8G / 6.0G
+    - "largest: sd-server 10.0G, GradleDaemon 3.0G, KotlinCompileDaemon 2.8G"
+  fix: stop 2 idle build daemons + 1 orphan (≈5.9G)
+- kind: low_battery
+  score: 0.45
+  title: "On battery, low charge"
+  evidence:
+    - on battery at 29%
+  fix: plug in

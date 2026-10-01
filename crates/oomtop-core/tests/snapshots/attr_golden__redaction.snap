@@ -1,0 +1,18 @@
+---
+source: crates/oomtop-core/tests/attr_golden.rs
+expression: "(t, redact_cmdline(&argv))"
+---
+- server --api-key <secret> --token=<secret> OPENAI_API_KEY=<secret> --db <secret> --webhook
+- - /usr/local/bin/server
+  - "--api-key"
+  - "<redacted>"
+  - "--token=<redacted>"
+  - OPENAI_API_KEY=<redacted>
+  - "--db"
+  - "postgres://<redacted>@127.0.0.1:5432/app"
+  - "--webhook"
+  - "https://hooks.example.com/x?sig=<redacted>&x=1"
+  - "-H"
+  - "Authorization: Bearer <redacted>"
+  - "--session-id"
+  - "<redacted>"

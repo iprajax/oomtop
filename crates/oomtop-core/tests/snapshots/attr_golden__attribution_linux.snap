@@ -1,0 +1,169 @@
+---
+source: crates/oomtop-core/tests/attr_golden.rs
+expression: view(&s)
+---
+- id: "model:builtin:ollama:450"
+  kind: model
+  label: Ollama
+  root: 450
+  confidence: high
+  footprint_mib: 5500
+  members:
+    - 450 rule/high
+    - 451 ancestry/high
+- id: "app:firefox"
+  kind: app
+  label: Firefox
+  root: 500
+  confidence: high
+  footprint_mib: 1200
+  members:
+    - 500 rule/high
+    - 501 ancestry/high
+- id: "app:slack"
+  kind: app
+  label: slack
+  root: 520
+  confidence: medium
+  footprint_mib: 590
+  members:
+    - 520 cgroup/medium
+    - 521 cgroup/medium
+  flags:
+    - idle
+- id: "agent:b2f66a0ae127"
+  kind: agent
+  label: Claude Code
+  root: 602
+  confidence: high
+  footprint_mib: 504
+  members:
+    - 602 rule/high
+    - 604 marker/high
+    - 605 marker/high
+  owner: "other:gnome-terminal-server"
+- id: "daemon:builtin:tsserver:603"
+  kind: daemon
+  label: tsserver
+  root: 603
+  confidence: high
+  footprint_mib: 450
+  members:
+    - 603 rule/high
+  owner: "agent:b2f66a0ae127"
+  flags:
+    - idle
+- id: "sandbox:docker-4b1d6c9e0f2a"
+  kind: sandbox
+  label: docker 4b1d6c9e0f2a
+  root: 311
+  confidence: high
+  footprint_mib: 330
+  members:
+    - 311 cgroup/high
+    - 312 cgroup/high
+  flags:
+    - idle
+    - protected
+- id: "other:load-test-py:611"
+  kind: other
+  label: load_test.py
+  root: 611
+  confidence: low
+  footprint_mib: 90
+  members:
+    - 611 heuristic/low
+  owner: "agent:b2f66a0ae127"
+- id: "system:docker"
+  kind: system
+  label: docker
+  root: 300
+  confidence: medium
+  footprint_mib: 90
+  members:
+    - 300 cgroup/medium
+  flags:
+    - idle
+    - protected
+- id: "other:gnome-terminal-server"
+  kind: other
+  label: gnome-terminal-server
+  root: 600
+  confidence: medium
+  footprint_mib: 70
+  members:
+    - 600 cgroup/medium
+    - 601 ancestry/medium
+    - 610 ancestry/medium
+  flags:
+    - idle
+- id: "system:systemd"
+  kind: system
+  label: systemd
+  root: 1
+  confidence: high
+  footprint_mib: 22
+  members:
+    - 1 rule/high
+    - 400 rule/high
+  flags:
+    - idle
+    - protected
+- id: "other:tmux:700"
+  kind: other
+  label: tmux
+  root: 700
+  confidence: low
+  footprint_mib: 17
+  members:
+    - 700 heuristic/low
+    - 701 ancestry/medium
+    - 702 ancestry/medium
+  flags:
+    - protected
+- id: oomtop
+  kind: other
+  label: oomtop
+  root: 4120
+  confidence: high
+  footprint_mib: 14
+  members:
+    - 4120 rule/high
+  flags:
+    - protected
+    - self
+- id: "system:containerd"
+  kind: system
+  label: containerd
+  root: 310
+  confidence: medium
+  footprint_mib: 10
+  members:
+    - 310 cgroup/medium
+  flags:
+    - idle
+    - protected
+- id: "system:htop"
+  kind: system
+  label: htop
+  root: 703
+  confidence: low
+  footprint_mib: 6
+  members:
+    - 703 heuristic/low
+  owner: "other:tmux:700"
+  flags:
+    - protected
+- id: "system:kthreadd"
+  kind: system
+  label: kthreadd
+  root: 2
+  confidence: low
+  footprint_mib: ~
+  members:
+    - 2 heuristic/low
+    - 3 ancestry/medium
+    - 4 ancestry/medium
+  flags:
+    - idle
+    - protected

@@ -1,0 +1,56 @@
+---
+source: crates/oomtop-core/tests/memory_headroom.rs
+expression: h
+---
+{
+  "available_now": {
+    "value": 4294967296,
+    "source": "cgroup memory.max − memory.current (< MemAvailable)",
+    "quality": "exact"
+  },
+  "safety_margin": 5497558138,
+  "headroom": -1202590842,
+  "pressure": "normal",
+  "swap_growing": false,
+  "reclaimable": {
+    "value": 2147483648,
+    "source": "Σ reclaim_gain",
+    "quality": "estimate"
+  },
+  "reclaimable_swap": {
+    "value": 268435456,
+    "source": "Σ swap_gain",
+    "quality": "estimate"
+  },
+  "gpu": [
+    {
+      "accelerator_id": "gpu0",
+      "budget": {
+        "value": 25769803776,
+        "source": "nvml",
+        "quality": "exact"
+      },
+      "in_use": {
+        "value": 10737418240,
+        "source": "nvml",
+        "quality": "exact"
+      },
+      "free": {
+        "value": 15032385536,
+        "source": "gpu budget − in use",
+        "quality": "exact"
+      },
+      "unified": false,
+      "vendor": "nvidia",
+      "name": "NVIDIA GeForce RTX 4090",
+      "margin": 1288490188,
+      "headroom": 13743895348
+    }
+  ],
+  "as_of_ms": 1790709000000,
+  "total": 68719476736,
+  "memorystatus_available": null,
+  "margin_boosted": false,
+  "notes": [],
+  "unified_memory": false
+}

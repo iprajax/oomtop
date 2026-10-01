@@ -1,0 +1,61 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+ CPU[||||||||||                                       18.0%]
+.aaab.................................................aaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]
+.aaab.............bbbbbbbbbbbbbbbbbbbbbb...cccccaaaaaaaaaaab
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]
+.aaab.............................................aaaaaaaaab
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]
+.aaab.................................................aaaaab
+ Tight on memory - 223 MiB headroom. sd-server |
+.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ qwen-image-studio holds 9.9 GiB; 3 idle groups could free
+.bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+ 3.0 GiB.  [r]
+.bbbbbbbbbbbbb
+ oomtop  [1 Home] 2 3 4 5 6  ! Pressure  72% speed  ! warm
+bbbbbbbb.bbbbbbbb.b.b.b.b.b
+ sd-server | qwen-image-..    Claude Code x4  1.4G
+
+ ! Leftovers: chrome-headless-shell from Claude Code | 7c1..
+
+- Ranked ---------------------------------------------------
+..aaaaaaa
+ > sd-server | qwen-image-studio (2)                    9.9G
+dddeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeffggggggggg
+   KotlinCompileDaemon                            o     3.0G
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   GradleDaemon 9.8                               o     2.9G
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+   Google Chrome (14)                                   2.9G
+bbb..............................................aa
+   Claude desktop VM                                  >=1.5G
+bbbhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhaa
+   ChatGPT / Codex (6)                                  1.0G
+bbb..............................................aa
+   Claude Code | d4e5 (2)                               383M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaa
+   chrome-headless-shell                          !     450M
+bbb
+   Claude                                               420M
+bbb..............................................aa
+   clang                                                120M
+bbb..............................................aa
+   Claude Code | a90b (2)                               372M
+bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaa
+   .. 4 more
+aaaaaaaaaaaa
+F1Help F2Set F3Find F4Filt F5Tree F6Sort F9Stop F10Quit
+..ggggg..gggg..ggggg..ggggg..ggggg..ggggg..ggggg...ggggggggg
+--- legend
+a = dim
+b = bold
+c = dim italic
+d = bold reverse
+e = bold italic reverse
+f = dim reverse
+g = reverse
+h = italic

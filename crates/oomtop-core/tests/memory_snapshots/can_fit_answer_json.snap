@@ -1,0 +1,43 @@
+---
+source: crates/oomtop-core/tests/memory_can_fit.rs
+expression: a
+---
+{
+  "fit": {
+    "answer": "yes_after_reclaim",
+    "reclaim": [
+      {
+        "group_id": "daemon:gradle",
+        "label": "Gradle daemon",
+        "kind": "build_daemon",
+        "gain": 3353369637,
+        "idle_for_s": 18000,
+        "orphan": false,
+        "swap_gain": null,
+        "gpu_gain": null
+      }
+    ],
+    "gain": 3353369637
+  },
+  "need": {
+    "bytes": 13958643712,
+    "gpu_bytes": null,
+    "label": null
+  },
+  "headroom": 11897059410,
+  "gpu_free": null,
+  "as_of_ms": 1790709769433,
+  "valid_for_s": 10,
+  "reason": "fits after stopping 1 group (Gradle daemon) freeing ≈3.1 GiB",
+  "expires_at_ms": 1790709779433,
+  "host_need": 13958643712,
+  "gpu_device": null,
+  "gpu_shortfall": null,
+  "gpu_checked": true,
+  "error": null,
+  "notes": [
+    "advisory: another process may take this memory before you load"
+  ],
+  "host_shortfall": 0,
+  "reclaimable": 3353369637
+}

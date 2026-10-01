@@ -1,0 +1,99 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||||                      21.5%]  E4[                              1.3%]  P8[|||||||||||||||||||||||||||||93.1%]
+.aaabcccccccddddddddddddddddddddddaaaaab.aaabddddddddddddddddddddddddddddddaaaab.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeaaaaab
+  E1[|||||                        16.0%]  E5[                              0.7%]  P9[||||                         11.8%]
+.aaabcccccddddddddddddddddddddddddaaaaab.aaabddddddddddddddddddddddddddddddaaaab.aaabccccdddddddddddddddddddddddddaaaaab
+  E2[||                            6.7%]  P6[||||||||||||||               42.4%]
+.aaabccddddddddddddddddddddddddddddaaaab.aaabccccccccccccccdddddddddddddddaaaaab
+  E3[|                             2.0%]  P7[|||||||||||||||||||||||||||  78.0%]
+.aaabcdddddddddddddddddddddddddddddaaaab.aaabfffffffffffffffffffffffffffddaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab.............bbbbbbbbbbbbbbbbbbbbbbdddgggggaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabfffffffffffffffffffffffffffffffffffffffffffffaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]  Uptime: 58 days, 11:23:04
+.aaabcccccccccccccccccccccccccccccccddddddddddddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free 3.0 GiB.  [r]
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaa.....daaaa.....gaaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   headroom 223M
+aaaaaaiiiiiiiiiiiffffffffffff........fffffffffffff
+ oomtop  1 Home [2 Processes] 3 Models 4 Sandboxes 5 Reclaim 6 Timeline         ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.bbbbbb.bbbbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbb.........ffffffffff..fffffffff..ffffff
+─ Processes ────────────────────────────────────────────────────── 38 processes · sorted by footprint (F6) · tree (F5) ─
+ddaaaaaaaaaaddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+       PID NAME                                                 GROUP                     MEM      RES    CPU STATE
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+       819 ├─ Google Chrome Helper (Renderer)                   Google Chrome            177M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       810 ├─ Google Chrome Helper (Renderer)                   Google Chrome            170M     120M     2% running
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       814 ├─ Google Chrome Helper (Renderer)                   Google Chrome            170M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       818 ├─ Google Chrome Helper (Renderer)                   Google Chrome            170M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       822 └─ Google Chrome Helper (Renderer)                   Google Chrome            170M     120M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      6100 chrome-headless-shell                                chrome-headless-she…     450M     380M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1300 Claude                                               Claude                   420M     300M     1% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+       300 WindowServer                                         WindowServer             410M     300M     6% running
+bbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1500 ChatGPT                                              ChatGPT / Codex          400M     300M     1% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1510 ├─ codex                                             ChatGPT / Codex          125M    90.0M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1511 ├─ ChatGPT Helper                                    ChatGPT / Codex          125M    90.0M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1512 ├─ ChatGPT Helper                                    ChatGPT / Codex          125M    90.0M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1513 ├─ ChatGPT Helper                                    ChatGPT / Codex          125M    90.0M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      1514 └─ ChatGPT Helper                                    ChatGPT / Codex          125M    90.0M     0% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2030 claude                                               Claude Code · d4e5       293M     200M     0% sleeping
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2031 └─ node                                              Claude Code · d4e5      90.0M    70.0M     0% sleeping
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2020 claude                                               Claude Code · a90b       282M     200M     0% sleeping
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2021 └─ node                                              Claude Code · a90b      90.0M    70.0M     0% sleeping
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2010 claude                                               Claude Code · 7c11       271M     200M     0% sleeping
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2011 └─ node                                              Claude Code · 7c11      90.0M    70.0M     0% sleeping
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2000 claude                                               Claude Code · 3f2a       260M     200M     4% running
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      2001 ├─ node                                              Claude Code · 3f2a      90.0M    70.0M     0% sleeping
+bbbaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      9999 └─ oomtop                                            oomtop (this)           22.0M    20.0M     1% sleeping
+bbbaaaaaaaa....................................................aaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+      4200 python3                                              sd-server · qwen-im…     180M     150M     0% sleeping
+bbbaaaaaaaajjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjaaaaaaaaaaaaaaaaaaaaa.........................aaaaaaaaaa
+ ▸    4242 └─ sd-server                                         sd-server · qwen-im…     9.7G     1.1G    85% running
+kkkllllllllmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmlllllllllllllllllllllnnnnnnnnnnnnnnnnnnnnnnnnnlllllllllln
+ tree: processes nested under their parents (F5 for a flat list)
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..nnnnnnn..nnnnnnn..nnnnnnn..nnnnnnn..nnnnnnn..nnnnnnn..nnnnnnn..nnnnnnnn..nnnnnnn...nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Red bold
+f = fg:Yellow
+g = dim italic
+h = fg:Yellow bold
+i = italic
+j = bold italic
+k = bold reverse
+l = dim reverse
+m = bold italic reverse
+n = reverse

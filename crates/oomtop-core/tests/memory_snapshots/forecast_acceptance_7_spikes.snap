@@ -1,0 +1,8 @@
+---
+source: crates/oomtop-core/tests/memory_forecast.rs
+expression: "serde_json::json!({\n    \"single_spike\": spikes.len(), \"step\": steps.len(), \"burst\": burst.len(),\n    \"noise\": 0,\n})"
+---
+burst: 0
+noise: 0
+single_spike: 0
+step: 0

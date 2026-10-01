@@ -1,0 +1,7 @@
+---
+source: crates/oomtop-core/tests/ux_headline.rs
+expression: "format!(\"{plain}\\n{}\\n{text}\", calm(&capped).0)"
+---
+All good — 11 GB free.
+All good — 2.0 GB free.
+All good — 6.4 GB free.

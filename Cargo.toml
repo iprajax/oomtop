@@ -1,0 +1,76 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/oomtop-core",
+    "crates/oomtop-collect",
+    "crates/oomtop-detect",
+    "crates/oomtop-adapters",
+    "crates/oomtop-config",
+    "crates/oomtop-state",
+    "crates/oomtop-tui",
+    "crates/oomtop-mcp",
+    "crates/oomtop-serve",
+    "crates/oomtop-cli",
+]
+default-members = ["crates/oomtop-cli"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.88"
+license = "MIT"
+repository = "https://github.com/iprajax/oomtop"
+homepage = "https://github.com/iprajax/oomtop"
+description = "See the OOM coming: true memory accounting, attribution and headroom for local AI work."
+authors = ["oomtop contributors"]
+keywords = ["monitor", "memory", "tui", "oom", "mcp"]
+categories = ["command-line-utilities"]
+
+[workspace.dependencies]
+# internal crates
+oomtop-core = { path = "crates/oomtop-core", version = "0.1.0" }
+oomtop-collect = { path = "crates/oomtop-collect", version = "0.1.0" }
+oomtop-detect = { path = "crates/oomtop-detect", version = "0.1.0" }
+oomtop-adapters = { path = "crates/oomtop-adapters", version = "0.1.0" }
+oomtop-config = { path = "crates/oomtop-config", version = "0.1.0" }
+oomtop-state = { path = "crates/oomtop-state", version = "0.1.0" }
+oomtop-tui = { path = "crates/oomtop-tui", version = "0.1.0" }
+oomtop-mcp = { path = "crates/oomtop-mcp", version = "0.1.0" }
+oomtop-serve = { path = "crates/oomtop-serve", version = "0.1.0" }
+
+# third party (synchronous design: no tokio/async anywhere)
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "1"
+toml_edit = "0.25"
+thiserror = "2"
+anyhow = "1"
+clap = { version = "4", features = ["derive", "env", "wrap_help"] }
+ratatui = "0.30"
+crossterm = "0.29"
+rusqlite = { version = "0.40", features = ["bundled"] }
+libc = "0.2"
+ureq = { version = "3", default-features = false, features = ["json"] }  # loopback HTTP only: no TLS (drops rustls/ring)
+tiny_http = "0.12"
+regex = "1"
+globset = "0.4"
+notify = "8"
+unicode-width = "0.2"
+insta = { version = "1", features = ["yaml", "json"] }
+tempfile = "3"
+schemars = "1"
+sha2 = "0.10"
+gethostname = "1"
+dirs = "7"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1
+strip = "symbols"
+panic = "abort"
+
+[profile.dev.package.insta]
+opt-level = 3
+
+[profile.dev.package.similar]
+opt-level = 3

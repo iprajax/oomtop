@@ -1,0 +1,5 @@
+---
+source: crates/oomtop-core/tests/ux_headline.rs
+expression: "render(&input_from(&cool, &h, mode)).text"
+---
+Working — sd-server generating 3/6 · 8.1 s/step, ~24s left. 8.9 GB headroom.

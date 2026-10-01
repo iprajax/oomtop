@@ -1,0 +1,90 @@
+---
+source: crates/oomtop-tui/tests/render.rs
+expression: styled(&buf)
+---
+  E0[|||||              21.5%]  E3[                    2.0%]  P6[||||||||||         42.4%]  P9[|||                11.8%]
+.aaabcccccddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabccccccccccdddddddddaaaaab.aaabcccddddddddddddddddaaaaab
+  E1[||||               16.0%]  E4[                    1.3%]  P7[|||||||||||||||||||78.0%]
+.aaabccccdddddddddddddddaaaaab.aaabddddddddddddddddddddaaaab.aaabeeeeeeeeeeeeeeeeeeeaaaaab
+  E2[||                  6.7%]  E5[                    0.7%]  P8[|||||||||||||||||||93.1%]
+.aaabccddddddddddddddddddaaaab.aaabddddddddddddddddddddaaaab.aaabfffffffffffffffffffaaaaab
+ Mem[|||||||||||||######################***=====20.1G/24.0G]  Tasks: 761, 3412 thr; 3 running
+.aaab.............bbbbbbbbbbbbbbbbbbbbbbdddgggggaaaaaaaaaaab..aaaaaaabbbaabbbbaaaaaabaaaaaaaa
+ Swp[|||||||||||||||||||||||||||||||||||||||||||||6.1G/7.0G]  Load average: 3.20 2.74 2.41
+.aaabeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeaaaaaaaaab..aaaaaaaaaaaaaabbbb
+ GPU[|||||||||||||||||||||||||||||||                  58.0%]  Uptime: 58 days, 11:23:04
+.aaabcccccccccccccccccccccccccccccccddddddddddddddddddaaaaab..aaaaaaaabbbbbbbbbbbbbbbbb
+ Tight on memory — 223 MiB headroom. sd-server · qwen-image-studio holds 9.9 GiB; 3 idle groups could free 3.0 GiB.  [r]
+.hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhbbbbb
+ MEM |apps 5.6G #gpu 9.9G *cmp 1.6G =wired 3.0G .cache 3.8G free 100M avail 3.1G
+aaaa..aaaaa.....baaaa.....daaaa.....gaaaaaa.....aaaaaaa.....aaaaa.....aaaaaa
+ SWAP 6.1G / 7.0G  ▲ 87% full  ⣀⣤⣤⣶⣶⣿  ▲ +360M/min   headroom 223M
+aaaaaaiiiiiiiiiiieeeeeeeeeeee........eeeeeeeeeeeee
+ oomtop  [1 Home] 2 Processes 3 Models 4 Sandboxes 5 Reclaim 6 Timeline         ▲ Pressure  72% speed  ▲ warm  bat 29%
+bbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbb.bbbbbbbbbbb.bbbbbbbbb.bbbbbbbbbb.........eeeeeeeeee..eeeeeeeee..eeeeee
+─ You╭ Why is it slow? · esc close ───────────────────────────────────────────────────────────────────────────────╮─────
+ddaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbddddd
+ sd-s│1. ▲ Swapping heavily  (score 0.64)                                                                         │
+.....beeeeebbbbbbbbbbbbbbbbdddddddddddddd.........................................................................b
+ ▲ Le│     · swap in +60.0M/min, out +420M/min                                                                    │
+eeeeeb............................................................................................................beeeee
+─ Ran│     · swap 6.1G / 7.0G                                                                                     │why ─
+ddaaab............................................................................................................baaaaa
+ ▸ sd│     · largest: sd-server · qwen-image-studio 9.9G, KotlinCompileDaemon 3.0G, Google Chrome 2.9G            │
+jjjkkb............................................................................................................blllll
+   Ko│     fix: stop 2 idle build daemons + 1 orphan (≈3.0G)                                                      │mable
+bbbaabcccccccccccccccccccccccccccccccccccccccccccccccccccccc......................................................bccccc
+   Gr│2. ▲ Memory pressure  (score 0.60)                                                                          │mable
+bbbaabeeeeebbbbbbbbbbbbbbbdddddddddddddd..........................................................................bccccc
+   Go│     · memory pressure warn                                                                                 │
+bbb..b............................................................................................................baaaaa
+   Cl│     · memorystatus level 13% available                                                                     │
+bbbiib............................................................................................................biiiii
+   Ch│     · available 3.1G                                                                                       │
+bbb..b............................................................................................................baaaaa
+   Cl│     · swap 6.1G / 7.0G                                                                                     │
+bbbbbb............................................................................................................baaaaa
+   ch│     · largest: sd-server · qwen-image-studio 9.9G, KotlinCompileDaemon 3.0G, Google Chrome 2.9G            │mable
+bbb..b............................................................................................................bccccc
+   Cl│     fix: stop 2 idle build daemons + 1 orphan (≈3.0G)                                                      │
+bbb..bcccccccccccccccccccccccccccccccccccccccccccccccccccccc......................................................baaaaa
+   cl│3. ▲ Thermal throttling — running at 72% speed  (score 0.52)                                                │
+bbb..beeeeebbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbdddddddddddddd................................................baaaaa
+   Cl│     · P-cluster at 70% of max clock (71% busy) with thermal pressure moderate                              │
+bbbbbb............................................................................................................baaaaa
+   Cl│     · thermal pressure moderate                                                                            │
+bbbbbb............................................................................................................baaaaa
+   Wi│     · package power 11.8 W                                                                                 │d
+bbbaab............................................................................................................baaaaa
+   Cl│     · on battery at 29%                                                                                    │
+bbbbbb............................................................................................................baaaaa
+   oo│     fix: plug in and pause heavy work until it cools                                                       │
+bbb..bccccccccccccccccccccccccccccccccccccccccccccccccccccc.......................................................baaaaa
+     │4. ▲ On battery, low charge  (score 0.45)                                                                   │
+.....beeeeebbbbbbbbbbbbbbbbbbbbbbdddddddddddddd...................................................................b
+     │     · on battery at 29%                                                                                    │
+.....b............................................................................................................b
+     │     fix: plug in                                                                                           │
+.....bccccccccccccccccc...........................................................................................b
+     │5. ● Apple M5 GPU is throttled  (score 0.32)                                                                │
+.....b.....bbbbbbbbbbbbbbbbbbbbbbbbbdddddddddddddd................................................................b
+     │     · Apple M5 GPU at 68% of max clock with thermal pressure moderate                                      │
+.....b............................................................................................................b
+     ╰────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
+.....bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+F1Help   F2Setup  F3Search F4Filter F5Tree   F6SortBy F7Why    F8Reclaim F9Stop   F10Quit
+..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmm..mmmmmmmm..mmmmmmm...mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+--- legend
+a = dim
+b = bold
+c = fg:Green
+d = fg:DarkGray
+e = fg:Yellow
+f = fg:Red bold
+g = dim italic
+h = fg:Yellow bold
+i = italic
+j = bold reverse
+k = bold italic reverse
+l = dim reverse
+m = reverse

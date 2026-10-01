@@ -1,0 +1,40 @@
+---
+source: crates/oomtop-core/tests/memory_forecast.rs
+expression: out
+---
+- forecast: stable
+  swap_used_mib: 2048
+  t_s: 0
+- forecast: stable
+  swap_used_mib: 2348
+  t_s: 60
+- forecast: 18m
+  swap_used_mib: 2648
+  t_s: 120
+- forecast: 17m
+  swap_used_mib: 2948
+  t_s: 180
+- forecast: 16m
+  swap_used_mib: 3248
+  t_s: 240
+- forecast: 15m
+  swap_used_mib: 3548
+  t_s: 300
+- forecast: 14m
+  swap_used_mib: 3848
+  t_s: 360
+- forecast: stable
+  swap_used_mib: 1024
+  t_s: 365
+- forecast: stable
+  swap_used_mib: 1024
+  t_s: 420
+- forecast: stable
+  swap_used_mib: 1024
+  t_s: 480
+- forecast: stable
+  swap_used_mib: 1024
+  t_s: 540
+- forecast: stable
+  swap_used_mib: 1024
+  t_s: 600

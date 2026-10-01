@@ -1,0 +1,67 @@
+---
+source: crates/oomtop-core/tests/memory_model_estimate.rs
+expression: "json!({\n    \"qwen3_8b_q4km_default_ctx\": summary(&default_ctx),\n    \"qwen3_8b_q4km_32k_q8kv_x4\": summary(&long), \"gguf_truncated_before_dims\":\n    summary(&from_truncated), \"llama_70b_bf16_safetensors\":\n    summary(&llama70b), \"unknown_12g_blob\":\n    summary(&estimate_unknown(12 * GIB)), \"qwen_image_studio_448x608\":\n    summary(&studio), \"qwen_image_studio_1024x1024\": summary(&studio_1k),\n})"
+---
+gguf_truncated_before_dims:
+  ctx: ~
+  fallback: true
+  kv: 0B
+  need: 5.6G
+  need_bytes: 6033341760
+  note: "no metadata: 1.2 × file size"
+  overhead: 959M
+  weights: 4.7G
+llama_70b_bf16_safetensors:
+  ctx: 8192
+  fallback: false
+  kv: 2.5G
+  need: 140G
+  need_bytes: 150847138201
+  note: 80 layers × 8 kv heads × 128 dim × ctx 8192
+  overhead: 6.6G
+  weights: 131G
+qwen3_8b_q4km_32k_q8kv_x4:
+  ctx: 32768
+  fallback: false
+  kv: 9.6G
+  need: 14.7G
+  need_bytes: 15832311904
+  note: 36 layers × 8 kv heads × 128 dim × ctx 32768 × 4 parallel
+  overhead: 512M
+  weights: 4.7G
+qwen3_8b_q4km_default_ctx:
+  ctx: 8192
+  fallback: false
+  kv: 1.1G
+  need: 6.3G
+  need_bytes: 6772615264
+  note: 36 layers × 8 kv heads × 128 dim × ctx 8192
+  overhead: 512M
+  weights: 4.7G
+qwen_image_studio_1024x1024:
+  ctx: ~
+  fallback: false
+  kv: 0B
+  need: 21.0G
+  need_bytes: 22558595240
+  note: "5 components + activations for 1024×1024 (calibrated: qwen-image-2.1 (sd.cpp, Metal))"
+  overhead: 9.7G
+  weights: 11.3G
+qwen_image_studio_448x608:
+  ctx: ~
+  fallback: false
+  kv: 0B
+  need: 13.8G
+  need_bytes: 14851194970
+  note: "5 components + activations for 448×608 (calibrated: qwen-image-2.1 (sd.cpp, Metal))"
+  overhead: 2.5G
+  weights: 11.3G
+unknown_12g_blob:
+  ctx: ~
+  fallback: true
+  kv: 0B
+  need: 14.4G
+  need_bytes: 15461882265
+  note: "no metadata: 1.2 × file size"
+  overhead: 2.4G
+  weights: 12.0G

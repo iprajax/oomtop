@@ -1,0 +1,210 @@
+---
+source: crates/oomtop-detect/tests/fixture_m5.rs
+expression: "summary.join(\"\\n\")"
+---
+agent_session  Claude Code                  n=1   rule=builtin:claude-code
+agent_session  Claude Code                  n=5   rule=builtin:claude-code
+agent_session  Claude Code                  n=9   rule=builtin:claude-code
+agent_session  Codex                        n=29  rule=builtin:codex
+app            AccessibilityUIServer        n=1   rule=-
+app            AccessibilityUIServer (uid 502) n=1   rule=-
+app            AirPlayUIAgent               n=1   rule=-
+app            AirPlayUIAgent (uid 502)     n=1   rule=-
+app            AppSSOAgent                  n=1   rule=-
+app            BackgroundTaskManagementAgent n=1   rule=-
+app            Batteries                    n=1   rule=-
+app            Calendar                     n=1   rule=-
+app            Calendar (uid 502)           n=2   rule=-
+app            ChatGPT                      n=18  rule=-
+app            Claude                       n=9   rule=-
+app            Clock                        n=1   rule=-
+app            ControlCenter                n=2   rule=-
+app            ControlCenter (uid 502)      n=1   rule=-
+app            CoreLocationAgent            n=1   rule=-
+app            CoreLocationAgent (uid 502)  n=1   rule=-
+app            CoreServicesUIAgent          n=1   rule=-
+app            CoreServicesUIAgent (uid 502) n=1   rule=-
+app            Dock                         n=2   rule=-
+app            Dock (uid 502)               n=2   rule=-
+app            FindMy                       n=2   rule=-
+app            Finder                       n=1   rule=-
+app            Finder (uid 502)             n=1   rule=-
+app            Google Chrome                n=24  rule=-
+app            Google Chrome (uid 502)      n=17  rule=-
+app            Home                         n=2   rule=-
+app            IMAutomaticHistoryDeletionAgent (uid 502) n=1   rule=-
+app            IMAutomaticHistoryDeletionAgent n=1   rule=-
+app            Journal                      n=2   rule=-
+app            Keychain Circle Notification (uid 502) n=1   rule=-
+app            Keychain Circle Notification n=1   rule=-
+app            LinkedNotesUIService         n=1   rule=-
+app            Messages (uid 502)           n=1   rule=-
+app            NoirWall                     n=1   rule=-
+app            Notes                        n=2   rule=-
+app            NotificationCenter           n=1   rule=-
+app            NotificationCenter (uid 502) n=1   rule=-
+app            PeopleViewService            n=1   rule=-
+app            Photos                       n=1   rule=-
+app            Photos (uid 502)             n=1   rule=-
+app            Podcasts                     n=1   rule=-
+app            PowerChime                   n=1   rule=-
+app            PowerChime (uid 502)         n=1   rule=-
+app            Reminders                    n=1   rule=-
+app            Safari                       n=1   rule=-
+app            Safari (uid 502)             n=1   rule=-
+app            Screen Time                  n=2   rule=-
+app            Setup Assistant              n=1   rule=-
+app            Setup Assistant (uid 502)    n=1   rule=-
+app            Shortcuts                    n=1   rule=-
+app            Siri                         n=2   rule=-
+app            Siri (uid 502)               n=2   rule=-
+app            Software Update              n=1   rule=-
+app            Software Update (uid 200)    n=1   rule=-
+app            SoftwareUpdateNotificationManager (uid 502) n=1   rule=-
+app            SoftwareUpdateNotificationManager n=2   rule=-
+app            Spotlight                    n=1   rule=-
+app            Spotlight (uid 502)          n=1   rule=-
+app            Stocks                       n=1   rule=-
+app            SystemUIServer               n=1   rule=-
+app            SystemUIServer (uid 502)     n=1   rule=-
+app            Terminal                     n=7   rule=-
+app            TextInputMenuAgent           n=1   rule=-
+app            TextInputMenuAgent (uid 502) n=1   rule=-
+app            Tips                         n=1   rule=-
+app            UIKitSystem                  n=1   rule=-
+app            UIKitSystem (uid 502)        n=1   rule=-
+app            UserNotificationCenter       n=1   rule=-
+app            VoiceMemos                   n=2   rule=-
+app            WallpaperAgent               n=2   rule=-
+app            WallpaperAgent (uid 502)     n=1   rule=-
+app            Weather                      n=2   rule=-
+app            Weather (uid 502)            n=1   rule=-
+app            WiFiAgent                    n=1   rule=-
+app            WiFiAgent (uid 502)          n=1   rule=-
+app            WindowManager                n=1   rule=-
+app            WindowManager (uid 502)      n=1   rule=-
+app            identityservicesd            n=1   rule=-
+app            identityservicesd (uid 502)  n=1   rule=-
+app            imagent                      n=1   rule=-
+app            imagent (uid 502)            n=1   rule=-
+app            liquiddetectiond             n=1   rule=-
+app            privatecloudcomputed         n=1   rule=-
+app            privatecloudcomputed (uid 502) n=1   rule=-
+app            storeuid                     n=1   rule=-
+app            universalAccessAuthWarn      n=1   rule=-
+build_daemon   GradleDaemon                 n=1   rule=builtin:gradle-daemon
+build_daemon   KotlinCompileDaemon          n=1   rule=builtin:kotlin-daemon
+system         ANEStorageMainta             n=2   rule=-
+system         BiomeAgent                   n=3   rule=-
+system         CMFSyncAgent                 n=2   rule=-
+system         CloudTelemetrySe             n=3   rule=-
+system         CommCenter                   n=2   rule=-
+system         ContextService               n=3   rule=-
+system         MTLCompilerServi             n=2   rule=-
+system         MauiAUSP                     n=2   rule=-
+system         ScopedBookmarkAgent          n=2   rule=-
+system         ScreenTimeAgent              n=2   rule=-
+system         StatusKitAgent               n=2   rule=-
+system         TGOnDeviceInfere             n=3   rule=-
+system         UserEventAgent               n=3   rule=-
+system         WindowServer                 n=1   rule=builtin:window-server
+system         accountsd                    n=2   rule=-
+system         akd                          n=2   rule=-
+system         amsaccountsd                 n=2   rule=-
+system         amsengagementd               n=2   rule=-
+system         analyticsagent               n=2   rule=-
+system         appstoreagent                n=3   rule=-
+system         assessmentagent              n=2   rule=-
+system         assistantd                   n=2   rule=-
+system         avconferenced                n=2   rule=-
+system         axassetsd                    n=2   rule=-
+system         biomesyncd                   n=2   rule=-
+system         bird                         n=3   rule=-
+system         calaccessd                   n=2   rule=-
+system         callservicesd                n=2   rule=-
+system         cfprefsd                     n=17  rule=-
+system         chronod                      n=3   rule=-
+system         ciphermld                    n=2   rule=-
+system         cloudd                       n=4   rule=-
+system         cloudphotod                  n=2   rule=-
+system         com.apple.Safari             n=2   rule=-
+system         com.apple.access             n=2   rule=-
+system         com.apple.geod               n=6   rule=-
+system         com.apple.hiserv             n=2   rule=-
+system         commerce                     n=2   rule=-
+system         contactsd                    n=2   rule=-
+system         containermanager             n=5   rule=-
+system         coreauthd                    n=3   rule=-
+system         corespeechd                  n=2   rule=-
+system         corespotlightd               n=2   rule=-
+system         ctkahp                       n=2   rule=-
+system         ctkd                         n=3   rule=-
+system         deleted                      n=2   rule=-
+system         distnoted                    n=24  rule=-
+system         dmd                          n=2   rule=-
+system         donotdisturbd                n=2   rule=-
+system         dprivacyd                    n=4   rule=-
+system         duetexpertd                  n=2   rule=-
+system         extensionkitserv             n=2   rule=-
+system         familycircled                n=2   rule=-
+system         feedbackd                    n=2   rule=-
+system         fileproviderd                n=2   rule=-
+system         followupd                    n=2   rule=-
+system         fontd                        n=2   rule=-
+system         fontworker                   n=2   rule=-
+system         heard                        n=2   rule=-
+system         homed                        n=2   rule=-
+system         icdd                         n=2   rule=-
+system         imklaunchagent               n=2   rule=-
+system         intelligenceplat             n=2   rule=-
+system         itunescloudd                 n=2   rule=-
+system         knowledge-agent              n=2   rule=-
+system         launchd                      n=1   rule=builtin:launchd
+system         linkd                        n=2   rule=-
+system         liveactivitiesd              n=2   rule=-
+system         lockoutagent                 n=2   rule=-
+system         loginwindow                  n=2   rule=builtin:loginwindow
+system         lsd                          n=3   rule=-
+system         maild                        n=2   rule=-
+system         managedappdistri             n=2   rule=-
+system         mapssyncd                    n=2   rule=-
+system         mdbulkimport                 n=2   rule=-
+system         mdworker_shared              n=21  rule=-
+system         mdwrite                      n=2   rule=-
+system         mediaanalysisd               n=2   rule=-
+system         mediaremoteagent             n=2   rule=-
+system         milod                        n=2   rule=-
+system         mlhostd                      n=3   rule=-
+system         mobiletimerd                 n=2   rule=-
+system         neagent                      n=2   rule=-
+system         nsattributedstri             n=2   rule=-
+system         nsurlsessiond                n=3   rule=-
+system         parsecd                      n=2   rule=-
+system         pboard                       n=2   rule=-
+system         pbs                          n=2   rule=-
+system         photoanalysisd               n=2   rule=-
+system         photolibraryd                n=2   rule=-
+system         pkd                          n=2   rule=-
+system         rapportd                     n=2   rule=-
+system         recentsd                     n=2   rule=-
+system         replayd                      n=2   rule=-
+system         routined                     n=2   rule=-
+system         secd                         n=2   rule=-
+system         secinitd                     n=5   rule=-
+system         sharedfilelistd              n=2   rule=-
+system         sharingd                     n=2   rule=-
+system         siriactionsd                 n=2   rule=-
+system         siriinferenced               n=3   rule=-
+system         siriknowledged               n=2   rule=-
+system         spotlightknowled             n=2   rule=-
+system         suggestd                     n=2   rule=-
+system         syncdefaultsd                n=2   rule=-
+system         systemstats                  n=2   rule=-
+system         talagentd                    n=2   rule=-
+system         tccd                         n=3   rule=-
+system         tipsd                        n=2   rule=-
+system         triald                       n=2   rule=-
+system         trustd                       n=5   rule=-
+system         universalaccessd             n=2   rule=-
+system         useractivityd                n=2   rule=-
+system         usernoted                    n=2   rule=-

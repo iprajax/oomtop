@@ -1,0 +1,19 @@
+Name:	llama-server
+Umask:	0022
+State:	S (sleeping)
+Tgid:	2200
+Ngid:	0
+Pid:	2200
+PPid:	2100
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	256
+VmPeak:	5624664 kB
+VmSize:	5624664 kB
+VmHWM:	2812332 kB
+VmRSS:	2812332 kB
+RssAnon:	2531098 kB
+RssFile:	281233 kB
+VmSwap:	0 kB
+Threads:	12

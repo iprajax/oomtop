@@ -1,0 +1,19 @@
+Name:	claude
+Umask:	0022
+State:	S (sleeping)
+Tgid:	2100
+Ngid:	0
+Pid:	2100
+PPid:	2050
+TracerPid:	0
+Uid:	1000	1000	1000	1000
+Gid:	1000	1000	1000	1000
+FDSize:	256
+VmPeak:	764224 kB
+VmSize:	764224 kB
+VmHWM:	382112 kB
+VmRSS:	382112 kB
+RssAnon:	343900 kB
+RssFile:	38211 kB
+VmSwap:	0 kB
+Threads:	12

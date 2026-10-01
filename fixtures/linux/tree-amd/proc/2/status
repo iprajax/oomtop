@@ -1,0 +1,19 @@
+Name:	kthreadd
+Umask:	0022
+State:	S (sleeping)
+Tgid:	2
+Ngid:	0
+Pid:	2
+PPid:	0
+TracerPid:	0
+Uid:	0	0	0	0
+Gid:	0	0	0	0
+FDSize:	256
+VmPeak:	0 kB
+VmSize:	0 kB
+VmHWM:	0 kB
+VmRSS:	0 kB
+RssAnon:	0 kB
+RssFile:	0 kB
+VmSwap:	0 kB
+Threads:	12
