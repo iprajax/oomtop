@@ -104,7 +104,7 @@ fn estimates_golden() {
                 "qwen_image_studio_448x608": summary(&studio),
                 "qwen_image_studio_1024x1024": summary(&studio_1k),
             })
-        )
+        );
     });
 }
 

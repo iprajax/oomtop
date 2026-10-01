@@ -152,13 +152,17 @@ fn acceptance_7(os: OsKind) -> serde_json::Value {
 #[test]
 fn acceptance_7_steady_swap_growth() {
     let golden = acceptance_7(OsKind::Linux);
-    settings().bind(|| insta::assert_yaml_snapshot!("forecast_acceptance_7_steady", golden));
+    settings().bind(|| {
+        insta::assert_yaml_snapshot!("forecast_acceptance_7_steady", golden);
+    });
 }
 
 #[test]
 fn acceptance_7_steady_swap_growth_macos_jetsam() {
     let golden = acceptance_7(OsKind::Macos);
-    settings().bind(|| insta::assert_yaml_snapshot!("forecast_acceptance_7_steady_macos", golden));
+    settings().bind(|| {
+        insta::assert_yaml_snapshot!("forecast_acceptance_7_steady_macos", golden);
+    });
 }
 
 #[test]
@@ -199,7 +203,9 @@ fn acceptance_7_rise_then_drop_clears_the_eta() {
         after_drop.iter().all(|(_, f)| f.is_none()),
         "ETA after the drop: {after_drop:?}"
     );
-    settings().bind(|| insta::assert_yaml_snapshot!("forecast_rise_then_drop", out));
+    settings().bind(|| {
+        insta::assert_yaml_snapshot!("forecast_rise_then_drop", out);
+    });
 }
 
 /// Forecast on the history truncated at `t_s` (the state a frontend saw at that time).
@@ -280,7 +286,7 @@ fn acceptance_7_never_on_a_single_spike() {
                 "burst": burst.len(),
                 "noise": 0,
             })
-        )
+        );
     });
 }
 
@@ -372,6 +378,6 @@ fn macos_available_decline_and_killer_thresholds() {
                     "confidence": (f.confidence * 1000.0).round() / 1000.0,
                 },
             })
-        )
+        );
     });
 }

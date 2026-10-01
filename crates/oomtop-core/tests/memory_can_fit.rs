@@ -143,7 +143,9 @@ fn acceptance_6_need_13g() {
     assert_eq!(answer_exit_code(&a), EXIT_ERROR);
     out.push(d);
 
-    settings().bind(|| insta::assert_yaml_snapshot!("can_fit_acceptance_6", out));
+    settings().bind(|| {
+        insta::assert_yaml_snapshot!("can_fit_acceptance_6", out);
+    });
 }
 
 #[test]
@@ -151,7 +153,9 @@ fn answer_json_schema() {
     let (_, a) = decide("short by 1.9G", &m5_air(13 * GIB), &Need::bytes(13 * GIB));
     assert_eq!(a.valid_for_s, 10);
     assert_eq!(a.expires_at_ms, a.as_of_ms + 10_000);
-    settings().bind(|| insta::assert_json_snapshot!("can_fit_answer_json", a));
+    settings().bind(|| {
+        insta::assert_json_snapshot!("can_fit_answer_json", a);
+    });
 }
 
 #[test]
@@ -204,5 +208,7 @@ fn model_aware_needs() {
     let (d, _) = decide("14G on a 24G RTX 4090 with 10G in use", &s, &need);
     out.push(d);
 
-    settings().bind(|| insta::assert_yaml_snapshot!("can_fit_models", out));
+    settings().bind(|| {
+        insta::assert_yaml_snapshot!("can_fit_models", out);
+    });
 }

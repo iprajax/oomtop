@@ -60,7 +60,9 @@ fn m5_air_under_pressure() {
     assert!(h.margin_boosted);
     assert_eq!(h.available_now.value, Some(memorystatus_bytes(11, 24 * GIB)));
     assert!(h.headroom.unwrap() < 0);
-    settings().bind(|| insta::assert_json_snapshot!("headroom_m5_air_pressure", h));
+    settings().bind(|| {
+        insta::assert_json_snapshot!("headroom_m5_air_pressure", h);
+    });
 }
 
 #[test]
@@ -76,5 +78,7 @@ fn linux_cgroup_and_discrete_gpu() {
     assert_eq!(h.gpu[0].free.value, Some(14 * GIB));
     assert_eq!(h.gpu[0].margin, discrete_gpu_margin(24 * GIB));
     assert_eq!(h.reclaimable_swap.value, Some(256 * MIB));
-    settings().bind(|| insta::assert_json_snapshot!("headroom_linux_cgroup_gpu", h));
+    settings().bind(|| {
+        insta::assert_json_snapshot!("headroom_linux_cgroup_gpu", h);
+    });
 }
