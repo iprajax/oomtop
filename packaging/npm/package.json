@@ -1,0 +1,50 @@
+{
+  "name": "oomtop",
+  "version": "0.1.0",
+  "description": "See the OOM coming: true memory accounting, attribution and headroom for local AI work (agents, models, sandboxes).",
+  "keywords": [
+    "oom",
+    "memory",
+    "monitor",
+    "tui",
+    "mcp",
+    "headroom",
+    "llm",
+    "agents",
+    "top"
+  ],
+  "homepage": "https://github.com/iprajax/oomtop",
+  "bugs": "https://github.com/iprajax/oomtop/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iprajax/oomtop.git",
+    "directory": "packaging/npm"
+  },
+  "license": "MIT",
+  "author": "oomtop contributors",
+  "mcpName": "io.github.iprajax/oomtop",
+  "bin": {
+    "oomtop": "bin/oomtop.js"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "scripts/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "engines": {
+    "node": ">=18"
+  }
+}

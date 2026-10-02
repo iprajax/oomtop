@@ -1,0 +1,7 @@
+# Allowlist: the image build needs only the Cargo workspace.
+*
+!Cargo.toml
+!Cargo.lock
+!crates/
+crates/**/target/
+crates/**/*.snap.new

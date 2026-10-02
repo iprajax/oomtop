@@ -8,6 +8,10 @@ license.workspace = true
 repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
+readme = "../../README.md"
+documentation = "https://docs.rs/oomtop-adapters"
+keywords = ["ollama", "llm", "sandbox", "model-server", "monitoring"]
+categories = ["os", "artificial-intelligence"]
 
 [dependencies]
 oomtop-core = { workspace = true }

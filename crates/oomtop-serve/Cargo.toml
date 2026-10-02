@@ -8,6 +8,10 @@ license.workspace = true
 repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
+readme = "../../README.md"
+documentation = "https://docs.rs/oomtop-serve"
+keywords = ["prometheus", "metrics", "http", "memory", "monitoring"]
+categories = ["web-programming::http-server", "development-tools::profiling"]
 
 [dependencies]
 oomtop-core = { workspace = true }

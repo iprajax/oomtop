@@ -8,6 +8,10 @@ license.workspace = true
 repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
+readme = "../../README.md"
+documentation = "https://docs.rs/oomtop-config"
+keywords = ["config", "toml", "themes", "keymap", "json-schema"]
+categories = ["config"]
 
 [dependencies]
 oomtop-core = { workspace = true }

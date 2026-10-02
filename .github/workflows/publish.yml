@@ -1,0 +1,273 @@
+name: publish
+
+# After a GitHub Release is out, push the same version to the package registries. release.yml dispatches this
+# (`gh workflow run publish.yml -f tag=vX.Y.Z -f dry_run=false`) because a release created with GITHUB_TOKEN
+# doesn't fire `release:` events; a release published by hand fires `release: published`. If both happen, the
+# concurrency group queues the second run and every job skips what's already published.
+# Each channel is skipped, with a notice, while its credential is absent:
+#
+#   crates.io  secret   CARGO_REGISTRY_TOKEN        (crates.io → Account Settings → API Tokens, scope publish-new + publish-update)
+#   npm        secret   NPM_TOKEN                   (npmjs.com → Access Tokens → Granular, publish; provenance via OIDC)
+#   PyPI       variable PYPI_TRUSTED_PUBLISHING=true (after adding this repo/workflow/environment "pypi" as a trusted publisher)
+#   AUR        secret   AUR_SSH_PRIVATE_KEY         (key registered on the AUR account that owns oomtop-bin)
+#   MCP Registry variable MCP_REGISTRY_PUBLISH=true (GitHub OIDC; io.github.iprajax/* is owned by this repo's owner)
+#
+# Every job is idempotent: a version already on the registry is skipped, so re-running after a partial failure
+# is safe. Manual runs default to a dry run (build + verify everything, upload nothing).
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "release tag, e.g. v0.1.0 (the GitHub Release must exist)"
+        required: true
+      dry_run:
+        description: "verify only; publish nothing"
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.event.release.tag_name || inputs.tag }}
+  cancel-in-progress: false
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.m.outputs.tag }}
+      version: ${{ steps.m.outputs.version }}
+      prerelease: ${{ steps.m.outputs.prerelease }}
+      dry_run: ${{ steps.m.outputs.dry_run }}
+      has_cargo: ${{ steps.m.outputs.has_cargo }}
+      has_npm: ${{ steps.m.outputs.has_npm }}
+      has_pypi: ${{ steps.m.outputs.has_pypi }}
+      has_aur: ${{ steps.m.outputs.has_aur }}
+      has_mcp: ${{ steps.m.outputs.has_mcp }}
+    steps:
+      - id: m
+        shell: bash
+        env:
+          TAG: ${{ github.event.release.tag_name || inputs.tag }}
+          DRY: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run }}
+          # secrets can't appear in `if:`; expose whether each one is configured
+          HAS_CARGO: ${{ secrets.CARGO_REGISTRY_TOKEN != '' }}
+          HAS_NPM: ${{ secrets.NPM_TOKEN != '' }}
+          HAS_PYPI: ${{ vars.PYPI_TRUSTED_PUBLISHING == 'true' }}
+          HAS_AUR: ${{ secrets.AUR_SSH_PRIVATE_KEY != '' }}
+          HAS_MCP: ${{ vars.MCP_REGISTRY_PUBLISH == 'true' }}
+        run: |
+          set -euo pipefail
+          [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+ ]] || { echo "::error::not a version tag: $TAG"; exit 1; }
+          version="${TAG#v}"
+          pre=false; [[ "$version" == *-* ]] && pre=true
+          {
+            echo "tag=$TAG"; echo "version=$version"; echo "prerelease=$pre"; echo "dry_run=$DRY"
+            echo "has_cargo=$HAS_CARGO"; echo "has_npm=$HAS_NPM"; echo "has_pypi=$HAS_PYPI"; echo "has_aur=$HAS_AUR"
+            echo "has_mcp=$HAS_MCP"
+          } | tee -a "$GITHUB_OUTPUT"
+          [ "$HAS_CARGO" = true ] || echo "::notice::crates.io: skipped (secret CARGO_REGISTRY_TOKEN not set)"
+          [ "$HAS_NPM" = true ] || echo "::notice::npm: skipped (secret NPM_TOKEN not set)"
+          [ "$HAS_PYPI" = true ] || echo "::notice::PyPI: skipped (variable PYPI_TRUSTED_PUBLISHING != true)"
+          [ "$HAS_AUR" = true ] || echo "::notice::AUR: skipped (secret AUR_SSH_PRIVATE_KEY not set)"
+          [ "$HAS_MCP" = true ] || echo "::notice::MCP Registry: skipped (variable MCP_REGISTRY_PUBLISH != true)"
+
+  crates:
+    needs: meta
+    if: needs.meta.outputs.has_cargo == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: check workspace version
+        shell: bash
+        run: |
+          crate_version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
+          test "$crate_version" = "${{ needs.meta.outputs.version }}" || { echo "::error::Cargo.toml has $crate_version"; exit 1; }
+      - name: dry run (packages + verifies all 10 crates against a local overlay registry)
+        if: needs.meta.outputs.dry_run == 'true'
+        run: cargo publish --workspace --locked --dry-run
+      - name: publish in dependency order
+        if: needs.meta.outputs.dry_run != 'true'
+        shell: bash
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+          V: ${{ needs.meta.outputs.version }}
+        run: |
+          set -euo pipefail
+          # leaf first; cargo publish waits until each crate is in the index before returning
+          for c in oomtop-core \
+                   oomtop-adapters oomtop-collect oomtop-config oomtop-detect oomtop-serve oomtop-state \
+                   oomtop-mcp oomtop-tui \
+                   oomtop-cli; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -A 'oomtop-publish (github.com/iprajax/oomtop)' \
+              "https://crates.io/api/v1/crates/$c/$V")
+            if [ "$code" = 200 ]; then echo "$c $V: already published"; continue; fi
+            cargo publish --locked -p "$c"
+          done
+
+  npm:
+    needs: meta
+    if: needs.meta.outputs.has_npm == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # npm provenance
+    defaults:
+      run:
+        shell: bash
+        working-directory: packaging/npm
+    env:
+      V: ${{ needs.meta.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - name: set version, add license
+        run: |
+          npm version "$V" --no-git-tag-version --allow-same-version
+          cp ../../LICENSE LICENSE
+      - name: smoke test against the published release assets
+        run: |
+          set -euo pipefail
+          npm pack --pack-destination "$RUNNER_TEMP"
+          mkdir "$RUNNER_TEMP/try" && cd "$RUNNER_TEMP/try" && npm init -y > /dev/null
+          npm install --ignore-scripts "$RUNNER_TEMP/oomtop-$V.tgz"
+          out=$(npx oomtop --version); echo "$out"
+          test "$out" = "oomtop $V"
+      - name: publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          set -euo pipefail
+          if npm view "oomtop@$V" version > /dev/null 2>&1; then echo "oomtop@$V already on npm"; exit 0; fi
+          tag=latest; [ "${{ needs.meta.outputs.prerelease }}" = true ] && tag=next
+          dry=(); [ "${{ needs.meta.outputs.dry_run }}" = true ] && dry=(--dry-run)
+          npm publish --provenance --access public --tag "$tag" "${dry[@]}"
+
+  pypi:
+    needs: meta
+    if: needs.meta.outputs.has_pypi == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/project/oomtop/
+    permissions:
+      contents: read
+      id-token: write # PyPI trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+      - uses: astral-sh/setup-uv@v6
+      - name: download release archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download "${{ needs.meta.outputs.tag }}" -R "$GITHUB_REPOSITORY" -p 'oomtop-*.tar.gz' -p SHA256SUMS -D dist
+      - name: build wheels (each archive verified against SHA256SUMS)
+        run: uv run packaging/pypi/build_wheels.py --dist dist --version "${{ needs.meta.outputs.version }}" --out dist/wheels
+      - name: check + smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          ls -l dist/wheels
+          uvx twine check dist/wheels/*.whl
+          uv venv "$RUNNER_TEMP/venv"
+          VIRTUAL_ENV="$RUNNER_TEMP/venv" uv pip install dist/wheels/*manylinux_2_28_x86_64.whl
+          "$RUNNER_TEMP/venv/bin/oomtop" --version
+          "$RUNNER_TEMP/venv/bin/python" -m oomtop --version
+      - name: publish
+        if: needs.meta.outputs.dry_run != 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/wheels/
+          skip-existing: true
+
+  aur:
+    needs: meta
+    # pacman versions can't carry '-rc.N'; pre-releases stay off the AUR
+    if: needs.meta.outputs.has_aur == 'true' && needs.meta.outputs.prerelease != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+      - uses: astral-sh/setup-uv@v6
+      - name: render PKGBUILD + .SRCINFO from SHA256SUMS
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "${{ needs.meta.outputs.tag }}" -R "$GITHUB_REPOSITORY" -p SHA256SUMS -D dist
+          uv run packaging/aur/render.py --version "${{ needs.meta.outputs.version }}" --sums dist/SHA256SUMS --out dist/aur/oomtop-bin
+          cat dist/aur/oomtop-bin/PKGBUILD dist/aur/oomtop-bin/.SRCINFO
+      - name: push to aur.archlinux.org/oomtop-bin
+        shell: bash
+        env:
+          AUR_SSH_PRIVATE_KEY: ${{ secrets.AUR_SSH_PRIVATE_KEY }}
+          V: ${{ needs.meta.outputs.version }}
+          DRY: ${{ needs.meta.outputs.dry_run }}
+        run: |
+          set -euo pipefail
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$AUR_SSH_PRIVATE_KEY" > ~/.ssh/aur && chmod 600 ~/.ssh/aur
+          # pinned host key; fingerprint SHA256:RFzBCUItH9LZS0cKB5UE6ceAYhBD5C8GeOBip8Z11+4 is published on aur.archlinux.org
+          echo 'aur.archlinux.org ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEuBKrPzbawxA/k2g6NcyV5jmqwJ2s+zpgZGZ7tpLIcN' >> ~/.ssh/known_hosts
+          export GIT_SSH_COMMAND="ssh -i $HOME/.ssh/aur -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes"
+          git clone ssh://aur@aur.archlinux.org/oomtop-bin.git "$RUNNER_TEMP/aur"
+          cp dist/aur/oomtop-bin/PKGBUILD dist/aur/oomtop-bin/.SRCINFO "$RUNNER_TEMP/aur/"
+          cd "$RUNNER_TEMP/aur"
+          git add PKGBUILD .SRCINFO
+          if git diff --cached --quiet; then echo "AUR already at $V"; exit 0; fi
+          git -c user.name="oomtop release" -c user.email="noreply@users.noreply.github.com" commit -m "oomtop-bin $V"
+          git show --stat HEAD
+          if [ "$DRY" = true ]; then echo "dry run: not pushing"; exit 0; fi
+          git push origin HEAD:master
+
+  mcp-registry:
+    # registry.modelcontextprotocol.io lists the npm + PyPI packages (server.json); it verifies ownership via
+    # `mcpName` in package.json and the `mcp-name:` marker in the PyPI README, so both must be live first.
+    needs: [meta, npm, pypi]
+    if: needs.meta.outputs.has_mcp == 'true' && needs.meta.outputs.prerelease != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # mcp-publisher login github-oidc
+    defaults:
+      run:
+        shell: bash
+        working-directory: packaging/npm
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.meta.outputs.tag }}
+      - name: set version in server.json
+        env:
+          V: ${{ needs.meta.outputs.version }}
+        run: |
+          jq --arg v "$V" '.version = $v | .packages |= map(.version = $v)' server.json > server.json.new
+          mv server.json.new server.json
+          cat server.json
+      - name: install mcp-publisher
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" \
+            | tar xz mcp-publisher
+          ./mcp-publisher --help > /dev/null
+      - name: publish
+        if: needs.meta.outputs.dry_run != 'true'
+        run: |
+          ./mcp-publisher login github-oidc
+          ./mcp-publisher publish

@@ -1,0 +1,27 @@
+# Maintainer: oomtop contributors <https://github.com/iprajax/oomtop>
+# Rendered by packaging/aur/render.py from the release's SHA256SUMS; don't edit the rendered copy by hand.
+pkgname=oomtop-bin
+pkgver=@VERSION@
+pkgrel=1
+pkgdesc="See the OOM coming: true memory accounting, attribution and headroom for local AI work"
+arch=('x86_64' 'aarch64')
+url="https://github.com/iprajax/oomtop"
+license=('MIT')
+depends=('glibc' 'gcc-libs')
+optdepends=('nvidia-utils: NVIDIA GPU memory via NVML (loaded at runtime)')
+provides=("oomtop=${pkgver}")
+conflicts=('oomtop')
+# release binaries are already stripped (profile.release strip = "symbols")
+options=('!strip' '!debug')
+source_x86_64=("oomtop-${pkgver}-x86_64-unknown-linux-gnu.tar.gz::${url}/releases/download/v${pkgver}/oomtop-${pkgver}-x86_64-unknown-linux-gnu.tar.gz")
+source_aarch64=("oomtop-${pkgver}-aarch64-unknown-linux-gnu.tar.gz::${url}/releases/download/v${pkgver}/oomtop-${pkgver}-aarch64-unknown-linux-gnu.tar.gz")
+sha256sums_x86_64=('@SHA256_X86_64@')
+sha256sums_aarch64=('@SHA256_AARCH64@')
+
+package() {
+  cd "oomtop-${pkgver}-${CARCH}-unknown-linux-gnu" || return 1
+  install -Dm755 oomtop "${pkgdir}/usr/bin/oomtop"
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+  install -Dm644 README.md "${pkgdir}/usr/share/doc/${pkgname}/README.md"
+  install -Dm644 -t "${pkgdir}/usr/share/doc/${pkgname}/" docs/*.md
+}

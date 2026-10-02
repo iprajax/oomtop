@@ -8,6 +8,10 @@ license.workspace = true
 repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
+readme = "../../README.md"
+documentation = "https://docs.rs/oomtop-detect"
+keywords = ["process", "attribution", "rules", "agents", "monitoring"]
+categories = ["os"]
 
 [dependencies]
 oomtop-core = { workspace = true }

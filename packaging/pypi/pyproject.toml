@@ -1,0 +1,45 @@
+# PyPI distribution of the oomtop binary (like ruff/uv: one platform wheel per release target, the native binary
+# installed straight into the environment's bin/ as a script, no Python in the hot path).
+#
+# Don't `uv build` this directly: build_wheels.py stages a verified release binary at build/bin/oomtop, sets
+# OOMTOP_PY_VERSION, builds the wheel and retags it for the target platform. See packaging/pypi/README.md.
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "oomtop"
+dynamic = ["version"]
+description = "See the OOM coming: true memory accounting, attribution and headroom for local AI work (agents, models, sandboxes)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.8"
+authors = [{ name = "oomtop contributors" }]
+keywords = ["oom", "memory", "monitor", "tui", "mcp", "headroom", "llm", "agents"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Rust",
+    "Topic :: System :: Monitoring",
+]
+
+[project.urls]
+Homepage = "https://github.com/iprajax/oomtop"
+Documentation = "https://github.com/iprajax/oomtop/tree/main/docs"
+Source = "https://github.com/iprajax/oomtop"
+Issues = "https://github.com/iprajax/oomtop/issues"
+
+[tool.hatch.version]
+source = "env"
+variable = "OOMTOP_PY_VERSION"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/oomtop"]
+
+# Installed as <env>/bin/oomtop (the wheel's .data/scripts), executable bit preserved.
+[tool.hatch.build.targets.wheel.shared-scripts]
+"build/bin/oomtop" = "oomtop"
