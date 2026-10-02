@@ -1,14 +1,19 @@
 name: release
 
-# Tag vX.Y.Z → build every artifact of SPEC §16, checksum them, and draft a GitHub Release.
+# Tag vX.Y.Z → build every artifact of SPEC §16, smoke-test it, checksum it, attest it, publish a GitHub Release.
 #  - Linux glibc (baseline glibc 2.28 via cargo-zigbuild): NVML is dlopen'ed at runtime → NVIDIA GPUs work.
 #  - Linux musl (fully static): portable everywhere, but cannot dlopen glibc's NVML → GPU shows "unavailable".
-#  - macOS universal (arm64 + x86_64): codesigned + notarized when the signing secrets are configured.
+#  - macOS universal (arm64 + x86_64 via lipo): Developer ID codesign + notarization only when the signing
+#    secrets are configured; otherwise the linker's ad-hoc signature is kept and the release body says so.
 #  - .deb / .rpm from the glibc binaries (cargo-deb / cargo-generate-rpm metadata in crates/oomtop-cli).
+#  - SHA256SUMS over every asset, SLSA build provenance (actions/attest-build-provenance), install.sh.
+#  - Optional: Formula/oomtop.rb pushed to the tap iprajax/homebrew-oomtop when HOMEBREW_TAP_TOKEN is set.
+#  - Then dispatches publish.yml (crates.io, npm, PyPI, AUR, ...): GITHUB_TOKEN releases don't fire `release:`.
+# Manual run (workflow_dispatch) = dry run: builds and uploads the would-be release as a workflow artifact only.
 
 on:
   push:
-    tags: ["v[0-9]+.[0-9]+.[0-9]+*"]
+    tags: ["v*"]
   workflow_dispatch:
     inputs:
       tag:
@@ -17,6 +22,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: release-${{ github.event.inputs.tag || github.ref }}
+  cancel-in-progress: false
 
 env:
   CARGO_TERM_COLOR: always
@@ -28,26 +37,37 @@ jobs:
     outputs:
       tag: ${{ steps.t.outputs.tag }}
       version: ${{ steps.t.outputs.version }}
+      prerelease: ${{ steps.t.outputs.prerelease }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
       - id: t
         shell: bash
+        env:
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
         run: |
-          tag="${{ github.event.inputs.tag || github.ref_name }}"
-          version="${tag#v}"
+          set -euo pipefail
+          version="${TAG#v}"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-+][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::tag $TAG is not vX.Y.Z[-pre]"; exit 1
+          fi
           crate_version=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
           if [ "$version" != "$crate_version" ]; then
-            echo "::error::tag $tag does not match workspace version $crate_version"; exit 1
+            echo "::error::tag $TAG does not match workspace version $crate_version"; exit 1
           fi
-          echo "tag=$tag" >> "$GITHUB_OUTPUT"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
+          prerelease=false
+          case "$version" in *-*) prerelease=true ;; esac
+          {
+            echo "tag=$TAG"
+            echo "version=$version"
+            echo "prerelease=$prerelease"
+          } >> "$GITHUB_OUTPUT"
 
   linux:
     needs: meta
     name: linux ${{ matrix.target }}
-    # native runner per architecture, so every binary gets a smoke test
+    # native runner per architecture, so every binary (and package) gets a smoke test
     runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
@@ -63,6 +83,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
+      - name: source date (reproducible archive timestamps, tools/release/package.sh)
+        run: echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" >> "$GITHUB_ENV"
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
@@ -87,6 +109,7 @@ jobs:
             max=$(readelf -W --dyn-syms "$f" | grep -o 'GLIBC_[0-9.]*' | sort -uV | tail -1)
             echo "max glibc symbol: $max"
             test "$(printf '%s\nGLIBC_2.28\n' "$max" | sort -V | tail -1)" = "GLIBC_2.28"
+            readelf -d "$f" | grep NEEDED
           else
             file "$f" | grep -Eq 'static(ally|-pie) linked'
           fi
@@ -95,48 +118,68 @@ jobs:
         run: |
           set -euo pipefail
           b=target/${{ matrix.target }}/release/$BIN
-          $b --version
-          $b doctor --no-probe --offline
-          $b json --compact --offline > /dev/null
+          "$b" --version
+          "$b" doctor --no-probe --offline
+          "$b" json --compact --offline > /dev/null
           if [ "${{ matrix.flavor }}" = "musl" ]; then
-            # static musl can't dlopen NVML: the source must degrade, never crash
-            $b doctor --json --no-probe --offline | python3 -c 'import json,sys; d=json.load(sys.stdin); n=[s for s in d["sources"] if "nvml" in s["name"]]; assert all(s["status"]!="available" for s in n), n'
+            # static musl can't dlopen NVML: the GPU source must still be listed and degrade with a reason
+            "$b" doctor --json --no-probe --offline | python3 -c 'import json,sys; d=json.load(sys.stdin); g=[s for s in d["sources"] if s["name"]=="linux.gpu"]; assert g, "no linux.gpu source"; assert all(s["status"]=="available" or s["reason"] for s in g), g; print(g)'
+            # and it runs on a musl userland with no glibc at all
+            docker run --rm -v "$PWD/target/${{ matrix.target }}/release:/b:ro" alpine:3 "/b/$BIN" --version
           fi
       - name: package
         shell: bash
         run: |
           set -euo pipefail
-          name="$BIN-${{ needs.meta.outputs.version }}-${{ matrix.target }}"
-          mkdir -p "dist/$name"
-          cp "target/${{ matrix.target }}/release/$BIN" LICENSE README.md "dist/$name/"
-          cp -r docs "dist/$name/docs"
-          tar -C dist -czf "dist/$name.tar.gz" "$name"
-          rm -rf "dist/$name"
+          sh tools/release/package.sh --version "${{ needs.meta.outputs.version }}" \
+            --target "${{ matrix.target }}" --bin "target/${{ matrix.target }}/release/$BIN" --out dist
+          tar -tzvf dist/*.tar.gz
       - name: deb + rpm (glibc builds)
         if: matrix.flavor == 'gnu'
         shell: bash
         run: |
           set -euo pipefail
           cargo install --locked cargo-deb cargo-generate-rpm
+          # --target maps the manifest's target/release/ asset paths to target/<triple>/release/
           cargo deb -p oomtop-cli --no-build --no-strip --target ${{ matrix.target }} --output dist/
-          cargo generate-rpm -p crates/oomtop-cli --target ${{ matrix.target }} --output dist/
+          # xz payload: readable by every rpm >= 4.x on glibc 2.28-era distros (zstd needs a newer rpm)
+          cargo generate-rpm -p crates/oomtop-cli --target ${{ matrix.target }} --output dist/ \
+            --payload-compress xz --source-date "$SOURCE_DATE_EPOCH"
+          ls -l dist
+          dpkg-deb --info dist/*.deb
+          dpkg-deb --contents dist/*.deb
+      - name: package smoke test (Debian 10 = glibc 2.28 for the .deb, Rocky 8 = glibc 2.28 for the .rpm)
+        if: matrix.flavor == 'gnu'
+        shell: bash
+        run: |
+          set -euo pipefail
+          docker run --rm -v "$PWD/dist:/d:ro" debian:buster-slim \
+            sh -c 'dpkg -i /d/*.deb && oomtop --version && oomtop doctor --no-probe --offline >/dev/null'
+          docker run --rm -v "$PWD/dist:/d:ro" rockylinux:8 \
+            sh -c 'rpm -i /d/*.rpm && rpm -qi oomtop && oomtop --version && oomtop doctor --no-probe --offline >/dev/null'
       - uses: actions/upload-artifact@v4
         with:
           name: dist-${{ matrix.target }}
           path: dist/*
+          if-no-files-found: error
 
   macos:
     needs: meta
     name: macos universal
     runs-on: macos-latest
+    outputs:
+      signed: ${{ steps.state.outputs.signed }}
+      notarized: ${{ steps.state.outputs.notarized }}
     env:
       # secrets can't appear in `if:` directly; expose whether they are configured
-      HAS_CERT: ${{ secrets.MACOS_CERT_P12 != '' }}
-      HAS_NOTARY: ${{ secrets.APPLE_ID != '' && secrets.APPLE_APP_PASSWORD != '' }}
+      HAS_CERT: ${{ secrets.MACOS_CERT_P12 != '' && secrets.MACOS_SIGN_IDENTITY != '' }}
+      HAS_NOTARY: ${{ secrets.APPLE_ID != '' && secrets.APPLE_TEAM_ID != '' && secrets.APPLE_APP_PASSWORD != '' }}
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
+      - name: source date (reproducible archive timestamps, tools/release/package.sh)
+        run: echo "SOURCE_DATE_EPOCH=$(git log -1 --format=%ct)" >> "$GITHUB_ENV"
       - uses: dtolnay/rust-toolchain@stable
         with:
           targets: aarch64-apple-darwin,x86_64-apple-darwin
@@ -150,10 +193,12 @@ jobs:
       - name: lipo
         run: |
           mkdir -p dist
-          lipo -create -output dist/$BIN \
-            target/aarch64-apple-darwin/release/$BIN target/x86_64-apple-darwin/release/$BIN
-          lipo -info dist/$BIN
-          dist/$BIN --version
+          lipo -create -output "dist/$BIN" \
+            "target/aarch64-apple-darwin/release/$BIN" "target/x86_64-apple-darwin/release/$BIN"
+          lipo -info "dist/$BIN"
+          lipo -verify_arch "dist/$BIN" arm64 x86_64
+          "dist/$BIN" --version
+          arch -x86_64 "dist/$BIN" --version || echo "Rosetta not available on this runner; x86_64 slice not executed"
       - name: codesign (Developer ID, hardened runtime)
         if: env.HAS_CERT == 'true'
         env:
@@ -170,10 +215,18 @@ jobs:
           security set-keychain-settings -lut 21600 "$kc"
           security unlock-keychain -p "$kcpw" "$kc"
           security import "$RUNNER_TEMP/cert.p12" -P "$MACOS_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$kc"
+          rm -f "$RUNNER_TEMP/cert.p12"
           security set-key-partition-list -S apple-tool:,apple: -k "$kcpw" "$kc"
           security list-keychains -d user -s "$kc"
-          codesign --force --timestamp --options runtime --sign "$MACOS_SIGN_IDENTITY" dist/$BIN
-          codesign --verify --strict --verbose=2 dist/$BIN
+          codesign --force --timestamp --options runtime --identifier dev.oomtop.oomtop \
+            --sign "$MACOS_SIGN_IDENTITY" "dist/$BIN"
+          codesign --verify --strict --verbose=2 "dist/$BIN"
+      - name: no signing secrets → keep the ad-hoc signature
+        if: env.HAS_CERT != 'true'
+        run: |
+          echo "::notice::MACOS_CERT_P12 / MACOS_SIGN_IDENTITY not set: shipping the linker's ad-hoc signature (not Developer ID signed, not notarized)"
+          codesign --verify --strict --verbose=2 "dist/$BIN"
+          codesign -dv "dist/$BIN" 2>&1 | grep -E 'Format|Signature|flags'
       - name: notarize
         if: env.HAS_CERT == 'true' && env.HAS_NOTARY == 'true'
         env:
@@ -184,30 +237,39 @@ jobs:
         run: |
           set -euo pipefail
           # A bare Mach-O can't be stapled; notarize a zip of it (Gatekeeper checks the ticket online).
-          ditto -c -k dist/$BIN "$RUNNER_TEMP/notarize.zip"
+          ditto -c -k "dist/$BIN" "$RUNNER_TEMP/notarize.zip"
           xcrun notarytool submit "$RUNNER_TEMP/notarize.zip" \
             --apple-id "$APPLE_ID" --team-id "$APPLE_TEAM_ID" --password "$APPLE_APP_PASSWORD" --wait
+      - id: state
+        name: record signing state (for the release notes)
+        run: |
+          echo "signed=$HAS_CERT" >> "$GITHUB_OUTPUT"
+          if [ "$HAS_CERT" = "true" ] && [ "$HAS_NOTARY" = "true" ]; then n=true; else n=false; fi
+          echo "notarized=$n" >> "$GITHUB_OUTPUT"
       - name: package
         shell: bash
         run: |
           set -euo pipefail
-          name="$BIN-${{ needs.meta.outputs.version }}-universal-apple-darwin"
-          mkdir -p "dist/$name"
-          mv dist/$BIN "dist/$name/"
-          cp LICENSE README.md packaging/THIRD-PARTY-NOTICES.md "dist/$name/"
-          cp -r docs "dist/$name/docs"
-          tar -C dist -czf "dist/$name.tar.gz" "$name"
-          rm -rf "dist/$name"
+          mv "dist/$BIN" "$RUNNER_TEMP/$BIN"
+          sh tools/release/package.sh --version "${{ needs.meta.outputs.version }}" \
+            --target universal-apple-darwin --bin "$RUNNER_TEMP/$BIN" --out dist
+          tar -tzvf dist/*.tar.gz
       - uses: actions/upload-artifact@v4
         with:
           name: dist-macos
           path: dist/*
+          if-no-files-found: error
 
   release:
     needs: [meta, linux, macos]
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # create the release and upload assets
+      actions: write # workflow_dispatch of publish.yml after the release is out
+      id-token: write # OIDC token for the provenance signature (Sigstore)
+      attestations: write # store the attestations on the repository
+    outputs:
+      has_tap_token: ${{ steps.tap.outputs.has_tap_token }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -219,21 +281,108 @@ jobs:
           merge-multiple: true
       - name: installer
         run: cp packaging/install.sh dist/install.sh
+      - name: Homebrew formula
+        shell: bash
+        run: |
+          set -euo pipefail
+          (cd dist && sha256sum -- *.tar.gz) > "$RUNNER_TEMP/archives.sums"
+          python3 packaging/homebrew/render.py \
+            --version "${{ needs.meta.outputs.version }}" \
+            --sums "$RUNNER_TEMP/archives.sums" \
+            --template packaging/homebrew/oomtop.rb.tmpl > dist/oomtop.rb
+          cat dist/oomtop.rb
       - name: checksums
         working-directory: dist
         run: |
-          sha256sum * | tee SHA256SUMS
-      - name: Homebrew formula
+          sha256sum -- * | tee SHA256SUMS
+          sha256sum -c SHA256SUMS
+      - name: expected assets
+        shell: bash
         run: |
-          python3 packaging/homebrew/render.py \
-            --version "${{ needs.meta.outputs.version }}" \
-            --sums dist/SHA256SUMS \
-            --template packaging/homebrew/oomtop.rb.tmpl > dist/oomtop.rb
-          cat dist/oomtop.rb
-      - name: draft release
+          set -euo pipefail
+          v="${{ needs.meta.outputs.version }}"
+          for f in \
+            "oomtop-$v-universal-apple-darwin.tar.gz" \
+            "oomtop-$v-x86_64-unknown-linux-gnu.tar.gz" "oomtop-$v-aarch64-unknown-linux-gnu.tar.gz" \
+            "oomtop-$v-x86_64-unknown-linux-musl.tar.gz" "oomtop-$v-aarch64-unknown-linux-musl.tar.gz" \
+            "oomtop_$v-1_amd64.deb" "oomtop_$v-1_arm64.deb" "oomtop-$v-1.x86_64.rpm" "oomtop-$v-1.aarch64.rpm" \
+            install.sh oomtop.rb SHA256SUMS; do
+            test -s "dist/$f" || { echo "::error::missing release asset $f"; ls -l dist; exit 1; }
+          done
+          ls -l dist
+      - name: release notes
+        shell: bash
+        run: |
+          set -euo pipefail
+          rc=0
+          sh tools/release/release-notes.sh --version "${{ needs.meta.outputs.version }}" \
+            --signed "${{ needs.macos.outputs.signed }}" --notarized "${{ needs.macos.outputs.notarized }}" \
+            --repo "$GITHUB_REPOSITORY" > "$RUNNER_TEMP/notes.md" || rc=$?
+          case "$rc" in
+            0) echo "GENERATE_NOTES=" >> "$GITHUB_ENV" ;;
+            3) echo "::notice::no CHANGELOG.md section for ${{ needs.meta.outputs.version }}; adding GitHub-generated notes"
+               echo "GENERATE_NOTES=--generate-notes" >> "$GITHUB_ENV" ;;
+            *) exit "$rc" ;;
+          esac
+          cat "$RUNNER_TEMP/notes.md"
+      - name: build provenance
+        if: github.event_name == 'push'
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: dist/*
+      - name: publish release
         if: github.event_name == 'push'
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.meta.outputs.tag }}
+          VERSION: ${{ needs.meta.outputs.version }}
+          PRERELEASE: ${{ needs.meta.outputs.prerelease }}
+        shell: bash
         run: |
-          gh release create "${{ needs.meta.outputs.tag }}" dist/* \
-            --draft --title "oomtop ${{ needs.meta.outputs.version }}" --generate-notes
+          set -euo pipefail
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            # re-run of the same tag: refresh assets and notes, keep the release
+            gh release upload "$TAG" dist/* --clobber
+            gh release edit "$TAG" --notes-file "$RUNNER_TEMP/notes.md" --draft=false
+          else
+            pre=()
+            [ "$PRERELEASE" = "true" ] && pre=(--prerelease)
+            # shellcheck disable=SC2086 # GENERATE_NOTES is empty or one flag
+            gh release create "$TAG" dist/* --verify-tag --title "oomtop $VERSION" \
+              --notes-file "$RUNNER_TEMP/notes.md" $GENERATE_NOTES "${pre[@]}"
+          fi
+          gh release view "$TAG"
+      - name: hand off to publish.yml (registries)
+        # A release created with GITHUB_TOKEN does not fire `release: published` in other workflows (GitHub
+        # suppresses recursive runs), but workflow_dispatch is allowed, so trigger the registry fan-out explicitly.
+        if: github.event_name == 'push' && hashFiles('.github/workflows/publish.yml') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ needs.meta.outputs.tag }}
+        run: gh workflow run publish.yml --ref "$TAG" -f tag="$TAG" -f dry_run=false
+      - name: dry run → workflow artifact
+        if: github.event_name != 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-dry-run
+          path: dist/*
+      - id: tap
+        name: tap token configured?
+        env:
+          HAS: ${{ secrets.HOMEBREW_TAP_TOKEN != '' }}
+        run: echo "has_tap_token=$HAS" >> "$GITHUB_OUTPUT"
+
+  homebrew-tap:
+    # Optional: needs a fine-grained PAT with contents:write on iprajax/homebrew-oomtop as HOMEBREW_TAP_TOKEN.
+    # Without it this job is skipped and the main session runs tools/release/update-tap.sh by hand.
+    needs: [meta, release]
+    if: github.event_name == 'push' && needs.release.outputs.has_tap_token == 'true' && needs.meta.outputs.prerelease != 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+      - name: update Formula/oomtop.rb in the tap
+        env:
+          HOMEBREW_TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: sh tools/release/update-tap.sh "${{ needs.meta.outputs.version }}" --repo "$GITHUB_REPOSITORY"

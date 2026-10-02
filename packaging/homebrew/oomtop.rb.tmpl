@@ -1,30 +1,43 @@
-# Homebrew formula for oomtop — rendered by packaging/homebrew/render.py in the release workflow.
-# Tap: brew tap iprajax/oomtop && brew install oomtop   (homebrew-core submission after 1.0, SPEC §16)
+# Homebrew formula for oomtop. Rendered from packaging/homebrew/oomtop.rb.tmpl by packaging/homebrew/render.py
+# (release workflow + tools/release/update-tap.sh) and committed to the tap iprajax/homebrew-oomtop as
+# Formula/oomtop.rb. Install: brew install iprajax/oomtop/oomtop   (homebrew-core submission after 1.0, SPEC §16)
 class Oomtop < Formula
-  desc "See the OOM coming: true memory, attribution and headroom for local AI work"
+  desc "Memory accounting, attribution and headroom for local AI work"
   homepage "https://github.com/iprajax/oomtop"
-  version "@VERSION@"
   license "MIT"
 
+  livecheck do
+    url :stable
+    strategy :github_latest
+  end
+
+  # One universal (arm64 + x86_64) archive serves both Mac architectures; brew style only allows url/sha256
+  # inside the innermost on_arm/on_intel blocks.
   on_macos do
-    url "https://github.com/iprajax/oomtop/releases/download/v@VERSION@/oomtop-@VERSION@-universal-apple-darwin.tar.gz"
-    sha256 "@SHA_MACOS@"
+    on_arm do
+      url "@URL_BASE@/oomtop-@VERSION@-universal-apple-darwin.tar.gz"
+      sha256 "@SHA_MACOS@"
+    end
+    on_intel do
+      url "@URL_BASE@/oomtop-@VERSION@-universal-apple-darwin.tar.gz"
+      sha256 "@SHA_MACOS@"
+    end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/iprajax/oomtop/releases/download/v@VERSION@/oomtop-@VERSION@-x86_64-unknown-linux-gnu.tar.gz"
+      url "@URL_BASE@/oomtop-@VERSION@-x86_64-unknown-linux-gnu.tar.gz"
       sha256 "@SHA_LINUX_X86_64@"
     end
     on_arm do
-      url "https://github.com/iprajax/oomtop/releases/download/v@VERSION@/oomtop-@VERSION@-aarch64-unknown-linux-gnu.tar.gz"
+      url "@URL_BASE@/oomtop-@VERSION@-aarch64-unknown-linux-gnu.tar.gz"
       sha256 "@SHA_LINUX_AARCH64@"
     end
   end
 
   def install
     bin.install "oomtop"
-    doc.install Dir["docs/*"]
+    doc.install "README.md", Dir["docs/*.md"]
   end
 
   def caveats
@@ -37,6 +50,7 @@ class Oomtop < Formula
 
   test do
     assert_match version.to_s, shell_output("#{bin}/oomtop --version")
+    # Sandbox-safe: prints the commented default config to stdout, touches no files and no other process.
     assert_match "theme", shell_output("#{bin}/oomtop config init --print")
     system bin/"oomtop", "keys", "list", "--conflicts"
   end

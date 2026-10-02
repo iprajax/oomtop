@@ -9,9 +9,26 @@ repository.workspace = true
 homepage.workspace = true
 authors.workspace = true
 readme = "../../README.md"
+documentation = "https://github.com/iprajax/oomtop/blob/main/docs/cli.md"
 keywords.workspace = true
 categories.workspace = true
 
+# `cargo binstall oomtop-cli` downloads the GitHub Release archive instead of compiling. Names must match
+# .github/workflows/release.yml: oomtop-<version>-<target>.tar.gz containing oomtop-<version>-<target>/oomtop.
+# macOS ships one universal archive, so both Apple targets point at it. binstall falls back from *-gnu to *-musl
+# on its own when the host glibc is too old.
+[package.metadata.binstall]
+pkg-url = "{ repo }/releases/download/v{ version }/oomtop-{ version }-{ target }.tar.gz"
+bin-dir = "oomtop-{ version }-{ target }/{ bin }{ binary-ext }"
+pkg-fmt = "tgz"
+
+[package.metadata.binstall.overrides.aarch64-apple-darwin]
+pkg-url = "{ repo }/releases/download/v{ version }/oomtop-{ version }-universal-apple-darwin.tar.gz"
+bin-dir = "oomtop-{ version }-universal-apple-darwin/{ bin }{ binary-ext }"
+
+[package.metadata.binstall.overrides.x86_64-apple-darwin]
+pkg-url = "{ repo }/releases/download/v{ version }/oomtop-{ version }-universal-apple-darwin.tar.gz"
+bin-dir = "oomtop-{ version }-universal-apple-darwin/{ bin }{ binary-ext }"
 
 [[bin]]
 name = "oomtop"
@@ -72,8 +89,11 @@ assets = [
 name = "oomtop"
 summary = "See the OOM coming: true memory, attribution and headroom for local AI work"
 license = "MIT"
-# glibc 2.28 baseline (RHEL 8 / Debian 10 and newer), same as the cargo-zigbuild target.
-requires = { glibc = ">= 2.28" }
+# glibc 2.28 baseline (RHEL 8 / Debian 10 and newer), same as the cargo-zigbuild target. Declared explicitly with
+# auto-req off (like the .deb): the ldd-based discovery depends on the build host (it fails on macOS and would
+# record whatever the runner's glibc offers), while the binary needs only libc + libgcc_s; NVML is dlopen'ed.
+auto-req = "no"
+requires = { glibc = ">= 2.28", libgcc = "*" }
 assets = [
     { source = "target/release/oomtop", dest = "/usr/bin/oomtop", mode = "755" },
     { source = "../../README.md", dest = "/usr/share/doc/oomtop/README.md", mode = "644", doc = true },
