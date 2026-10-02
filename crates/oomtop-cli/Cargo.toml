@@ -52,7 +52,7 @@ toml = { workspace = true }
 libc = { workspace = true }
 
 [target.'cfg(target_os = "macos")'.dependencies]
-tikv-jemallocator = "0.6"
+tikv-jemallocator = "0.7"
 
 [dev-dependencies]
 tempfile = { workspace = true }
