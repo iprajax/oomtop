@@ -19,7 +19,7 @@
 <meta property="og:image" content="https://iprajax.github.io/oomtop/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="oomtop: a 3D stack of memory groups from a recorded MacBook Air under a 24 GiB RAM ceiling, with the tagline See the OOM coming.">
+<meta property="og:image:alt" content="oomtop: a 3D stack of memory groups from a recorded machine under a 24 GiB RAM ceiling, with the tagline See the OOM coming.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="oomtop: see the OOM coming">
 <meta name="twitter:description" content="Who's eating your machine: agents, models, sandboxes. A terminal resource monitor for local AI work on macOS and Linux.">
@@ -55,7 +55,7 @@
     </a>
     <nav aria-label="Primary">
       <ul class="nav-links">
-        <li><a href="#story">Story</a></li>
+        <li><a href="#answers">What it answers</a></li>
         <li><a href="#features">Features</a></li>
         <li><a href="#headroom">Headroom</a></li>
         <li><a href="#keys">Keys</a></li>
@@ -79,9 +79,9 @@
 <!-- ───────────────────────── Hero ───────────────────────── -->
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero-scene" id="scene" aria-hidden="false">
-    <canvas id="city" role="img" aria-label="3D memory stack from a recorded 24 GB MacBook Air: each block is one group of processes, as tall as its memory footprint, stacked under a translucent 24 GiB RAM ceiling. The two tallest blocks, GradleDaemon and KotlinCompileDaemon, are reclaim candidates."></canvas>
+    <canvas id="city" role="img" aria-label="3D memory stack from a recorded 24 GB machine: each block is one group of processes, as tall as its memory footprint, stacked under a translucent 24 GiB RAM ceiling. The two tallest blocks, GradleDaemon and KotlinCompileDaemon, are reclaim candidates."></canvas>
     <div class="scene-fallback" id="scene-fallback" hidden></div>
-    <noscript><img class="scene-noscript" src="og.png" width="1200" height="630" alt="The memory stack of the recorded MacBook Air under a 24 GiB RAM ceiling"></noscript>
+    <noscript><img class="scene-noscript" src="og.png" width="1200" height="630" alt="The memory stack of a recorded machine under a 24 GiB RAM ceiling"></noscript>
     <div class="tip" id="tip" aria-hidden="true" hidden></div>
     <div class="scene-label" id="label-ceiling" hidden>RAM ceiling · <span data-fmt="total"></span></div>
     <div class="scene-label scene-label-peak" id="label-peak" hidden></div>
@@ -92,9 +92,8 @@
     <div class="hero-copy">
       <p class="eyebrow"><span class="dot" aria-hidden="true"></span><span><span class="nw">Terminal resource monitor ·</span> <span class="nw">macOS + Linux · no root</span></span></p>
       <h1 id="hero-title">See the <span class="accent">OOM</span> coming.</h1>
-      <p class="lede"><strong>Who's eating your machine: agents, models, sandboxes.</strong> True memory accounting, every
-        process attributed to the agent, app, sandbox or model server that owns it, and a straight answer to
-        <em>“can I load this model right now?”</em></p>
+      <p class="lede"><strong>htop for local AI work.</strong> See what really holds your RAM (GPU/Metal, compressed,
+        swap), which agent, app or model server owns every process, and whether the next model will fit — before it swaps.</p>
 
       <div class="install-cta" data-tabs>
         <div class="cta-tabs" role="tablist" aria-label="Install method">
@@ -117,13 +116,13 @@
         <a class="btn btn-ghost" href="https://github.com/iprajax/oomtop">
           <svg viewBox="0 0 16 16" aria-hidden="true" class="gh"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
           Star on GitHub</a>
-        <a class="link-quiet" href="#story">Read the story ↓</a>
+        <a class="link-quiet" href="#answers">What it answers ↓</a>
       </div>
     </div>
 
     <aside class="hud" aria-label="Recorded snapshot">
       <div class="hud-head">
-        <span class="hud-title">MacBook Air M5 · <span data-fmt="total"></span></span>
+        <span class="hud-title">Recorded snapshot · <span data-fmt="total"></span></span>
         <span class="hud-src" title="fixtures/macos/m5-air-agents.json, replayed with oomtop --replay">recorded</span>
       </div>
       <div class="hud-stats">
@@ -144,35 +143,30 @@
   </div>
 </section>
 
-<!-- ───────────────────────── Story ───────────────────────── -->
-<section class="section" id="story" aria-labelledby="story-title">
-  <div class="wrap narrow">
-    <p class="kicker">Why this exists</p>
-    <h2 id="story-title">The afternoon that started this</h2>
-    <p class="prose">A 24 GB MacBook Air was running an image-generation server, four coding-agent sessions and a few apps.
-      Image generation was suddenly 2–3.5× slower and the machine felt full. <code>htop</code> didn't explain it.</p>
+<!-- ───────────────────────── Answers ───────────────────────── -->
+<section class="section" id="answers" aria-labelledby="answers-title">
+  <div class="wrap narrow center">
+    <p class="kicker">What it answers</p>
+    <h2 id="answers-title">Four questions htop can't answer.</h2>
   </div>
   <div class="wrap">
-    <div class="table-wrap" role="region" aria-labelledby="story-title" tabindex="0">
-      <table class="truth">
-        <thead><tr><th scope="col">The question</th><th scope="col">What htop showed</th><th scope="col">What was actually true</th></tr></thead>
-        <tbody>
-          <tr><th scope="row">Who holds the memory?</th><td data-label="htop showed"><code>sd-server</code> nowhere near the top (small RES)</td><td data-label="Actually true"><strong>9.9 GB</strong> of Metal/GPU allocations, visible only in macOS <em>physical footprint</em></td></tr>
-          <tr><th scope="row">Are the Java processes big?</th><td data-label="htop showed">~0.5 GB RES each</td><td data-label="Actually true"><strong>~3 GB each</strong>, mostly compressed/swapped: Gradle + Kotlin daemons idle for 5 hours</td></tr>
-          <tr><th scope="row">What is <code>com.apple.<wbr>Virtualization.<wbr>VirtualMachine</code>?</th><td data-label="htop showed">a process name</td><td data-label="Actually true">the Claude desktop app's sandbox VM</td></tr>
-          <tr><th scope="row">Why did generation slow down?</th><td data-label="htop showed">nothing</td><td data-label="Actually true">thermal throttling + low battery + 6–7.5 GB of swap</td></tr>
-          <tr><th scope="row">Which session spawned what?</th><td data-label="htop showed">a flat list</td><td data-label="Actually true">4 agent sessions, headless Chrome, benchmark runs, orphaned daemons</td></tr>
-        </tbody>
-      </table>
+    <div class="answers">
+      <div class="answer"><h3>What's really using my memory?</h3>
+        <p>Footprint and PSS, not RSS — including GPU/Metal, compressed and swapped memory, grouped by owner.</p>
+        <code><span class="prompt" aria-hidden="true">$</span> oomtop</code></div>
+      <div class="answer"><h3>Will this model fit right now?</h3>
+        <p>Yes, yes-after-reclaim or no, with the shortfall and an exit code for scripts.</p>
+        <code><span class="prompt" aria-hidden="true">$</span> oomtop headroom --need 13G</code></div>
+      <div class="answer"><h3>What can I safely stop?</h3>
+        <p>Idle build daemons, orphans left by agent sessions, idle model servers — largest gain first, always confirmed.</p>
+        <code><span class="prompt" aria-hidden="true">$</span> oomtop reclaim --dry-run</code></div>
+      <div class="answer"><h3>Why is it slow?</h3>
+        <p>Swap storms, memory pressure, thermal throttling, Low Power Mode — ranked, with evidence, plus an OOM forecast.</p>
+        <code><span class="prompt" aria-hidden="true">$</span> oomtop why</code></div>
     </div>
-  </div>
-  <div class="wrap narrow">
-    <p class="prose">Stopping two idle daemons and the model server moved free memory from <strong>36&nbsp;% to 84&nbsp;%</strong>.
-      Nothing on screen had pointed at them, and nothing warned that swap was filling up.</p>
-    <p class="prose"><strong>oomtop is the tool that would have said so in one line:</strong></p>
     <figure class="headline-demo">
       <div class="term-line"><span class="sev" aria-hidden="true">▲</span> Tight on memory: 1.2 GB headroom. <span class="nw">sd-server</span> holds 9.9 GB; 2 idle build daemons could free 5.9 GB. <kbd>r</kbd></div>
-      <figcaption>The answer-first headline, from the README.</figcaption>
+      <figcaption>The first line oomtop shows: the answer, then the numbers.</figcaption>
     </figure>
   </div>
 </section>
@@ -195,8 +189,7 @@
     <figure class="shot shot-wide">
       <a class="frame" href="media/hero.gif" title="Open full size"><img src="media/hero.gif" width="1640" height="960" loading="lazy" decoding="async"
         alt="oomtop TUI: htop-style per-core meters, true-memory bar, an answer-first headline, groups ranked by what matters, and an F-key bar"></a>
-      <figcaption>Live on a 24 GB fanless MacBook Air M5: per-core meters (E/P cores), a memory bar split by what really holds RAM,
-        a one-line verdict, groups instead of a flat process list, and “why is this here?” on any row.</figcaption>
+      <figcaption>Live TUI: per-core meters, a memory bar split by what holds RAM, a one-line verdict, grouped processes.</figcaption>
     </figure>
   </article>
 
@@ -219,18 +212,15 @@
     <div class="feature-copy">
       <span class="fnum">03</span>
       <h3 id="f3-title">Things, not PIDs: every process has an owner</h3>
-      <p>oomtop groups ~800 processes into the <strong>agent session</strong> (Claude Code, Codex, Cursor, Aider, Gemini, Goose…),
+      <p>Every process is grouped under its <strong>agent session</strong> (Claude Code, Codex, Cursor, Aider, Gemini…),
         <strong>app</strong>, <strong>model server</strong> (Ollama, llama.cpp, sd.cpp, vLLM, LM Studio, MLX), <strong>sandbox</strong>
-        (Virtualization.framework VMs, Docker/OrbStack/Podman, Firecracker, bubblewrap, Seatbelt…) or <strong>build daemon</strong>
-        that owns them. It uses cgroups, macOS responsible-pid, ancestry, session markers and rules, and shows a confidence for each
-        group. Children that outlive their session show up as <strong>orphans</strong>. Things that cost memory and do nothing show up
-        as <strong>idle</strong>, sorted by how much RAM you'd get back.</p>
+        (VMs, Docker/OrbStack/Podman, Firecracker) or <strong>build daemon</strong>. Leftovers from ended sessions show as
+        <strong>orphans</strong>; memory that does nothing shows as <strong>idle</strong>, sorted by what you'd get back.</p>
     </div>
     <figure class="shot shot-wide">
       <a class="frame" href="media/tui-replay.gif" title="Open full size"><img src="media/tui-replay.gif" width="1640" height="960" loading="lazy" decoding="async"
         alt="Replay of the recorded M5 Air: ranked groups, the Reclaim view with idle Gradle and Kotlin daemons, sandboxes and models views"></a>
-      <figcaption>Recorded with <code>--replay fixtures/macos/m5-air-agents.json</code>, a real (username-redacted) snapshot of the
-        machine in the story. Clone the repo and run the same command.</figcaption>
+      <figcaption>Replay of a recorded snapshot: <code>oomtop --replay fixtures/macos/m5-air-agents.json</code></figcaption>
     </figure>
   </article>
 

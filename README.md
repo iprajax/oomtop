@@ -20,30 +20,23 @@ attributed to the agent, app, sandbox or model server that owns it, and a straig
 
 <img src="docs/media/hero.gif" alt="oomtop TUI: htop-style per-core meters, true-memory bar, an answer-first headline, groups ranked by what matters, and an F-key bar" width="100%">
 
-<sub>Live on a 24 GB fanless MacBook Air M5: per-core meters (E/P cores), a memory bar split by what really
-holds RAM, a one-line verdict, groups instead of a flat process list, and “why is this here?” on any row.</sub>
+<sub>Live TUI: per-core meters (E/P cores), a memory bar split by what really holds RAM, a one-line verdict, grouped
+processes, and “why is this here?” on any row.</sub>
 
 </div>
 
 ---
 
-## The afternoon that started this
+## What it answers
 
-A 24 GB MacBook Air was running an image-generation server, four coding-agent sessions and a few apps. Image
-generation was suddenly 2–3.5× slower and the machine felt full. `htop` didn't explain it:
-
-| The question | What htop showed | What was actually true |
+| Question | Command | What you get |
 |---|---|---|
-| Who holds the memory? | `sd-server` nowhere near the top (small RES) | **9.9 GB** of Metal/GPU allocations, visible only in macOS *physical footprint* |
-| Are the Java processes big? | ~0.5 GB RES each | **~3 GB each**, mostly compressed/swapped: Gradle + Kotlin daemons idle for 5 hours |
-| What is `com.apple.Virtualization.VirtualMachine`? | a process name | the Claude desktop app's sandbox VM |
-| Why did generation slow down? | nothing | thermal throttling + low battery + 6–7.5 GB of swap |
-| Which session spawned what? | a flat list | 4 agent sessions, headless Chrome, benchmark runs, orphaned daemons |
+| What's really using my memory? | `oomtop` | footprint/PSS (not RSS) incl. GPU/Metal, compressed and swap, grouped by agent / app / model server / sandbox |
+| Will this model fit right now? | `oomtop headroom --need 13G` | yes · yes-after-reclaim · no, with the shortfall; exit `0` / `3` / `4` for scripts |
+| What can I safely stop? | `oomtop reclaim --dry-run` | idle build daemons, orphans from ended agent sessions, idle model servers, largest gain first |
+| Why is it slow? | `oomtop why` | swap storms, pressure, thermal throttling, Low Power Mode, ranked with evidence, plus an OOM forecast |
 
-Stopping two idle daemons and the model server moved free memory from **36 % to 84 %**. Nothing on screen had
-pointed at them, and nothing warned that swap was filling up.
-
-**oomtop is the tool that would have said so in one line:**
+The first line of the TUI is the answer, then the numbers:
 
 > *Tight on memory: 1.2 GB headroom. sd-server holds 9.9 GB; 2 idle build daemons could free 5.9 GB.* `[r]`
 
@@ -83,8 +76,7 @@ macOS responsible-pid, ancestry, session markers and rules, and shows a confiden
 outlive their session show up as **orphans**. Things that cost memory and do nothing show up as **idle**, sorted by
 how much RAM you'd get back.
 
-<sub>Recorded with <code>--replay fixtures/macos/m5-air-agents.json</code>, a real (username-redacted) snapshot of
-the machine in the story. Clone the repo and run the same command.</sub>
+<sub>Replay of a recorded snapshot: <code>oomtop --replay fixtures/macos/m5-air-agents.json</code>.</sub>
 
 ### 4 · “Can I load this model now?”, answered in one command
 
