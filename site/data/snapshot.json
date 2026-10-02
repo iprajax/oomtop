@@ -1,0 +1,1792 @@
+{
+  "source": "oomtop --replay fixtures/macos/m5-air-agents.json json (schema_version 1)",
+  "note": "Recorded on a 24 GB MacBook Air M5 with four agent sessions, Gradle/Kotlin daemons and apps running. Groups only; no pids, command lines or paths.",
+  "taken_at_ms": 1790709769460,
+  "host": {
+    "os": "macOS 26.6",
+    "arch": "aarch64",
+    "model": "Mac17,3",
+    "cpu": "Apple M5",
+    "cores_performance": 4,
+    "cores_efficiency": 6,
+    "unified_memory": true,
+    "fanless": true
+  },
+  "memory": {
+    "total": 25769803776,
+    "available": 6886522880,
+    "app": 12346294272,
+    "wired": 2686992384,
+    "compressed": 2952888320,
+    "cached": 6621495296,
+    "free": 210386944,
+    "swap_used": 3684761600,
+    "swap_total": 5368709120,
+    "pressure": "normal"
+  },
+  "headroom": {
+    "bytes": 4824938578,
+    "reclaimable": 6174751689,
+    "reclaim": [
+      {
+        "label": "GradleDaemon",
+        "kind": "build_daemon",
+        "gain": 3254284386
+      },
+      {
+        "label": "KotlinCompileDaemon",
+        "kind": "build_daemon",
+        "gain": 2920467303
+      }
+    ],
+    "valid_for_s": 10
+  },
+  "groups": [
+    {
+      "label": "KotlinCompileDaemon",
+      "kind": "build_daemon",
+      "footprint": 3602812360,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": true,
+      "gain": 2920467303
+    },
+    {
+      "label": "GradleDaemon",
+      "kind": "build_daemon",
+      "footprint": 3372044272,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": true,
+      "gain": 3254284386
+    },
+    {
+      "label": "Claude",
+      "kind": "app",
+      "footprint": 2248127424,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ChatGPT",
+      "kind": "app",
+      "footprint": 2127943424,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Google Chrome",
+      "kind": "app",
+      "footprint": 2080290432,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Codex",
+      "kind": "agent_session",
+      "footprint": 842258256,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Terminal",
+      "kind": "app",
+      "footprint": 475039928,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Claude Code",
+      "kind": "agent_session",
+      "footprint": 395677968,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Claude Code",
+      "kind": "agent_session",
+      "footprint": 297404744,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Claude Code",
+      "kind": "agent_session",
+      "footprint": 226952440,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Spotlight",
+      "kind": "app",
+      "footprint": 164908368,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "loginwindow",
+      "kind": "system",
+      "footprint": 136463560,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Finder",
+      "kind": "app",
+      "footprint": 116507728,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "WallpaperImageExtension",
+      "kind": "system",
+      "footprint": 107479760,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ControlCenter",
+      "kind": "app",
+      "footprint": 73925976,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "MauiAUSP",
+      "kind": "system",
+      "footprint": 57099488,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mdworker_shared",
+      "kind": "system",
+      "footprint": 50239776,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Siri",
+      "kind": "app",
+      "footprint": 44139912,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "NotificationCenter",
+      "kind": "app",
+      "footprint": 37372624,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "contactsd",
+      "kind": "system",
+      "footprint": 31113960,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Dock",
+      "kind": "app",
+      "footprint": 30033072,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "corespotlightd",
+      "kind": "system",
+      "footprint": 28624552,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "assistantd",
+      "kind": "system",
+      "footprint": 26411560,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "SoftwareUpdateNotificationManager",
+      "kind": "app",
+      "footprint": 25118136,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "appstoreagent",
+      "kind": "system",
+      "footprint": 24609920,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "WiFiAgent",
+      "kind": "app",
+      "footprint": 23823344,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "WallpaperAgent",
+      "kind": "app",
+      "footprint": 22823896,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "siriinferenced",
+      "kind": "system",
+      "footprint": 21988360,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "accountsd",
+      "kind": "system",
+      "footprint": 21103432,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "universalAccessAuthWarn",
+      "kind": "app",
+      "footprint": 21086928,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Home",
+      "kind": "app",
+      "footprint": 20350128,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "chronod",
+      "kind": "system",
+      "footprint": 20087768,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "BiomeAgent",
+      "kind": "system",
+      "footprint": 19891184,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "homed",
+      "kind": "system",
+      "footprint": 19645088,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "AccessibilityUIServer",
+      "kind": "app",
+      "footprint": 19071672,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "sharingd",
+      "kind": "system",
+      "footprint": 18629808,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "WindowManager",
+      "kind": "app",
+      "footprint": 18350512,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "SystemUIServer",
+      "kind": "app",
+      "footprint": 18154168,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "duetexpertd",
+      "kind": "system",
+      "footprint": 17711704,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "identityservicesd",
+      "kind": "app",
+      "footprint": 17384168,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Weather",
+      "kind": "app",
+      "footprint": 17106024,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "CoreServicesUIAgent",
+      "kind": "app",
+      "footprint": 16548560,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "FindMy",
+      "kind": "app",
+      "footprint": 16319592,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Journal",
+      "kind": "app",
+      "footprint": 16286800,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "cloudd",
+      "kind": "system",
+      "footprint": 16253816,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "UserNotificationCenter",
+      "kind": "app",
+      "footprint": 16188088,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "WallpaperAerialsExtension",
+      "kind": "system",
+      "footprint": 16041640,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "routined",
+      "kind": "system",
+      "footprint": 16024128,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "remindd",
+      "kind": "system",
+      "footprint": 15614480,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "TextInputMenuAgent",
+      "kind": "app",
+      "footprint": 15155896,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Screen Time",
+      "kind": "app",
+      "footprint": 14926928,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mediaanalysisd",
+      "kind": "system",
+      "footprint": 14500464,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "fileproviderd",
+      "kind": "system",
+      "footprint": 14238176,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "fontd",
+      "kind": "system",
+      "footprint": 13943216,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "callservicesd",
+      "kind": "system",
+      "footprint": 13714056,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "siriactionsd",
+      "kind": "system",
+      "footprint": 13648496,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "VoiceMemos",
+      "kind": "app",
+      "footprint": 13550624,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "amsaccountsd",
+      "kind": "system",
+      "footprint": 13337128,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "photolibraryd",
+      "kind": "system",
+      "footprint": 13173312,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "PowerChime",
+      "kind": "app",
+      "footprint": 12812840,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "AppleSpell",
+      "kind": "system",
+      "footprint": 12730968,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "CursorUIViewService",
+      "kind": "system",
+      "footprint": 12222992,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Stocks",
+      "kind": "app",
+      "footprint": 12059200,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "suggestd",
+      "kind": "system",
+      "footprint": 11715088,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Notes",
+      "kind": "app",
+      "footprint": 11551704,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "searchpartyuseragent",
+      "kind": "system",
+      "footprint": 11256264,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "spotlightknowledged.updater",
+      "kind": "system",
+      "footprint": 11223880,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "imagent",
+      "kind": "app",
+      "footprint": 11207208,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ScreenTimeAgent",
+      "kind": "system",
+      "footprint": 11158056,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "bird",
+      "kind": "system",
+      "footprint": 11092760,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "secd",
+      "kind": "system",
+      "footprint": 11059728,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "siriknowledged",
+      "kind": "system",
+      "footprint": 11027416,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "passd",
+      "kind": "system",
+      "footprint": 11027008,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "NoirWall",
+      "kind": "app",
+      "footprint": 10978072,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "photoanalysisd",
+      "kind": "system",
+      "footprint": 10633696,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "usernoted",
+      "kind": "system",
+      "footprint": 10584568,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "LinkedNotesUIService",
+      "kind": "app",
+      "footprint": 10551824,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Podcasts",
+      "kind": "app",
+      "footprint": 10420824,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "corespeechd",
+      "kind": "system",
+      "footprint": 10125864,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mlhostd",
+      "kind": "system",
+      "footprint": 10093408,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "UIKitSystem",
+      "kind": "app",
+      "footprint": 9962000,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "homeenergyd",
+      "kind": "system",
+      "footprint": 9929232,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "akd",
+      "kind": "system",
+      "footprint": 9781824,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "donotdisturbd",
+      "kind": "system",
+      "footprint": 9699832,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "networkserviceproxy",
+      "kind": "system",
+      "footprint": 9699808,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "iconservicesagent",
+      "kind": "system",
+      "footprint": 9667136,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "heard",
+      "kind": "system",
+      "footprint": 9568784,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "knowledge-agent",
+      "kind": "system",
+      "footprint": 9355744,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "calaccessd",
+      "kind": "system",
+      "footprint": 9339384,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "itunescloudd",
+      "kind": "system",
+      "footprint": 9290160,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "coreautha",
+      "kind": "system",
+      "footprint": 9224696,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "talagentd",
+      "kind": "system",
+      "footprint": 9208240,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "tipsd",
+      "kind": "system",
+      "footprint": 9191928,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "universalaccessd",
+      "kind": "system",
+      "footprint": 9077240,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "AppSSOAgent",
+      "kind": "app",
+      "footprint": 8962648,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "replayd",
+      "kind": "system",
+      "footprint": 8913472,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Clock",
+      "kind": "app",
+      "footprint": 8897064,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "rapportd",
+      "kind": "system",
+      "footprint": 8782328,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "WallpaperLegacyExtension",
+      "kind": "system",
+      "footprint": 8749512,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "spotlightknowledged",
+      "kind": "system",
+      "footprint": 8487512,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "UserEventAgent",
+      "kind": "system",
+      "footprint": 8389064,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "trustd",
+      "kind": "system",
+      "footprint": 8372632,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "CoreLocationAgent",
+      "kind": "app",
+      "footprint": 8241824,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "familycircled",
+      "kind": "system",
+      "footprint": 8077768,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "nsurlsessiond",
+      "kind": "system",
+      "footprint": 7979536,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Batteries",
+      "kind": "app",
+      "footprint": 7914024,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "dprivacyd",
+      "kind": "system",
+      "footprint": 7881520,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ShortcutsViewService",
+      "kind": "system",
+      "footprint": 7881304,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "milod",
+      "kind": "system",
+      "footprint": 7848392,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "IMDPersistenceAgent",
+      "kind": "system",
+      "footprint": 7750160,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "findmylocateagent",
+      "kind": "system",
+      "footprint": 7684576,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "StatusKitAgent",
+      "kind": "system",
+      "footprint": 7651784,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "avconferenced",
+      "kind": "system",
+      "footprint": 7635448,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "intelligenceplatformd",
+      "kind": "system",
+      "footprint": 7537120,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "lsd",
+      "kind": "system",
+      "footprint": 7438840,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "storeuid",
+      "kind": "app",
+      "footprint": 7406216,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "AirPlayUIAgent",
+      "kind": "app",
+      "footprint": 7340512,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ContextStoreAgent",
+      "kind": "system",
+      "footprint": 7340488,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "amsengagementd",
+      "kind": "system",
+      "footprint": 7242184,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "managedappdistributionagent",
+      "kind": "system",
+      "footprint": 7143856,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mdbulkimport",
+      "kind": "system",
+      "footprint": 7029168,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "contactsdonationagent",
+      "kind": "system",
+      "footprint": 6914528,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "linkd",
+      "kind": "system",
+      "footprint": 6832632,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "audioaccessoryd",
+      "kind": "system",
+      "footprint": 6734304,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "parsecd",
+      "kind": "system",
+      "footprint": 6685152,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "communicationtrustd",
+      "kind": "system",
+      "footprint": 6668744,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mapssyncd",
+      "kind": "system",
+      "footprint": 6472088,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Keychain Circle Notification",
+      "kind": "app",
+      "footprint": 6439416,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "managedcorespotlightd",
+      "kind": "system",
+      "footprint": 6373904,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "BackgroundTaskManagementAgent",
+      "kind": "app",
+      "footprint": 6341088,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "com.apple.quicklook.ThumbnailsA",
+      "kind": "system",
+      "footprint": 6291984,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "coreauthd",
+      "kind": "system",
+      "footprint": 6275528,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "CommCenter",
+      "kind": "system",
+      "footprint": 6144528,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "UsageTrackingAgent",
+      "kind": "system",
+      "footprint": 6144480,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "syncdefaultsd",
+      "kind": "system",
+      "footprint": 6144384,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "usernotificationsd",
+      "kind": "system",
+      "footprint": 6111712,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "liveactivitiesd",
+      "kind": "system",
+      "footprint": 5964256,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "diagnostics_agent",
+      "kind": "system",
+      "footprint": 5964232,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "cloudphotod",
+      "kind": "system",
+      "footprint": 5898696,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "pkd",
+      "kind": "system",
+      "footprint": 5685632,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ScopedBookmarkAgent",
+      "kind": "system",
+      "footprint": 5669560,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "tccd",
+      "kind": "system",
+      "footprint": 5620120,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ModelCatalogAgent",
+      "kind": "system",
+      "footprint": 5587400,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "com.apple.geod",
+      "kind": "system",
+      "footprint": 5472712,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Shortcuts",
+      "kind": "app",
+      "footprint": 5440112,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Safari",
+      "kind": "app",
+      "footprint": 5439944,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "deleted",
+      "kind": "system",
+      "footprint": 5439920,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "triald",
+      "kind": "system",
+      "footprint": 5259720,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "com.apple.Safari.SafeBrowsing.S",
+      "kind": "system",
+      "footprint": 5243360,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ContinuityCaptureAgent",
+      "kind": "system",
+      "footprint": 5243336,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "proactived",
+      "kind": "system",
+      "footprint": 5210544,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "sharedfilelistd",
+      "kind": "system",
+      "footprint": 5145176,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ContextService",
+      "kind": "system",
+      "footprint": 5128720,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "FeatureAccessAgent",
+      "kind": "system",
+      "footprint": 5112264,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "keyboardservicesd",
+      "kind": "system",
+      "footprint": 5095856,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "intelligentroutingd",
+      "kind": "system",
+      "footprint": 5079472,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "com.apple.CloudDocs.iCloudDrive",
+      "kind": "system",
+      "footprint": 4997576,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "PeopleViewService",
+      "kind": "app",
+      "footprint": 4981192,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Calendar",
+      "kind": "app",
+      "footprint": 4915656,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Reminders",
+      "kind": "app",
+      "footprint": 4915656,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "axassetsd",
+      "kind": "system",
+      "footprint": 4899320,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "MobileTimerIntents",
+      "kind": "system",
+      "footprint": 4899224,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "IMAutomaticHistoryDeletionAgent",
+      "kind": "app",
+      "footprint": 4817352,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "dmd",
+      "kind": "system",
+      "footprint": 4751792,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "imklaunchagent",
+      "kind": "system",
+      "footprint": 4669800,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "distnoted",
+      "kind": "system",
+      "footprint": 4669752,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "PasswordBreachAgent",
+      "kind": "system",
+      "footprint": 4653464,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "fontworker",
+      "kind": "system",
+      "footprint": 4538800,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mobiletimerd",
+      "kind": "system",
+      "footprint": 4522440,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "cfprefsd",
+      "kind": "system",
+      "footprint": 4489504,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Photos",
+      "kind": "app",
+      "footprint": 4374960,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ciphermld",
+      "kind": "system",
+      "footprint": 4342192,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ViewBridgeAuxiliary",
+      "kind": "system",
+      "footprint": 4342192,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "TrustedPeersHelper",
+      "kind": "system",
+      "footprint": 4309400,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Tips",
+      "kind": "app",
+      "footprint": 4293064,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "secinitd",
+      "kind": "system",
+      "footprint": 4276608,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "AssetCacheLocatorService",
+      "kind": "system",
+      "footprint": 4194712,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "recentsd",
+      "kind": "system",
+      "footprint": 4161992,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "pboard",
+      "kind": "system",
+      "footprint": 4145536,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "SafariLaunchAgent",
+      "kind": "system",
+      "footprint": 4014536,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "AMPDeviceDiscoveryAgent",
+      "kind": "system",
+      "footprint": 4014488,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "analyticsagent",
+      "kind": "system",
+      "footprint": 3932592,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "privatecloudcomputed",
+      "kind": "app",
+      "footprint": 3850696,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "neagent",
+      "kind": "system",
+      "footprint": 3850624,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ctkd",
+      "kind": "system",
+      "footprint": 3768704,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "containermanagerd",
+      "kind": "system",
+      "footprint": 3752320,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "devicecheckd",
+      "kind": "system",
+      "footprint": 3719576,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "useractivityd",
+      "kind": "system",
+      "footprint": 3703144,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "contentlinkingd",
+      "kind": "system",
+      "footprint": 3654088,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "icdd",
+      "kind": "system",
+      "footprint": 3621272,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "assessmentagent",
+      "kind": "system",
+      "footprint": 3424688,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "followupd",
+      "kind": "system",
+      "footprint": 3424688,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "backgroundassets.user",
+      "kind": "system",
+      "footprint": 3326336,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "assistant_cdmd",
+      "kind": "system",
+      "footprint": 3310024,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "inputanalyticsd",
+      "kind": "system",
+      "footprint": 3293640,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "lockoutagent",
+      "kind": "system",
+      "footprint": 3277184,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "swcd",
+      "kind": "system",
+      "footprint": 3260776,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ctkahp",
+      "kind": "system",
+      "footprint": 3162544,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "CategoriesService",
+      "kind": "system",
+      "footprint": 3162472,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "localizationswitcherd",
+      "kind": "system",
+      "footprint": 3031400,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "maild",
+      "kind": "system",
+      "footprint": 2933096,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ManagedSettingsAgent",
+      "kind": "system",
+      "footprint": 2933096,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "pbs",
+      "kind": "system",
+      "footprint": 2933096,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "feedbackd",
+      "kind": "system",
+      "footprint": 2900304,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "CMFSyncAgent",
+      "kind": "system",
+      "footprint": 2883968,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "AudioComponentRegistrar",
+      "kind": "system",
+      "footprint": 2883872,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "commerce",
+      "kind": "system",
+      "footprint": 2834768,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "Setup Assistant",
+      "kind": "app",
+      "footprint": 2720152,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "biomesyncd",
+      "kind": "system",
+      "footprint": 2621800,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "com.apple.hiservices-xpcservice",
+      "kind": "system",
+      "footprint": 2425144,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mediaremoteagent",
+      "kind": "system",
+      "footprint": 2343248,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "com.apple.accessibility.mediaac",
+      "kind": "system",
+      "footprint": 2261280,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "mdwrite",
+      "kind": "system",
+      "footprint": 2146616,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "caffeinate",
+      "kind": "other",
+      "footprint": 2097392,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "ReportCrash",
+      "kind": "system",
+      "footprint": 1982800,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "geodMachServiceBridge",
+      "kind": "system",
+      "footprint": 1966392,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "csnameddatad",
+      "kind": "system",
+      "footprint": 1835296,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    },
+    {
+      "label": "DiskUnmountWatcher",
+      "kind": "system",
+      "footprint": 1720560,
+      "idle": false,
+      "orphan": false,
+      "reclaimable": false
+    }
+  ]
+}

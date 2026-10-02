@@ -16,6 +16,8 @@ attributed to the agent, app, sandbox or model server that owns it, and a straig
 ![Rust](https://img.shields.io/badge/rust-1.88%2B-orange)
 ![No root](https://img.shields.io/badge/root-not%20required-success)
 
+**[Website](https://iprajax.github.io/oomtop/) · [Install](docs/INSTALL.md) · [Changelog](CHANGELOG.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)**
+
 <img src="docs/media/hero.gif" alt="oomtop TUI: htop-style per-core meters, true-memory bar, an answer-first headline, groups ranked by what matters, and an F-key bar" width="100%">
 
 <sub>Live on a 24 GB fanless MacBook Air M5: per-core meters (E/P cores), a memory bar split by what really
@@ -177,6 +179,9 @@ $ brew install iprajax/oomtop/oomtop
 $ curl -fsSL https://github.com/iprajax/oomtop/releases/latest/download/install.sh | sh   # verifies SHA-256
 $ cargo install oomtop-cli --locked
 ```
+
+Every other channel (cargo-binstall, npm, PyPI, AUR, Nix, Docker/GHCR, mise, eget, ubi) and its status:
+[docs/INSTALL.md](docs/INSTALL.md).
 
 | Platform | Notes |
 |---|---|

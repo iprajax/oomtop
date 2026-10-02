@@ -1,0 +1,62 @@
+name: pages
+
+# Deploys the static landing page in site/ to GitHub Pages (https://iprajax.github.io/oomtop).
+# No build step: the artifact is site/ plus the README GIFs from docs/media (copied here so they live in git once).
+# One-time setup: Settings → Pages → Source: "GitHub Actions".
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "site/**"
+      - "docs/media/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: assemble site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          cp -R site/. _site/
+          rm -rf _site/media && mkdir -p _site/media      # a local media/ symlink is never shipped
+          cp docs/media/*.gif _site/media/
+          rm -f _site/.gitignore _site/data/make-snapshot.sh
+          touch _site/.nojekyll
+          # fail fast if something the page references is missing
+          for f in index.html styles.css app.js city.js favicon.svg og.png data/snapshot.json \
+                   media/hero.gif media/tui-replay.gif media/headroom.gif media/reclaim.gif \
+                   media/mcp.gif media/doctor.gif media/themes.gif; do
+            test -s "_site/$f" || { echo "::error::missing _site/$f"; exit 1; }
+          done
+          python3 -c "import json; d=json.load(open('_site/data/snapshot.json')); assert d['groups'] and d['headroom']['bytes'] > 0"
+          du -sh _site && find _site -type f | sort
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

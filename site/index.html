@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>oomtop: see the OOM coming</title>
+<meta name="description" content="A terminal resource monitor for local AI work on macOS and Linux: true memory accounting, every process attributed to the agent, app, sandbox or model server that owns it, and a straight answer to “can I load this model right now?”">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0d0c0b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f7f5f1" media="(prefers-color-scheme: light)">
+<link rel="canonical" href="https://iprajax.github.io/oomtop/">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="oomtop">
+<meta property="og:title" content="oomtop: see the OOM coming">
+<meta property="og:description" content="Who's eating your machine: agents, models, sandboxes. True memory, attribution, headroom checks and an MCP server, in your terminal.">
+<meta property="og:url" content="https://iprajax.github.io/oomtop/">
+<meta property="og:image" content="https://iprajax.github.io/oomtop/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="oomtop: a 3D stack of memory groups from a recorded MacBook Air under a 24 GiB RAM ceiling, with the tagline See the OOM coming.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="oomtop: see the OOM coming">
+<meta name="twitter:description" content="Who's eating your machine: agents, models, sandboxes. A terminal resource monitor for local AI work on macOS and Linux.">
+<meta name="twitter:image" content="https://iprajax.github.io/oomtop/og.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap"></noscript>
+<link rel="preload" href="data/snapshot.json" as="fetch" type="application/json" crossorigin>
+<link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js" crossorigin>
+<link rel="stylesheet" href="styles.css">
+<script>
+  // theme before first paint (manual override only; default follows prefers-color-scheme)
+  try { var t = localStorage.getItem("oomtop-theme"); if (t === "light" || t === "dark") document.documentElement.dataset.theme = t; } catch (e) {}
+  document.documentElement.classList.add("js");
+  if (/[?&]og\b/.test(location.search)) document.documentElement.classList.add("og"); // social-card render mode
+</script>
+<script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js" } }
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="top">
+  <div class="wrap nav-inner">
+    <a class="brand" href="#top">
+      <svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" class="bm-bg"/><path d="M12 17h40" class="bm-accent" stroke-width="4" stroke-linecap="round"/><rect x="13" y="38" width="9" height="14" rx="2" class="bm-a"/><rect x="27.5" y="30" width="9" height="22" rx="2" class="bm-b"/><rect x="42" y="23" width="9" height="29" rx="2" class="bm-c"/></svg>
+      <span>oomtop</span>
+      <span class="pill" title="Not yet released: build from source">v0.1.0 · pre-release</span>
+    </a>
+    <nav aria-label="Primary">
+      <ul class="nav-links">
+        <li><a href="#story">Story</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#headroom">Headroom</a></li>
+        <li><a href="#keys">Keys</a></li>
+        <li><a href="#install">Install</a></li>
+      </ul>
+    </nav>
+    <div class="nav-actions">
+      <button class="icon-btn" id="theme-toggle" type="button" aria-label="Switch color theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z"/></svg>
+      </button>
+      <a class="btn btn-ghost btn-sm" href="https://github.com/iprajax/oomtop" aria-label="GitHub">
+        <svg viewBox="0 0 16 16" aria-hidden="true" class="gh"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        <span>GitHub</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ───────────────────────── Hero ───────────────────────── -->
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-scene" id="scene" aria-hidden="false">
+    <canvas id="city" role="img" aria-label="3D memory stack from a recorded 24 GB MacBook Air: each block is one group of processes, as tall as its memory footprint, stacked under a translucent 24 GiB RAM ceiling. The two tallest blocks, GradleDaemon and KotlinCompileDaemon, are reclaim candidates."></canvas>
+    <div class="scene-fallback" id="scene-fallback" hidden></div>
+    <noscript><img class="scene-noscript" src="og.png" width="1200" height="630" alt="The memory stack of the recorded MacBook Air under a 24 GiB RAM ceiling"></noscript>
+    <div class="tip" id="tip" aria-hidden="true" hidden></div>
+    <div class="scene-label" id="label-ceiling" hidden>RAM ceiling · <span data-fmt="total"></span></div>
+    <div class="scene-label scene-label-peak" id="label-peak" hidden></div>
+    <div class="scene-label" id="label-swap" hidden>swap · <span data-fmt="swap_used"></span> of <span data-fmt="swap_total"></span></div>
+  </div>
+
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow"><span class="dot" aria-hidden="true"></span><span><span class="nw">Terminal resource monitor ·</span> <span class="nw">macOS + Linux · no root</span></span></p>
+      <h1 id="hero-title">See the <span class="accent">OOM</span> coming.</h1>
+      <p class="lede"><strong>Who's eating your machine: agents, models, sandboxes.</strong> True memory accounting, every
+        process attributed to the agent, app, sandbox or model server that owns it, and a straight answer to
+        <em>“can I load this model right now?”</em></p>
+
+      <div class="install-cta" data-tabs>
+        <div class="cta-tabs" role="tablist" aria-label="Install method">
+          <button role="tab" id="cta-tab-brew" aria-controls="cta-brew" aria-selected="true">Homebrew</button>
+          <button role="tab" id="cta-tab-src" aria-controls="cta-src" aria-selected="false" tabindex="-1">From source</button>
+        </div>
+        <div class="cmd" role="tabpanel" id="cta-brew" aria-labelledby="cta-tab-brew">
+          <code><span class="prompt" aria-hidden="true">$</span> brew install iprajax/oomtop/oomtop</code>
+          <button class="copy" type="button" data-copy="brew install iprajax/oomtop/oomtop" aria-label="Copy the Homebrew install command">Copy</button>
+        </div>
+        <div class="cmd" role="tabpanel" id="cta-src" aria-labelledby="cta-tab-src" hidden>
+          <code><span class="prompt" aria-hidden="true">$</span> git clone https://github.com/iprajax/oomtop &amp;&amp; cd oomtop &amp;&amp; cargo build --release -p oomtop-cli</code>
+          <button class="copy" type="button" data-copy="git clone https://github.com/iprajax/oomtop && cd oomtop && cargo build --release -p oomtop-cli" aria-label="Copy the build-from-source commands">Copy</button>
+        </div>
+        <p class="cta-note" id="cta-note">Homebrew goes live with the first tagged release. Today: build from source (Rust 1.88+).</p>
+      </div>
+
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#install">Install</a>
+        <a class="btn btn-ghost" href="https://github.com/iprajax/oomtop">
+          <svg viewBox="0 0 16 16" aria-hidden="true" class="gh"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          Star on GitHub</a>
+        <a class="link-quiet" href="#story">Read the story ↓</a>
+      </div>
+    </div>
+
+    <aside class="hud" aria-label="Recorded snapshot">
+      <div class="hud-head">
+        <span class="hud-title">MacBook Air M5 · <span data-fmt="total"></span></span>
+        <span class="hud-src" title="fixtures/macos/m5-air-agents.json, replayed with oomtop --replay">recorded</span>
+      </div>
+      <div class="hud-stats">
+        <div class="stat">
+          <span class="stat-k">Headroom</span>
+          <span class="stat-v" id="hud-headroom">–</span>
+        </div>
+        <div class="stat">
+          <span class="stat-k">Σ group footprint</span>
+          <span class="stat-v stat-v-sm" id="hud-sum">–</span>
+        </div>
+      </div>
+      <p class="hud-help" id="hud-help">Each block is one group, as tall as its footprint, stacked under the RAM ceiling.
+        <span class="swatch" aria-hidden="true"></span><strong>Amber</strong> = reclaim candidate: click it to reclaim.
+        <span class="hud-swap">Glass cylinder = swap: <span data-fmt="swap_used"></span> of <span data-fmt="swap_total"></span> used.</span></p>
+      <div class="hud-actions" id="hud-actions"></div>
+    </aside>
+  </div>
+</section>
+
+<!-- ───────────────────────── Story ───────────────────────── -->
+<section class="section" id="story" aria-labelledby="story-title">
+  <div class="wrap narrow">
+    <p class="kicker">Why this exists</p>
+    <h2 id="story-title">The afternoon that started this</h2>
+    <p class="prose">A 24 GB MacBook Air was running an image-generation server, four coding-agent sessions and a few apps.
+      Image generation was suddenly 2–3.5× slower and the machine felt full. <code>htop</code> didn't explain it.</p>
+  </div>
+  <div class="wrap">
+    <div class="table-wrap" role="region" aria-labelledby="story-title" tabindex="0">
+      <table class="truth">
+        <thead><tr><th scope="col">The question</th><th scope="col">What htop showed</th><th scope="col">What was actually true</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Who holds the memory?</th><td data-label="htop showed"><code>sd-server</code> nowhere near the top (small RES)</td><td data-label="Actually true"><strong>9.9 GB</strong> of Metal/GPU allocations, visible only in macOS <em>physical footprint</em></td></tr>
+          <tr><th scope="row">Are the Java processes big?</th><td data-label="htop showed">~0.5 GB RES each</td><td data-label="Actually true"><strong>~3 GB each</strong>, mostly compressed/swapped: Gradle + Kotlin daemons idle for 5 hours</td></tr>
+          <tr><th scope="row">What is <code>com.apple.<wbr>Virtualization.<wbr>VirtualMachine</code>?</th><td data-label="htop showed">a process name</td><td data-label="Actually true">the Claude desktop app's sandbox VM</td></tr>
+          <tr><th scope="row">Why did generation slow down?</th><td data-label="htop showed">nothing</td><td data-label="Actually true">thermal throttling + low battery + 6–7.5 GB of swap</td></tr>
+          <tr><th scope="row">Which session spawned what?</th><td data-label="htop showed">a flat list</td><td data-label="Actually true">4 agent sessions, headless Chrome, benchmark runs, orphaned daemons</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="wrap narrow">
+    <p class="prose">Stopping two idle daemons and the model server moved free memory from <strong>36&nbsp;% to 84&nbsp;%</strong>.
+      Nothing on screen had pointed at them, and nothing warned that swap was filling up.</p>
+    <p class="prose"><strong>oomtop is the tool that would have said so in one line:</strong></p>
+    <figure class="headline-demo">
+      <div class="term-line"><span class="sev" aria-hidden="true">▲</span> Tight on memory: 1.2 GB headroom. <span class="nw">sd-server</span> holds 9.9 GB; 2 idle build daemons could free 5.9 GB. <kbd>r</kbd></div>
+      <figcaption>The answer-first headline, from the README.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ───────────────────────── Features ───────────────────────── -->
+<section class="section features" id="features" aria-labelledby="features-title">
+  <div class="wrap narrow center">
+    <p class="kicker">What you get</p>
+    <h2 id="features-title">An htop you already know, telling the truth about memory.</h2>
+  </div>
+
+  <article class="feature wrap" id="f-htop" aria-labelledby="f1-title">
+    <div class="feature-copy">
+      <span class="fnum">01</span>
+      <h3 id="f1-title">An htop you already know how to read</h3>
+      <p>Per-core bars (tagged <strong>E</strong>/<strong>P</strong> on Apple Silicon), <code>Mem[…]</code> and <code>Swp[…]</code> meters,
+        Tasks · Load · Uptime, and the familiar <strong>F1–F10</strong> bar: Help, Setup, Search, Filter, Tree, SortBy, Why,
+        Reclaim, Stop, Quit. It works in every key preset (default, vim, emacs, htop).</p>
+    </div>
+    <figure class="shot shot-wide">
+      <a class="frame" href="media/hero.gif" title="Open full size"><img src="media/hero.gif" width="1640" height="960" loading="lazy" decoding="async"
+        alt="oomtop TUI: htop-style per-core meters, true-memory bar, an answer-first headline, groups ranked by what matters, and an F-key bar"></a>
+      <figcaption>Live on a 24 GB fanless MacBook Air M5: per-core meters (E/P cores), a memory bar split by what really holds RAM,
+        a one-line verdict, groups instead of a flat process list, and “why is this here?” on any row.</figcaption>
+    </figure>
+  </article>
+
+  <article class="feature wrap feature-text" id="f-truth" aria-labelledby="f2-title">
+    <div class="feature-copy">
+      <span class="fnum">02</span>
+      <h3 id="f2-title">Memory that tells the truth</h3>
+      <p>The <code>Mem</code> bar is split by what really holds RAM. The glyphs differ, so it reads without color. Per process:
+        macOS <code>phys_footprint</code> (includes Metal), Linux PSS/SwapPss + NVML/DRM GPU memory. Never RSS alone, and every
+        number carries its source.</p>
+    </div>
+    <div class="membar-demo" id="membar" aria-label="Memory bar of the recorded snapshot">
+      <div class="membar-line mono"><span class="mb-label">Mem[</span><span class="mb-bar" id="membar-bar"></span><span class="mb-label">]</span> <span id="membar-total" class="mb-total"></span></div>
+      <ul class="mb-legend" id="membar-legend"></ul>
+      <p class="mb-note">From the recorded snapshot. Each figure keeps its source, e.g. <code>app</code> = <code>vm_statistics64: internal − purgeable</code>.</p>
+    </div>
+  </article>
+
+  <article class="feature wrap" id="f-attrib" aria-labelledby="f3-title">
+    <div class="feature-copy">
+      <span class="fnum">03</span>
+      <h3 id="f3-title">Things, not PIDs: every process has an owner</h3>
+      <p>oomtop groups ~800 processes into the <strong>agent session</strong> (Claude Code, Codex, Cursor, Aider, Gemini, Goose…),
+        <strong>app</strong>, <strong>model server</strong> (Ollama, llama.cpp, sd.cpp, vLLM, LM Studio, MLX), <strong>sandbox</strong>
+        (Virtualization.framework VMs, Docker/OrbStack/Podman, Firecracker, bubblewrap, Seatbelt…) or <strong>build daemon</strong>
+        that owns them. It uses cgroups, macOS responsible-pid, ancestry, session markers and rules, and shows a confidence for each
+        group. Children that outlive their session show up as <strong>orphans</strong>. Things that cost memory and do nothing show up
+        as <strong>idle</strong>, sorted by how much RAM you'd get back.</p>
+    </div>
+    <figure class="shot shot-wide">
+      <a class="frame" href="media/tui-replay.gif" title="Open full size"><img src="media/tui-replay.gif" width="1640" height="960" loading="lazy" decoding="async"
+        alt="Replay of the recorded M5 Air: ranked groups, the Reclaim view with idle Gradle and Kotlin daemons, sandboxes and models views"></a>
+      <figcaption>Recorded with <code>--replay fixtures/macos/m5-air-agents.json</code>, a real (username-redacted) snapshot of the
+        machine in the story. Clone the repo and run the same command.</figcaption>
+    </figure>
+  </article>
+
+  <article class="feature wrap" id="headroom" aria-labelledby="f4-title">
+    <div class="feature-copy">
+      <span class="fnum">04</span>
+      <h3 id="f4-title">“Can I load this model now?”, answered in one command</h3>
+      <p>Headroom = what the OS can give you now, minus a safety margin. On Apple Silicon it also checks the <strong>Metal GPU
+        budget</strong>. Give it bytes or a model file: <code>--model x.gguf</code> reads only the GGUF header (layers, KV heads, context)
+        to estimate weights + KV cache + buffers. The exit code is made for scripts.</p>
+    </div>
+
+    <div class="calc" id="calc">
+      <div class="calc-head">
+        <h4>Try it on the recorded machine</h4>
+        <span class="calc-src">computed from the recorded snapshot · <code>data/snapshot.json</code></span>
+      </div>
+      <div class="calc-input">
+        <label for="need">I need</label>
+        <input type="range" id="need" min="0.5" max="16" step="0.1" value="8" aria-describedby="need-out">
+        <output id="need-out" for="need" class="mono">8.0 GiB</output>
+      </div>
+      <div class="calc-bar" id="calc-bar" aria-hidden="true">
+        <div class="cb-seg cb-head" id="cb-head"></div>
+        <div class="cb-seg cb-r" id="cb-r1"></div>
+        <div class="cb-seg cb-r" id="cb-r2"></div>
+        <div class="cb-need" id="cb-need"><span></span></div>
+      </div>
+      <ul class="cb-legend" aria-hidden="true">
+        <li><span class="k k-head"></span>headroom now</li>
+        <li><span class="k k-r"></span>after reclaim</li>
+        <li><span class="k k-need"></span>your need</li>
+      </ul>
+      <div class="term" aria-live="polite">
+        <div class="term-cmd mono"><span class="prompt" aria-hidden="true">$</span> <span id="calc-cmd">oomtop headroom --need 8.0G</span></div>
+        <div class="term-out mono" id="calc-out"></div>
+        <div class="term-exit mono"><span class="verdict" id="calc-verdict"></span><span class="exit">exit <b id="calc-exit">3</b></span></div>
+      </div>
+      <p class="calc-note">Uses the snapshot's headroom (<span data-fmt="headroom"></span>) and the reclaim plan oomtop computed
+        (largest gain first). The real command re-samples your machine; answers are advisory and valid for ~10 s.</p>
+    </div>
+
+    <div class="exit-table">
+      <table>
+        <thead><tr><th scope="col">exit</th><th scope="col">meaning</th></tr></thead>
+        <tbody>
+          <tr><td><code>0</code></td><td>fits now</td></tr>
+          <tr><td><code>3</code></td><td>fits <strong>after reclaim</strong>: it names exactly what to stop and how much that frees</td></tr>
+          <tr><td><code>4</code></td><td>doesn't fit, with the shortfall</td></tr>
+          <tr><td><code>1</code> / <code>2</code></td><td>couldn't measure / usage error</td></tr>
+        </tbody>
+      </table>
+      <div class="snippet">
+        <code>oomtop headroom &#8209;&#8209;model ~/models/qwen2.5&#8209;14b&#8209;q4_k_m.gguf &#8209;&#8209;ctx 8192 &amp;&amp; ./start&#8209;server.sh</code>
+        <button class="copy" type="button" data-copy="oomtop headroom --model ~/models/qwen2.5-14b-q4_k_m.gguf --ctx 8192 && ./start-server.sh" aria-label="Copy the headroom script example">Copy</button>
+      </div>
+    </div>
+
+    <figure class="shot shot-wide">
+      <a class="frame" href="media/headroom.gif" title="Open full size"><img src="media/headroom.gif" width="1400" height="560" loading="lazy" decoding="async"
+        alt="oomtop headroom --need 13G answers No (exit 4), 8G answers Yes after reclaiming the two daemons (exit 3), 2G answers Yes (exit 0)"></a>
+      <figcaption>The same three answers in a real terminal: 13G no (exit 4), 8G yes after reclaim (exit 3), 2G yes (exit 0).</figcaption>
+    </figure>
+  </article>
+
+  <article class="feature wrap" id="f-reclaim" aria-labelledby="f5-title">
+    <div class="feature-copy">
+      <span class="fnum">05</span>
+      <h3 id="f5-title">Reclaim safely, and know why it's slow</h3>
+      <ul class="points">
+        <li><strong>Reclaim</strong> lists idle build daemons, orphans and idle model servers, largest gain first, with the RAM you'd
+          actually get back (an estimate, and labeled as one). Nothing is stopped without confirmation. Model servers are unloaded
+          through their own API first (e.g. Ollama <code>keep_alive: 0</code>), then SIGTERM. SIGKILL needs a second, explicit yes.</li>
+        <li><strong><code>oomtop why</code></strong> ranks causes with evidence: swap storms (+600 MB/min), memory pressure / PSI, thermal
+          pressure, <strong>Low Power Mode</strong>, battery, GPU clocks. Throttling is only reported <strong>under load</strong>, since Apple
+          Silicon also down-clocks when idle.</li>
+        <li><strong>OOM forecast</strong>: when swap or available memory trends steadily toward a killer's threshold (kernel OOM,
+          systemd-oomd, earlyoom, macOS jetsam), the headline says <em>“Swap full in ~6 min at this rate”</em> and names the likely
+          victim. A single spike never triggers it.</li>
+      </ul>
+    </div>
+    <figure class="shot shot-wide">
+      <a class="frame" href="media/reclaim.gif" title="Open full size"><img src="media/reclaim.gif" width="1400" height="560" loading="lazy" decoding="async"
+        alt="oomtop reclaim --dry-run lists GradleDaemon ≈3.0 GiB and KotlinCompileDaemon ≈2.7 GiB, total ≈5.8 GiB; oomtop why reports nothing wrong"></a>
+      <figcaption><code>oomtop reclaim --dry-run</code> on the recorded machine, then <code>oomtop why</code>.</figcaption>
+    </figure>
+  </article>
+
+  <article class="feature wrap" id="f-mcp" aria-labelledby="f6-title">
+    <div class="feature-copy">
+      <span class="fnum">06</span>
+      <h3 id="f6-title">Agents ask before they load (MCP)</h3>
+      <div class="snippet">
+        <code><span class="prompt" aria-hidden="true">$</span> claude mcp add oomtop -- oomtop mcp</code>
+        <button class="copy" type="button" data-copy="claude mcp add oomtop -- oomtop mcp" aria-label="Copy the claude mcp add command">Copy</button>
+      </div>
+      <p>Read-only tools: <code>get_headroom</code>, <code>can_fit</code>, <code>top_consumers</code>, <code>list_groups</code>,
+        <code>list_model_servers</code>, <code>list_sandboxes</code>, <code>explain_slowdown</code>, <code>suggest_reclaim</code>. With
+        <code>--allow-actions</code> there is also <code>reclaim</code>, and oomtop itself asks <em>you</em> through MCP elicitation before
+        stopping anything. It samples only when called, so four agents running four MCP servers cost nothing while idle.
+        Setup for Codex, Cursor and Claude Desktop: <a href="https://github.com/iprajax/oomtop/blob/main/docs/mcp.md">docs/mcp.md</a>.</p>
+    </div>
+    <figure class="shot shot-wide">
+      <a class="frame" href="media/mcp.gif" title="Open full size"><img src="media/mcp.gif" width="1400" height="640" loading="lazy" decoding="async"
+        alt="An MCP client calls can_fit for 13 GB and gets a structured 'no, short by 1.8 GiB even after reclaiming 5.8 GiB'; suggest_reclaim lists the two daemons"></a>
+      <figcaption>An MCP client calling <code>can_fit</code> and <code>suggest_reclaim</code>: structured answers, no side effects.</figcaption>
+    </figure>
+  </article>
+
+  <div class="feature-pair wrap">
+    <article class="feature-card" id="f-doctor" aria-labelledby="f7-title">
+      <span class="fnum">07</span>
+      <h3 id="f7-title">Honest about what it can't see</h3>
+      <p><code>oomtop doctor</code> lists every source as <strong>ok / partial / unavailable (reason)</strong> and every terminal capability it
+        detected. Missing data is shown as <em>n/a</em> with a reason, never as a silent zero.</p>
+      <figure class="shot">
+        <a class="frame" href="media/doctor.gif" title="Open full size"><img src="media/doctor.gif" width="1400" height="900" loading="lazy" decoding="async"
+          alt="oomtop doctor lists each data source as ok, partial or unavailable with the reason, and the detected terminal capabilities"></a>
+      </figure>
+    </article>
+    <article class="feature-card" id="f-themes" aria-labelledby="f8-title">
+      <span class="fnum">08</span>
+      <h3 id="f8-title">Your terminal is the theme</h3>
+      <p>The default <code>terminal</code> theme uses your terminal's own 16 colors and <strong>never paints a background</strong>. Opt-in
+        themes: <code>mono</code>, <code>ember</code>, <code>mint</code>, <code>sand</code>, <code>coral</code>, <code>high-contrast</code>,
+        <code>colorblind</code>, <code>none</code>. Import base16, iTerm2, Ghostty, Kitty or Alacritty themes. <code>NO_COLOR</code>,
+        <code>--plain</code> (screen readers) and <code>--ascii</code> are supported.</p>
+      <figure class="shot">
+        <a class="frame" href="media/themes.gif" title="Open full size"><img src="media/themes.gif" width="1640" height="960" loading="lazy" decoding="async"
+          alt="oomtop theme list, then the TUI in the ember theme and in the monochrome none theme"></a>
+      </figure>
+    </article>
+  </div>
+</section>
+
+<!-- ───────────────────────── Keys ───────────────────────── -->
+<section class="section" id="keys" aria-labelledby="keys-title">
+  <div class="wrap narrow center">
+    <p class="kicker">Keyboard</p>
+    <h2 id="keys-title">The F-key bar you already know</h2>
+    <p class="prose">Press a key or pick one. On macOS the <span class="nw">F-keys</span> may control brightness/volume: use <kbd>fn</kbd>+F-key, or the letter keys.</p>
+  </div>
+  <div class="wrap">
+    <div class="keymap" id="keymap" tabindex="0" aria-label="Interactive key map. Focus it and press a key, or choose one of the keys.">
+      <div class="term-chrome" aria-hidden="true"><span></span><span></span><span></span><em>oomtop</em></div>
+      <div class="fbar" role="group" aria-label="Function keys" id="fbar"></div>
+      <div class="key-detail" id="key-detail" aria-live="polite"></div>
+      <div class="key-groups" id="key-groups"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── How it works ───────────────────────── -->
+<section class="section how" id="how" aria-labelledby="how-title">
+  <div class="wrap narrow center">
+    <p class="kicker">How it works</p>
+    <h2 id="how-title"><span class="nw">No daemon.</span> <span class="nw">Pure core.</span> <span class="nw">Replayable.</span></h2>
+  </div>
+  <div class="wrap">
+    <ol class="pipeline" aria-label="Data pipeline">
+      <li><span class="pl-k">Sources</span><span class="pl-v">macOS: proc_pid_rusage · sysctl · vm_statistics64 · IOReport · IOKit<br>Linux: /proc · smaps_rollup · cgroup v2 · PSI · NVML · DRM fdinfo</span><span class="pl-n">I/O, ≤ 50 ms each, no root</span></li>
+      <li><span class="pl-k">RawSample</span><span class="pl-v">what fixtures record</span><span class="pl-n">replays on any OS in CI</span></li>
+      <li><span class="pl-k">Attribution</span><span class="pl-v">rules · markers · ancestry · lineage + model-server &amp; sandbox adapters</span><span class="pl-n">adapters talk to 127.0.0.1 only</span></li>
+      <li><span class="pl-k">oomtop-core</span><span class="pl-v">headroom · forecast · why · ranking</span><span class="pl-n">pure, unit-tested</span></li>
+      <li><span class="pl-k">Outputs</span><span class="pl-v">TUI · json / ndjson · serve (HTTP + Prometheus) · MCP (stdio)</span><span class="pl-n">same numbers everywhere</span></li>
+    </ol>
+    <div class="facts">
+      <div class="fact"><span class="fact-v">0.96 %</span><span class="fact-k">of one core for the TUI, measured on the M5 Air over 11 minutes</span></div>
+      <div class="fact"><span class="fact-v">31 MB</span><span class="fact-k">RSS for the TUI (headless: 0.8 %, 24 MB)</span></div>
+      <div class="fact"><span class="fact-v">0.2 %</span><span class="fact-k">footprint delta vs. <code>top</code> on the M5 Air</span></div>
+      <div class="fact"><span class="fact-v">737</span><span class="fact-k">tests pass on macOS; 689 on Linux aarch64 (1 skipped)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── Install ───────────────────────── -->
+<section class="section" id="install" aria-labelledby="install-title">
+  <div class="wrap narrow center">
+    <p class="kicker">Install</p>
+    <h2 id="install-title">One static binary. No root.</h2>
+    <p class="prose"><strong>Pre-release (v0.1.0).</strong> Build from source today. Release archives, the Homebrew tap and the install
+      script go live with the first tagged release; those tabs say so.</p>
+  </div>
+  <div class="wrap">
+    <div class="install" data-tabs>
+      <div class="tabs" role="tablist" aria-label="Install channel">
+        <button role="tab" id="t-src" aria-controls="p-src" aria-selected="true">From source <span class="badge badge-live">today</span></button>
+        <button role="tab" id="t-brew" aria-controls="p-brew" aria-selected="false" tabindex="-1">Homebrew <span class="badge">after release</span></button>
+        <button role="tab" id="t-curl" aria-controls="p-curl" aria-selected="false" tabindex="-1">Install script <span class="badge">after release</span></button>
+        <button role="tab" id="t-cargo" aria-controls="p-cargo" aria-selected="false" tabindex="-1">cargo <span class="badge">after release</span></button>
+        <button role="tab" id="t-arch" aria-controls="p-arch" aria-selected="false" tabindex="-1">Release archives <span class="badge">after release</span></button>
+      </div>
+
+      <div class="tab-panel" role="tabpanel" id="p-src" aria-labelledby="t-src">
+        <div class="snippet block">
+          <pre><code>git clone https://github.com/iprajax/oomtop &amp;&amp; cd oomtop
+<span class="c-cm"># Rust 1.88+; binary: target/release/oomtop</span>
+cargo build --release -p oomtop-cli
+./target/release/oomtop
+<span class="c-cm"># or: cargo install --path crates/oomtop-cli --locked</span></code></pre>
+          <button class="copy" type="button" data-copy="git clone https://github.com/iprajax/oomtop && cd oomtop
+cargo build --release -p oomtop-cli
+./target/release/oomtop" aria-label="Copy the build-from-source commands">Copy</button>
+        </div>
+        <p class="panel-note">Try it against the recorded machine without touching yours: <code>./target/release/oomtop --replay fixtures/macos/m5-air-agents.json</code></p>
+      </div>
+      <div class="tab-panel" role="tabpanel" id="p-brew" aria-labelledby="t-brew" hidden>
+        <div class="snippet block">
+          <pre><code>brew install iprajax/oomtop/oomtop</code></pre>
+          <button class="copy" type="button" data-copy="brew install iprajax/oomtop/oomtop" aria-label="Copy the Homebrew command">Copy</button>
+        </div>
+        <p class="panel-note">From the tap <code>iprajax/homebrew-oomtop</code>; the formula is rendered from the release's <code>SHA256SUMS</code>. Available after the first tagged release; homebrew-core after 1.0.</p>
+      </div>
+      <div class="tab-panel" role="tabpanel" id="p-curl" aria-labelledby="t-curl" hidden>
+        <div class="snippet block">
+          <pre><code>curl -fsSL https://github.com/iprajax/oomtop/releases/latest/download/install.sh | sh</code></pre>
+          <button class="copy" type="button" data-copy="curl -fsSL https://github.com/iprajax/oomtop/releases/latest/download/install.sh | sh" aria-label="Copy the install script command">Copy</button>
+        </div>
+        <p class="panel-note">POSIX sh. Picks the glibc or static musl build, verifies the archive against <code>SHA256SUMS</code> and refuses to install on a mismatch, installs to <code>~/.local/bin</code> without sudo. Options: <code>--version</code>, <code>--to DIR</code>, <code>--musl</code>, <code>--dry-run</code>. Available after the first tagged release.</p>
+      </div>
+      <div class="tab-panel" role="tabpanel" id="p-cargo" aria-labelledby="t-cargo" hidden>
+        <div class="snippet block">
+          <pre><code>cargo install oomtop-cli --locked     # installs the `oomtop` binary</code></pre>
+          <button class="copy" type="button" data-copy="cargo install oomtop-cli --locked" aria-label="Copy the cargo install command">Copy</button>
+        </div>
+        <p class="panel-note">From crates.io after the first release. Today, <code>cargo install --path crates/oomtop-cli --locked</code> from a clone.</p>
+      </div>
+      <div class="tab-panel" role="tabpanel" id="p-arch" aria-labelledby="t-arch" hidden>
+        <ul class="archives mono">
+          <li><span>oomtop-&lt;v&gt;-universal-apple-darwin.tar.gz</span><em>macOS arm64 + x86_64</em></li>
+          <li><span>oomtop-&lt;v&gt;-x86_64-unknown-linux-gnu.tar.gz</span><em>glibc ≥ 2.28, NVML at runtime</em></li>
+          <li><span>oomtop-&lt;v&gt;-aarch64-unknown-linux-gnu.tar.gz</span><em>glibc ≥ 2.28, NVML at runtime</em></li>
+          <li><span>oomtop-&lt;v&gt;-x86_64-unknown-linux-musl.tar.gz</span><em>fully static, no NVML</em></li>
+          <li><span>oomtop-&lt;v&gt;-aarch64-unknown-linux-musl.tar.gz</span><em>fully static, no NVML</em></li>
+          <li><span>.deb · .rpm · SHA256SUMS</span><em>built from the glibc binaries</em></li>
+        </ul>
+        <p class="panel-note">On <a href="https://github.com/iprajax/oomtop/releases">GitHub Releases</a> after the first tagged release. macOS builds are codesigned and notarized when the signing secrets are configured.</p>
+      </div>
+    </div>
+
+    <div class="table-wrap platforms" role="region" aria-label="Supported platforms" tabindex="0">
+      <table>
+        <thead><tr><th scope="col">Platform</th><th scope="col">Notes</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">macOS 13+ on Apple Silicon (primary)</th><td>GPU/power via IOReport (resolved at runtime; degrades cleanly). Intel Macs: best effort</td></tr>
+          <tr><th scope="row">Linux x86_64 / aarch64, glibc ≥ 2.28</th><td>NVIDIA via NVML (loaded at runtime), AMD/Intel via DRM fdinfo, PSI, cgroup v2</td></tr>
+          <tr><th scope="row">Linux, fully static (musl)</th><td>everything except NVML</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="usage">
+      <h3>Use</h3>
+      <dl class="usage-list mono">
+        <div><dt>oomtop</dt><dd>the TUI</dd></div>
+        <div><dt>oomtop headroom --need 13G</dt><dd>exit 0 yes · 3 after reclaim · 4 no</dd></div>
+        <div><dt>oomtop why</dt><dd>ranked causes of slowness / pressure, with evidence</dd></div>
+        <div><dt>oomtop reclaim --dry-run</dt><dd>what's idle and what stopping it would free</dd></div>
+        <div><dt>oomtop models</dt><dd>model files on disk: size, last use, duplicates</dd></div>
+        <div><dt>oomtop json</dt><dd>one redacted, versioned snapshot (ndjson: one per interval)</dd></div>
+        <div><dt>oomtop serve</dt><dd>HTTP JSON + Prometheus /metrics on 127.0.0.1:9469</dd></div>
+        <div><dt>oomtop mcp</dt><dd>MCP server for agents</dd></div>
+        <div><dt>oomtop doctor</dt><dd>what was measured, what wasn't, and why</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── Compare ───────────────────────── -->
+<section class="section" id="compare" aria-labelledby="compare-title">
+  <div class="wrap narrow center">
+    <p class="kicker">How it compares</p>
+    <h2 id="compare-title">The attribution + headroom layer</h2>
+  </div>
+  <div class="wrap">
+    <div class="table-wrap" role="region" aria-labelledby="compare-title" tabindex="0">
+      <table class="compare">
+        <thead><tr><th scope="col"><span class="sr">Capability</span></th><th scope="col" class="us">oomtop</th><th scope="col">htop / btop</th><th scope="col">Activity Monitor</th><th scope="col">agtop</th><th scope="col">macmon / mactop</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">macOS footprint / Linux PSS (not RSS)</th><td class="us">✓</td><td>–</td><td>✓</td><td>–</td><td>–</td></tr>
+          <tr><th scope="row">Apple GPU / power, no sudo</th><td class="us">✓</td><td>–</td><td>partial</td><td>–</td><td>✓</td></tr>
+          <tr><th scope="row">Processes grouped by agent session / app / sandbox / model server</th><td class="us">✓</td><td>–</td><td>–</td><td>agents only</td><td>–</td></tr>
+          <tr><th scope="row">“Can I load X GB?” + script exit codes</th><td class="us">✓</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+          <tr><th scope="row">OOM forecast with the likely victim</th><td class="us">✓</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+          <tr><th scope="row">Safe reclaim of idle daemons / orphans</th><td class="us">✓</td><td>kill only</td><td>quit only</td><td>–</td><td>–</td></tr>
+          <tr><th scope="row">MCP server for agents</th><td class="us">✓</td><td>–</td><td>–</td><td>–</td><td>–</td></tr>
+          <tr><th scope="row">Token / cost tracking</th><td class="us nw">not a goal</td><td>–</td><td>–</td><td>✓</td><td>–</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── Safety ───────────────────────── -->
+<section class="section" id="safety" aria-labelledby="safety-title">
+  <div class="wrap narrow center">
+    <p class="kicker">Safety and privacy</p>
+    <h2 id="safety-title">Nothing stops without your yes. Nothing leaves your machine.</h2>
+  </div>
+  <div class="wrap cards3">
+    <div class="card">
+      <h3>Confirm, then SIGTERM</h3>
+      <p>Actions target whole groups, with the identity re-checked (<code>pid</code> + start time) right before signalling. SIGTERM first;
+        SIGKILL only on a second explicit yes. System processes, your terminal, other users' processes and the asking agent session are protected.</p>
+    </div>
+    <div class="card">
+      <h3>Redacted by default</h3>
+      <p>Command lines are redacted in every export. Environments are read only for an allowlist of session-marker keys (hashed, never stored).
+        MCP is read-only unless you pass <code>--allow-actions</code>.</p>
+    </div>
+    <div class="card">
+      <h3>Local only</h3>
+      <p>No telemetry. <code>serve</code> binds 127.0.0.1. Learning (what you open and pin) is local SQLite: <code>--no-learn</code> turns it
+        off, <code>oomtop profile reset</code> forgets it.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section closing" aria-labelledby="closing-title">
+  <div class="wrap narrow center">
+    <h2 id="closing-title">Know before it swaps.</h2>
+    <p class="prose">Open source, MIT licensed, built in the open. Read the spec, file an issue, or run it against the recorded machine.</p>
+    <div class="hero-actions center">
+      <a class="btn btn-primary" href="https://github.com/iprajax/oomtop">View on GitHub</a>
+      <a class="btn btn-ghost" href="https://github.com/iprajax/oomtop/blob/main/SPEC.md">Read SPEC.md</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="brand" href="#top"><svg class="brand-mark" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" class="bm-bg"/><path d="M12 17h40" class="bm-accent" stroke-width="4" stroke-linecap="round"/><rect x="13" y="38" width="9" height="14" rx="2" class="bm-a"/><rect x="27.5" y="30" width="9" height="22" rx="2" class="bm-b"/><rect x="42" y="23" width="9" height="29" rx="2" class="bm-c"/></svg><span>oomtop</span></a>
+      <p class="muted small">See the OOM coming. MIT licensed.</p>
+    </div>
+    <nav aria-label="Documentation">
+      <h2 class="foot-h">Docs</h2>
+      <ul>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/README.md">README</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/docs/cli.md">CLI</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/docs/config.md">Configuration</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/docs/mcp.md">MCP</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/docs/themes.md">Themes</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Design">
+      <h2 class="foot-h">Design</h2>
+      <ul>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/SPEC.md">SPEC.md</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/UX.md">UX.md</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/docs/CONTRACTS.md">Contracts</a></li>
+      </ul>
+    </nav>
+    <nav aria-label="Project">
+      <h2 class="foot-h">Project</h2>
+      <ul>
+        <li><a href="https://github.com/iprajax/oomtop">GitHub</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/issues">Issues</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/releases">Releases</a></li>
+        <li><a href="https://github.com/iprajax/oomtop/blob/main/LICENSE">MIT License</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="wrap foot-base small muted">
+    <span>The 3D scene and the headroom calculator use <code>data/snapshot.json</code>, generated by <code>oomtop --replay fixtures/macos/m5-air-agents.json json</code> (groups only, redacted).</span>
+  </div>
+</footer>
+
+<script src="app.js" defer></script>
+<script type="module" src="city.js"></script>
+</body>
+</html>
