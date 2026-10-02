@@ -39,7 +39,7 @@ jobs:
       version: ${{ steps.t.outputs.version }}
       prerelease: ${{ steps.t.outputs.prerelease }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
       - id: t
@@ -80,7 +80,7 @@ jobs:
           - { target: x86_64-unknown-linux-musl, zig_target: x86_64-unknown-linux-musl, flavor: musl, runner: ubuntu-latest }
           - { target: aarch64-unknown-linux-musl, zig_target: aarch64-unknown-linux-musl, flavor: musl, runner: ubuntu-24.04-arm }
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
       - name: source date (reproducible archive timestamps, tools/release/package.sh)
@@ -91,7 +91,7 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           key: ${{ matrix.target }}
-      - uses: mlugg/setup-zig@v1
+      - uses: mlugg/setup-zig@v2
         with:
           version: 0.13.0
       - name: install cargo-zigbuild
@@ -157,7 +157,7 @@ jobs:
             sh -c 'dpkg -i /d/*.deb && oomtop --version && oomtop doctor --no-probe --offline >/dev/null'
           docker run --rm -v "$PWD/dist:/d:ro" rockylinux:8 \
             sh -c 'rpm -i /d/*.rpm && rpm -qi oomtop && oomtop --version && oomtop doctor --no-probe --offline >/dev/null'
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist-${{ matrix.target }}
           path: dist/*
@@ -175,7 +175,7 @@ jobs:
       HAS_CERT: ${{ secrets.MACOS_CERT_P12 != '' && secrets.MACOS_SIGN_IDENTITY != '' }}
       HAS_NOTARY: ${{ secrets.APPLE_ID != '' && secrets.APPLE_TEAM_ID != '' && secrets.APPLE_APP_PASSWORD != '' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
       - name: source date (reproducible archive timestamps, tools/release/package.sh)
@@ -254,7 +254,7 @@ jobs:
           sh tools/release/package.sh --version "${{ needs.meta.outputs.version }}" \
             --target universal-apple-darwin --bin "$RUNNER_TEMP/$BIN" --out dist
           tar -tzvf dist/*.tar.gz
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: dist-macos
           path: dist/*
@@ -271,10 +271,10 @@ jobs:
     outputs:
       has_tap_token: ${{ steps.tap.outputs.has_tap_token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           pattern: dist-*
           path: dist
@@ -327,7 +327,7 @@ jobs:
           cat "$RUNNER_TEMP/notes.md"
       - name: build provenance
         if: github.event_name == 'push'
-        uses: actions/attest-build-provenance@v2
+        uses: actions/attest-build-provenance@v4
         with:
           subject-path: dist/*
       - name: publish release
@@ -362,7 +362,7 @@ jobs:
         run: gh workflow run publish.yml --ref "$TAG" -f tag="$TAG" -f dry_run=false
       - name: dry run → workflow artifact
         if: github.event_name != 'push'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: release-dry-run
           path: dist/*
@@ -379,7 +379,7 @@ jobs:
     if: github.event_name == 'push' && needs.release.outputs.has_tap_token == 'true' && needs.meta.outputs.prerelease != 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.tag || github.ref }}
       - name: update Formula/oomtop.rb in the tap
