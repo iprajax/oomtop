@@ -196,7 +196,7 @@ jobs:
           lipo -create -output "dist/$BIN" \
             "target/aarch64-apple-darwin/release/$BIN" "target/x86_64-apple-darwin/release/$BIN"
           lipo -info "dist/$BIN"
-          lipo -verify_arch "dist/$BIN" arm64 x86_64
+          lipo "dist/$BIN" -verify_arch arm64 x86_64
           "dist/$BIN" --version
           arch -x86_64 "dist/$BIN" --version || echo "Rosetta not available on this runner; x86_64 slice not executed"
       - name: codesign (Developer ID, hardened runtime)
