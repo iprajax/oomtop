@@ -224,7 +224,9 @@ jobs:
       - name: no signing secrets → keep the ad-hoc signature
         if: env.HAS_CERT != 'true'
         run: |
-          echo "::notice::MACOS_CERT_P12 / MACOS_SIGN_IDENTITY not set: shipping the linker's ad-hoc signature (not Developer ID signed, not notarized)"
+          echo "::notice::MACOS_CERT_P12 / MACOS_SIGN_IDENTITY not set: shipping an ad-hoc signature (not Developer ID signed, not notarized)"
+          # lipo -create drops the per-slice linker signatures; arm64 code must be signed to run, so ad-hoc sign the fat binary.
+          codesign --sign - --force "dist/$BIN"
           codesign --verify --strict --verbose=2 "dist/$BIN"
           codesign -dv "dist/$BIN" 2>&1 | grep -E 'Format|Signature|flags'
       - name: notarize

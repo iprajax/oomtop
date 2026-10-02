@@ -1,0 +1,16 @@
+# GitGuardian (ggshield) configuration.
+# The paths below are unit tests for oomtop's own command-line/URL redaction (SPEC §13): they contain
+# deliberately fake credentials such as `curl -u bob:hunter2` to prove they are redacted. No real secrets.
+version: 2
+secret:
+  ignored_paths:
+    - "crates/oomtop-core/src/redact.rs"
+    - "crates/oomtop-core/src/fingerprint.rs"
+    - "crates/oomtop-core/tests/**"
+    - "crates/oomtop-adapters/src/http.rs"
+    - "crates/oomtop-adapters/src/models/tests.rs"
+    - "crates/oomtop-mcp/src/export.rs"
+    - "crates/oomtop-mcp/tests/**"
+    - "crates/oomtop-serve/src/export.rs"
+    - "crates/oomtop-serve/tests/**"
+    - "SPEC.md"
