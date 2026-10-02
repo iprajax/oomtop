@@ -1,0 +1,71 @@
+name: Feature request
+description: Suggest something oomtop should do, detect or explain.
+title: "feat: "
+labels: ["enhancement", "status: triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Big or open-ended ideas, and anything that changes SPEC.md or UX.md (data model, JSON/MCP/HTTP output,
+        exit codes, config keys, safety or privacy rules), start as an
+        [RFC in Discussions](https://github.com/iprajax/oomtop/discussions/categories/ideas) (see GOVERNANCE.md).
+        Please check the [non-goals](https://github.com/iprajax/oomtop/blob/main/docs/ROADMAP.md#not-planned) first:
+        token/cost tracking, Windows and fleet monitoring are out of scope for v1.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What were you trying to find out or do, and what got in the way? A real situation helps most.
+      placeholder: "I run two agents that both start llama-server; the second one OOMs the machine because…"
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What you'd like
+      description: How oomtop could answer it. CLI, TUI, MCP, config, a new detector or adapter.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
+      description: Other tools, workarounds, or a different shape for this feature.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      multiple: true
+      options:
+        - Memory accounting / collectors
+        - Attribution (agents, apps, sandboxes, model servers)
+        - Headroom / OOM forecast / reclaim
+        - "`why` / throttling"
+        - TUI
+        - MCP
+        - "`serve` / Prometheus"
+        - Config / themes / keymaps
+        - Packaging / install
+        - Docs
+        - Other
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      multiple: true
+      options:
+        - macOS
+        - Linux
+        - Both
+
+  - type: checkboxes
+    id: help
+    attributes:
+      label: Contributing
+      options:
+        - label: I'd like to work on this (a maintainer will confirm the approach first).

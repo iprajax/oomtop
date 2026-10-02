@@ -1,0 +1,41 @@
+# typos (https://github.com/crate-ci/typos) configuration. Run locally: `typos` (brew install typos-cli).
+# CI runs the same in the `typos` job. Add a word here only for a real false positive, with a reason.
+
+[files]
+extend-exclude = [
+    "target/",
+    "Cargo.lock",
+    "docs/media/",
+    # Recorded process tables: macOS truncates `comm` to 16 bytes ("com.apple.acces", "SafariLinkExtens",
+    # "Discove…"), so a fixture must keep those names byte for byte.
+    "fixtures/**/*.json",
+    "fixtures/**/*.groundtruth.txt",
+]
+
+[default.extend-words]
+# --- names and terms ---
+ratatui = "ratatui"     # the TUI crate (ratatui.rs)
+ANE = "ANE"             # Apple Neural Engine (IOReport energy channel, process names)
+IST = "IST"             # India Standard Time in measurement logs (SPEC §21)
+replayd = "replayd"     # a macOS system daemon (ReplayKit), seen in snapshots
+vermillion = "vermillion" # Okabe–Ito's own spelling of the palette color
+Virtua = "Virtua"       # kernel-truncated `com.apple.Virtualization.Virtua` (16-byte comm limit)
+thr = "thr"             # htop's "Tasks: N, T thr" (threads) header, reproduced in the TUI
+metalness = "metalness" # three.js MeshStandardMaterial property (site/city.js)
+
+# --- short identifiers ---
+numer = "numer"         # mach_timebase_info { numer, denom }
+anc = "anc"             # ancestor
+fpr = "fpr"             # footprint (test tuple)
+ths = "ths"             # thresholds
+byt = "byt"             # bytes formatter closure
+nd = "nd"               # ordinal suffix (2nd)
+ba = "ba"               # Damerau–Levenshtein test input ("ab" vs "ba")
+
+# --- intentional misspellings: inputs for oomtop's own typo correction (filters, config keys, keymaps) ---
+modle = "modle"
+thme = "thme"
+detials = "detials"
+idel = "idel"
+memroy = "memroy"
+whos = "whos"

@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or "is this expected?"
+    url: https://github.com/iprajax/oomtop/discussions/categories/q-a
+    about: Ask in Discussions. Include `oomtop doctor` output; most "n/a" questions are answered there.
+  - name: Idea or RFC (changes to SPEC.md / UX.md)
+    url: https://github.com/iprajax/oomtop/discussions/categories/ideas
+    about: Propose larger changes in public first (RFC-lite, see GOVERNANCE.md).
+  - name: Security vulnerability
+    url: https://github.com/iprajax/oomtop/security/advisories/new
+    about: Report privately. Never open a public issue for a security problem (see SECURITY.md).

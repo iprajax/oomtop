@@ -1,0 +1,118 @@
+# Repository labels. The names carry the meaning; colors only group them (neutral greys plus one warm accent
+# for "needs attention"), so the set reads the same without color.
+#
+# Sync to GitHub (creates missing labels, updates existing ones; never deletes). Needs `gh auth login`:
+#
+#   uv run --quiet --with pyyaml python -c 'import subprocess,yaml; [subprocess.run(["gh","label","create",l["name"],"--color",l["color"],"--description",l["description"],"--force","-R","iprajax/oomtop"],check=True) for l in yaml.safe_load(open(".github/labels.yml"))]'
+#
+# Names reuse GitHub's defaults (bug, documentation, enhancement, ...) where they fit, so --force updates those
+# instead of creating near-duplicates. Issue forms, dependabot.yml and CONTRIBUTING.md reference these names.
+
+# --- type ---------------------------------------------------------------------------------------------------
+- name: bug
+  color: "ffb547"
+  description: Something is wrong, crashes, or a number doesn't match the OS
+- name: enhancement
+  color: "e8d5b0"
+  description: New feature or improvement
+- name: documentation
+  color: "e8d5b0"
+  description: Docs, README, SPEC/UX wording
+- name: question
+  color: "e8d5b0"
+  description: Better asked in Discussions; converted or answered there
+- name: rfc
+  color: "e8d5b0"
+  description: Changes SPEC.md or UX.md (RFC-lite, see GOVERNANCE.md)
+- name: security
+  color: "ffb547"
+  description: Security hardening (vulnerabilities are reported privately, see SECURITY.md)
+- name: breaking-change
+  color: "ffb547"
+  description: Breaks CLI, exit codes, JSON/MCP/HTTP output, config keys or the frozen model
+- name: performance
+  color: "e8d5b0"
+  description: CPU, RSS or first-frame budget (SPEC §14)
+
+# --- status -------------------------------------------------------------------------------------------------
+- name: "status: triage"
+  color: "ffb547"
+  description: New; a maintainer has not looked yet
+- name: "status: needs-info"
+  color: "9e9e9e"
+  description: Waiting on the reporter (doctor output, ground truth, steps)
+- name: "status: confirmed"
+  color: "9e9e9e"
+  description: Reproduced or accepted; ready to work on
+- name: "status: blocked"
+  color: "9e9e9e"
+  description: Waiting on something outside this issue
+- name: duplicate
+  color: "cfcfcf"
+  description: Already reported elsewhere
+- name: invalid
+  color: "cfcfcf"
+  description: Not a bug in oomtop, or not reproducible
+- name: wontfix
+  color: "cfcfcf"
+  description: Out of scope or a non-goal (SPEC §2)
+
+# --- community ----------------------------------------------------------------------------------------------
+- name: good first issue
+  color: "f2c37b"
+  description: Small, well-defined; a good place to start
+- name: help wanted
+  color: "f2c37b"
+  description: Maintainers would welcome a contribution
+- name: needs-fixture
+  color: "f2c37b"
+  description: Needs a recording of a machine we don't have (tools/capture)
+
+# --- area ---------------------------------------------------------------------------------------------------
+- name: "area: core"
+  color: "dedede"
+  description: oomtop-core (model, attribution, headroom, forecast, why, ranking)
+- name: "area: collect"
+  color: "dedede"
+  description: OS collectors (oomtop-collect)
+- name: "area: detect"
+  color: "dedede"
+  description: Agent, app, sandbox and model-server detection rules
+- name: "area: adapters"
+  color: "dedede"
+  description: Model-server and sandbox adapters
+- name: "area: config"
+  color: "dedede"
+  description: Config layering, themes, keymaps, schema
+- name: "area: tui"
+  color: "dedede"
+  description: The terminal UI
+- name: "area: mcp"
+  color: "dedede"
+  description: MCP server
+- name: "area: serve"
+  color: "dedede"
+  description: HTTP JSON and Prometheus
+- name: "area: cli"
+  color: "dedede"
+  description: Commands, flags, exit codes
+- name: "area: packaging"
+  color: "dedede"
+  description: Release builds, Homebrew, install.sh, deb/rpm, crates.io
+- name: "area: ci"
+  color: "dedede"
+  description: GitHub Actions workflows
+- name: "area: deps"
+  color: "dedede"
+  description: Rust dependencies
+- name: dependencies
+  color: "dedede"
+  description: Dependency update (Dependabot)
+
+# --- platform -----------------------------------------------------------------------------------------------
+- name: "platform: macos"
+  color: "bdbdbd"
+  description: macOS-specific
+- name: "platform: linux"
+  color: "bdbdbd"
+  description: Linux-specific

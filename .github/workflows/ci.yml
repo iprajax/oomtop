@@ -144,3 +144,29 @@ jobs:
           print(f"oomtop json: best of 5 = {best*1000:.0f} ms")
           assert best < 0.55 + 0.5, f"first snapshot too slow: {best:.3f}s"
           EOF
+
+  deny:
+    # Licenses, bans and sources are the PR gate; advisories also run nightly (new RustSec advisories can land
+    # any day) and don't block unrelated PRs. Config: deny.toml. Locally: `cargo deny check`.
+    name: cargo-deny (${{ matrix.checks }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        checks: [advisories, bans licenses sources]
+    continue-on-error: ${{ matrix.checks == 'advisories' && github.event_name == 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2
+        with:
+          command: check ${{ matrix.checks }}
+
+  typos:
+    # Spelling in code, docs and snapshots. Config: _typos.toml. Locally: `typos` (brew install typos-cli).
+    # Pinned: a new typos release can add dictionary words and fail an unrelated PR; Dependabot bumps it.
+    name: typos
+    runs-on: ubuntu-latest
+    if: github.event_name != 'schedule'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: crate-ci/typos@v1.50.3

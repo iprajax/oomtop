@@ -1,0 +1,89 @@
+# cargo-deny configuration (https://embarkstudios.github.io/cargo-deny/).
+# Run locally: `cargo deny check` (brew install cargo-deny). CI runs the same in the `deny` job.
+#
+# Policy: oomtop ships as an MIT-licensed binary. Every dependency must be under a permissive license that
+# allows redistribution inside an MIT binary; copyleft (GPL/LGPL/AGPL/MPL-as-weak-copyleft in static form)
+# is not accepted without a maintainer decision recorded here.
+
+[graph]
+# Check every target we ship (SPEC §16), not just the host's, so macOS-only (jemalloc) and Linux-only
+# dependencies are both covered whichever OS runs the check.
+targets = [
+    "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
+    "x86_64-unknown-linux-musl",
+    "aarch64-unknown-linux-musl",
+    "aarch64-apple-darwin",
+    "x86_64-apple-darwin",
+]
+all-features = false
+
+[output]
+feature-depth = 1
+
+# --- security advisories (RustSec) ------------------------------------------------------------------------
+[advisories]
+db-urls = ["https://github.com/rustsec/advisory-db"]
+# Unmaintained crates are reported for direct and transitive dependencies; yanked versions fail.
+unmaintained = "all"
+yanked = "deny"
+# Each ignore needs: the advisory id, why it does not affect oomtop, and when to revisit.
+ignore = []
+
+# --- licenses -----------------------------------------------------------------------------------------------
+[licenses]
+confidence-threshold = 0.9
+# Permissive licenses compatible with distributing an MIT binary. Keep this list minimal: add a license only
+# when a dependency needs it, with a comment naming that dependency.
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",                   # not in the tree today; jemalloc's own license (packaging/THIRD-PARTY-NOTICES.md)
+    "BSD-3-Clause",                   # not in the tree today; common permissive license, pre-approved
+    "ISC",
+    "Zlib",                           # foldhash
+    "Unicode-3.0",                    # unicode-ident
+    "CC0-1.0",
+    "BSL-1.0",
+]
+# BSD-2/3 are pre-approved but may not be in the tree at a given time: don't warn about them.
+unused-allowed-license = "allow"
+
+# Weak (file-level) copyleft, accepted per crate only. MPL-2.0 allows linking unmodified MPL files into an
+# MIT binary; the obligation is that those files' source stays available, which crates.io provides. Never
+# vendor-and-modify an MPL crate without a maintainer decision (GOVERNANCE.md).
+exceptions = [
+    # option-ext 0.2: via dirs -> dirs-sys (config/state directory lookup). Listed in NOTICE.
+    { crate = "option-ext", allow = ["MPL-2.0"] },
+]
+
+[licenses.private]
+# Workspace crates are checked like any other crate (they are published to crates.io).
+ignore = false
+
+# --- bans ---------------------------------------------------------------------------------------------------
+[bans]
+# Two versions of the same crate cost binary size and build time; report them, don't fail on them (the
+# ratatui/crossterm/windows-sys ecosystem routinely carries a duplicate or two between releases).
+multiple-versions = "warn"
+wildcards = "deny"
+# Workspace path dependencies carry a version too (they are published), so wildcards stay denied.
+allow-wildcard-paths = true
+highlight = "all"
+deny = [
+    # SPEC: synchronous design, no async runtime anywhere.
+    { crate = "tokio", reason = "oomtop is synchronous by design (no async runtime)" },
+    # Loopback HTTP only; no TLS stack in the binary (Cargo.toml: ureq without default features).
+    { crate = "openssl-sys", reason = "no TLS: adapters talk to 127.0.0.1 only" },
+    { crate = "ring", reason = "no TLS: adapters talk to 127.0.0.1 only" },
+]
+skip = []
+skip-tree = []
+
+# --- sources ------------------------------------------------------------------------------------------------
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []

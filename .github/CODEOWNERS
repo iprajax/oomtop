@@ -1,0 +1,18 @@
+# Review routing (https://docs.github.com/articles/about-code-owners). Last match wins.
+# Maintainers and committers are listed in MAINTAINERS.md; add owners per area as the team grows.
+
+*                       @iprajax
+
+# The contract: spec changes follow the RFC-lite process (GOVERNANCE.md).
+/SPEC.md                @iprajax
+/UX.md                  @iprajax
+/docs/CONTRACTS.md      @iprajax
+/crates/oomtop-core/src/model.rs @iprajax
+
+# Safety- and release-sensitive paths.
+/crates/oomtop-collect/src/signal.rs @iprajax
+/.github/               @iprajax
+/packaging/             @iprajax
+/deny.toml              @iprajax
+/GOVERNANCE.md          @iprajax
+/SECURITY.md            @iprajax

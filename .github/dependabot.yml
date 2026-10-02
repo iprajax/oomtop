@@ -1,0 +1,47 @@
+# Dependency updates (https://docs.github.com/code-security/dependabot/working-with-dependabot/dependabot-options-reference).
+# Each PR still has to pass CI, including `cargo deny` (licenses, advisories) and the MSRV build.
+version: 2
+updates:
+  - package-ecosystem: cargo
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "area: deps"]
+    commit-message:
+      prefix: "deps"
+    groups:
+      # One PR a week for minor and patch bumps. Majors get their own PR. Dependabot counts 0.30 -> 0.31 as
+      # "minor" although it is semver-breaking, so the 0.x crates that usually need code changes are kept out
+      # of the group and also get their own PR.
+      cargo-compatible:
+        applies-to: version-updates
+        update-types: ["minor", "patch"]
+        exclude-patterns:
+          - "ratatui*"
+          - "crossterm"
+          - "toml_edit"
+          - "rusqlite"
+          - "tiny_http"
+      # Security fixes are grouped too, but kept apart from routine bumps so they land fast.
+      cargo-security:
+        applies-to: security-updates
+        patterns: ["*"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+      time: "06:00"
+      timezone: Etc/UTC
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "area: ci"]
+    commit-message:
+      prefix: "ci"
+    groups:
+      github-actions:
+        patterns: ["*"]

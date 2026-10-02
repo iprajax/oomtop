@@ -1,0 +1,22 @@
+oomtop
+Copyright (c) 2026 oomtop contributors
+
+This product is licensed under the MIT License (see LICENSE).
+
+This product includes software developed by third parties:
+
+  * jemalloc 5.3 (BSD-2-Clause), statically linked into the macOS binary as
+    its memory allocator through the tikv-jemalloc-sys crate.
+    Copyright (C) 2002-present Jason Evans; (C) 2007-2012 Mozilla Foundation;
+    (C) 2009-present Facebook, Inc. Linux builds do not contain it.
+
+  * option-ext 0.2 (MPL-2.0), used unmodified through the dirs crate.
+    Its source is available at https://crates.io/crates/option-ext.
+
+  * Rust crates from crates.io under permissive licenses (MIT, Apache-2.0,
+    BSD, ISC, Zlib, Unicode-3.0, CC0-1.0, BSL-1.0); the accepted set is
+    enforced by deny.toml.
+
+The full license texts of bundled third-party components are in
+packaging/THIRD-PARTY-NOTICES.md, which ships inside every release archive
+that contains them.

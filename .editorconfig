@@ -1,0 +1,39 @@
+# https://editorconfig.org — editor defaults that match rustfmt.toml and the existing files.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+[*.rs]
+max_line_length = 110
+
+[*.{md,markdown}]
+# Markdown uses two trailing spaces for hard breaks; don't strip them.
+trim_trailing_whitespace = false
+max_line_length = 120
+
+[*.{yml,yaml,json,tape}]
+indent_size = 2
+
+[*.{sh,bash}]
+indent_size = 2
+
+[*.py]
+indent_size = 4
+
+[Makefile]
+indent_style = tab
+
+# Recorded data and golden files must stay byte for byte as captured or generated: no editor rewrites.
+[{fixtures/**,**/snapshots/*.snap,docs/media/**}]
+charset = unset
+end_of_line = unset
+insert_final_newline = unset
+trim_trailing_whitespace = unset
+indent_style = unset
+indent_size = unset
