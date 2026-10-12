@@ -84,7 +84,7 @@ jobs:
     if: needs.meta.outputs.has_cargo == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.meta.outputs.tag }}
       - uses: dtolnay/rust-toolchain@stable
@@ -130,10 +130,10 @@ jobs:
     env:
       V: ${{ needs.meta.outputs.version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.meta.outputs.tag }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
@@ -170,10 +170,10 @@ jobs:
       contents: read
       id-token: write # PyPI trusted publishing
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.meta.outputs.tag }}
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
       - name: download release archives
         env:
           GH_TOKEN: ${{ github.token }}
@@ -203,10 +203,10 @@ jobs:
     if: needs.meta.outputs.has_aur == 'true' && needs.meta.outputs.prerelease != 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.meta.outputs.tag }}
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v7
       - name: render PKGBUILD + .SRCINFO from SHA256SUMS
         env:
           GH_TOKEN: ${{ github.token }}
@@ -251,7 +251,7 @@ jobs:
         shell: bash
         working-directory: packaging/npm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ needs.meta.outputs.tag }}
       - name: set version in server.json
