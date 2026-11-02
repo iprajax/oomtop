@@ -48,7 +48,7 @@ anyhow = "1"
 clap = { version = "4", features = ["derive", "env", "wrap_help"] }
 ratatui = "0.30"
 crossterm = "0.29"
-rusqlite = { version = "0.40", features = ["bundled"] }
+rusqlite = { version = "0.41", features = ["bundled"] }
 libc = "0.2"
 ureq = { version = "3", default-features = false, features = ["json"] }  # loopback HTTP only: no TLS (drops rustls/ring)
 tiny_http = "0.12"
